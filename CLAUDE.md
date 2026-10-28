@@ -21,7 +21,11 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
      loqo, "SATILIR", qiymət ₼, evin bütün məlumatları 3 sətirdə, qızılı düymədə nömrə
      (`010 310 03 02`, boşluqla), "Zəng et • WhatsApp • DM yaz".
    - Hər iki formatı (9:16 və 4:5) render et, örtük şəkilləri + paylaşım mətni/heşteqlərlə göndər.
-   - Yalnız həqiqətən çatışmayan məlumatı (məs. qiymət yoxdursa) soruş.
+   - Qiymət verilməyibsə gözləmə: `"price": null` qoy (son kadrda "Qiymət üçün zəng edin",
+     girişdə "ƏTRAFLI SONDA ↓"), render et və qiyməti verərsə yenidən render edəcəyini de.
+   - Şəkil az olanda bir şəkildən bir neçə kadr çıxar: kadrın 6-cı elementi `[fx, fy, zoom]`
+     (məs. `[0.30, 0.58, 1.45]`) şəklin həmin hissəsinə yaxınlaşır — hər kadra öz yazısı.
+   - CTA mətnini evə uyğun yaz; "Dərhal köçməyə hazır" yalnız istifadəçi bunu deyibsə.
 
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 

@@ -83,12 +83,13 @@ class Renderer:
         self.tall = H / W > 1.5
         self.u = H / 1920  # vertical layout unit
         self.fs = 1.0 if self.tall else 0.86  # font scale
-        self.shots = [tuple(s) for s in LISTING["shots"]]
+        self.shots = [tuple(s[:5]) for s in LISTING["shots"]]
+        self.focus = [s[5] if len(s) > 5 else None for s in LISTING["shots"]]
         self.photos = {s[0]: load_photo(s[0]) for s in self.shots}
         self.build_overlays()
 
     # ---------- camera ----------
-    def kb(self, key, motion, p, punch=0.0):
+    def kb(self, key, motion, p, punch=0.0, focus=None):
         im = self.photos[key]
         iw, ih = im.size
         ar = self.W / self.H
@@ -111,9 +112,15 @@ class Renderer:
             zoom, py = 1.10, 0.5 - e
         zoom *= 1 + punch
         cw, ch = bw / zoom, bh / zoom
-        sx, sy = (iw - cw) / 2, (ih - ch) / 2  # slack each side
-        x0 = iw / 2 - cw / 2 + px * sx * 0.9
-        y0 = ih / 2 - ch / 2 + py * sy * 0.9
+        if focus:  # [fx, fy, extra_zoom]: detail shot cut out of a larger photo
+            fx, fy, fz = focus
+            cw, ch = cw / fz, ch / fz
+            x0 = fx * iw - cw / 2 + px * cw * 0.12
+            y0 = fy * ih - ch / 2 + py * ch * 0.12
+        else:
+            sx, sy = (iw - cw) / 2, (ih - ch) / 2  # slack each side
+            x0 = iw / 2 - cw / 2 + px * sx * 0.9
+            y0 = ih / 2 - ch / 2 + py * sy * 0.9
         x0 = min(max(x0, 0), iw - cw)
         y0 = min(max(y0, 0), ih - ch)
         return im.resize((self.W, self.H), Image.BICUBIC, box=(x0, y0, x0 + cw, y0 + ch))
@@ -254,7 +261,7 @@ class Renderer:
 
     def build_endcard(self, logo):
         W, H, fs = self.W, self.H, self.fs
-        bg = self.kb(self.shots[0][0], self.shots[0][2], 0.0).filter(ImageFilter.GaussianBlur(28))
+        bg = self.kb(self.shots[0][0], self.shots[0][2], 0.0, focus=self.focus[0]).filter(ImageFilter.GaussianBlur(28))
         bg = Image.blend(bg, Image.new("RGB", bg.size, GREEN), 0.80).convert("RGBA")
         self.end_bg = bg
 
@@ -276,17 +283,22 @@ class Renderer:
 
         items.append((self.text_layer([centered("SATILIR", font("Montserrat700.ttf", 40 * fs), GOLD, y, 14 * fs)], False), 0.15))
         y += 70 * fs
+        if not LISTING.get("price"):  # no price given: invite a call instead
+            fq = font("Playfair700.ttf", 92 * fs)
+            items.append((self.text_layer([centered("Qiymət üçün zəng edin", fq, GOLD, y + 40 * fs)], False), 0.3))
+            y += 230 * fs
         # price: Playfair digits + Montserrat manat sign
         fp = font("Playfair700.ttf", 160 * fs)
         fm = font("Montserrat700.ttf", 120 * fs)
-        num, cur = LISTING["price"] + " ", "₼"
-        wn, wc = d.textlength(num, font=fp), d.textlength(cur, font=fm)
-        x0 = cx - (wn + wc) / 2
-        base = y + fp.getmetrics()[0]
-        lay = self.text_layer([(num, fp, GOLD, x0, y, 0),
-                               (cur, fm, GOLD, x0 + wn, base - fm.getmetrics()[0], 0)], False)
-        items.append((lay, 0.3))
-        y += 230 * fs
+        if LISTING.get("price"):
+            num, cur = LISTING["price"] + " ", "₼"
+            wn, wc = d.textlength(num, font=fp), d.textlength(cur, font=fm)
+            x0 = cx - (wn + wc) / 2
+            base = y + fp.getmetrics()[0]
+            lay = self.text_layer([(num, fp, GOLD, x0, y, 0),
+                                   (cur, fm, GOLD, x0 + wn, base - fm.getmetrics()[0], 0)], False)
+            items.append((lay, 0.3))
+            y += 230 * fs
 
         fd = font("Montserrat600.ttf", 44 * fs)
         for i, line in enumerate(LISTING["details"]):
@@ -336,7 +348,7 @@ class Renderer:
     def shot_frame(self, i, t):
         key, dur, motion, label, tr = self.shots[i]
         punch = 0.10 * (1 - ease_out(t / TR)) if tr == "punch" and t < TR else 0.0
-        return self.kb(key, motion, t / dur, punch).convert("RGBA")
+        return self.kb(key, motion, t / dur, punch, self.focus[i]).convert("RGBA")
 
     def decorate(self, im, i, t):
         key, dur, motion, label, _ = self.shots[i]

@@ -1,0 +1,21 @@
+{
+  "slug": "merdekan-4sot",
+  "hook": {
+    "title": ["Hovuzlu", "villa"],
+    "sub": "Mərdəkan  •  4 sot  •  4 otaq",
+    "pill": "ƏTRAFLI SONDA  ↓"
+  },
+  "price": null,
+  "details": [
+    "Mərdəkan  •  4 sot  •  Həyət evi",
+    "4 otaq  •  Hovuz  •  İstirahət zonası"
+  ],
+  "cta": "Ətraflı məlumat və baxış üçün zəng et",
+  "phone": "010-310-03-02",
+  "shots": [
+    ["yard", 2.4, "in_slow", null, null],
+    ["yard", 1.4, "right", "Hovuz", "whip", [0.30, 0.58, 1.45]],
+    ["yard", 1.4, "in", "İstirahət zonası", "punch", [0.78, 0.53, 1.6]],
+    ["yard", 1.4, "left", "Fasad", "whip", [0.33, 0.45, 1.45]]
+  ]
+}
