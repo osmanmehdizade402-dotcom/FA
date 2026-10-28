@@ -1,0 +1,37 @@
+{
+  "slug": "merdekan-villa",
+  "hook": {
+    "title": ["Hovuzlu", "villa"],
+    "sub": "Mərdəkan  •  6.5 sot  •  5 otaq",
+    "pill": "QİYMƏTİ SONDA  ↓"
+  },
+  "price": "655 000",
+  "details": [
+    "Mərdəkan  •  6.5 sot  •  Həyət evi",
+    "5 otaq  •  3 hamam  •  2 qarderob",
+    "Hovuz  •  Qaraj  •  Yay mətbəxi"
+  ],
+  "cta": "Dərhal köçməyə hazır – baxış üçün zəng et",
+  "phone": "010-310-03-02",
+  "shots": [
+    ["facade_pool", 2.0, "in_slow", null, null],
+    ["facade_walk", 1.0, "in", null, "whip"],
+    ["porch_pool", 0.9, "left", "Hovuz", "punch"],
+    ["swing", 0.9, "out", null, "whip"],
+    ["garage", 1.0, "right", "Qaraj + geniş həyət", "punch"],
+    ["pergola", 0.9, "in", null, "whip"],
+    ["summer_view", 1.1, "in", "Yay mətbəxi", "punch"],
+    ["entrance", 1.2, "up", "Giriş holu", "flash"],
+    ["hall", 0.8, "in", null, "punch"],
+    ["living", 1.0, "in", "Qonaq otağı", "whip"],
+    ["kitchen", 1.0, "out", "Mətbəx", "punch"],
+    ["dining", 0.8, "left", null, "whip"],
+    ["bed1", 1.0, "in", "5 otaq", "punch"],
+    ["bed3", 0.8, "right", null, "whip"],
+    ["bed2", 0.7, "in", null, "punch"],
+    ["closet", 1.2, "left", "2 qarderob", "whip"],
+    ["bath_tub", 1.0, "in", "3 hamam + tualet", "punch"],
+    ["bath2", 0.8, "out", null, "whip"],
+    ["corridor", 0.9, "in_fast", null, "punch"]
+  ]
+}

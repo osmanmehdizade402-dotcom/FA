@@ -1,11 +1,19 @@
-"""Xəzər Sahil Əmlak — Mərdəkan villa promo video renderer.
+"""Xəzər Sahil Əmlak — listing promo video renderer (brand template).
 
-Renders 9:16 (TikTok / Reels / Story) and 4:5 (Instagram feed) versions from
-the listing photos: Ken Burns motion, beat-length cuts, whip/punch/flash
-transitions, branded labels, price end card that loops back into the hook.
+Everything brand-related (logo, colours, fonts, font sizes, layout, CTA box,
+photo brightening, motion and transitions) is fixed here. Everything about a
+specific house lives in listings/<slug>/listing.json + listings/<slug>/photos/.
 
-Usage: python3 render.py <photo_dir> <font_dir> <logo_png> <out_dir>
+Renders, into listings/<slug>/out/:
+  <slug>-9x16-tiktok-reels-story.mp4   1080x1920
+  <slug>-4x5-instagram-post.mp4        1080x1350
+  cover-9x16.jpg, cover-4x5.jpg        first frame (use as cover)
+
+Usage:
+  python3 render.py listings/<slug>            # full render
+  python3 render.py listings/<slug> --preview  # key frames only, to preview.jpg
 """
+import json
 import math
 import subprocess
 import sys
@@ -14,49 +22,25 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
-PHOTOS, FONTS, LOGO, OUT = (Path(a) for a in sys.argv[1:5])
+ROOT = Path(__file__).resolve().parent
+FONTS = ROOT / "fonts"
+LOGO = ROOT.parent / "logo" / "xezer-sahil-emlak-horizontal-transparent.png"
 FPS = 30
 TR = 0.24  # transition length, seconds
-
-GREEN = (22, 62, 58)
-GOLD = (194, 163, 101)
-CREAM = (241, 239, 232)
-
-# Photo ids (uploaded file prefixes)
-P = {
-    "facade_pool": "0f2acfc3", "porch_pool": "ddd20c06", "facade_walk": "c3619711",
-    "swing": "ad91cfb8", "garage": "b6919016", "pergola": "68fc86cc",
-    "summer_view": "0b9c30db", "entrance": "abecb15b", "hall": "6b5289a2",
-    "living": "b7083204", "kitchen": "02c6ad07", "dining": "b501b4e7",
-    "bed1": "a785a060", "bed3": "5aa21221", "bed2": "3f4cbbda",
-    "closet": "0d5e13ac", "bath_tub": "99d2106c", "bath2": "f82ca7ab",
-    "corridor": "551f8f00",
-}
-
-# (photo, seconds, motion, label, transition-into-this-shot)
-SHOTS = [
-    ("facade_pool", 2.0, "in_slow", None, None),
-    ("facade_walk", 1.0, "in", None, "whip"),
-    ("porch_pool", 0.9, "left", "Hovuz", "punch"),
-    ("swing", 0.9, "out", None, "whip"),
-    ("garage", 1.0, "right", "Qaraj + geniş həyət", "punch"),
-    ("pergola", 0.9, "in", None, "whip"),
-    ("summer_view", 1.1, "in", "Yay mətbəxi", "punch"),
-    ("entrance", 1.2, "up", "Giriş holu", "flash"),
-    ("hall", 0.8, "in", None, "punch"),
-    ("living", 1.0, "in", "Qonaq otağı", "whip"),
-    ("kitchen", 1.0, "out", "Mətbəx", "punch"),
-    ("dining", 0.8, "left", None, "whip"),
-    ("bed1", 1.0, "in", "5 otaq", "punch"),
-    ("bed3", 0.8, "right", None, "whip"),
-    ("bed2", 0.7, "in", None, "punch"),
-    ("closet", 1.2, "left", "2 qarderob", "whip"),
-    ("bath_tub", 1.0, "in", "3 hamam + tualet", "punch"),
-    ("bath2", 0.8, "out", None, "whip"),
-    ("corridor", 0.9, "in_fast", None, "punch"),
-]
 END_DUR = 3.4
 END_LOOP = 0.4  # final crossfade back into frame 0 for a seamless loop
+
+# ---- brand ----
+GREEN = (22, 62, 58)
+GREEN_DARK = (15, 46, 42)  # CTA box fill
+GOLD = (194, 163, 101)
+GOLD_SOFT = (214, 186, 124)  # CTA line text
+CREAM = (241, 239, 232)
+WHITE = (255, 255, 255)
+RE_GREEN = (18, 64, 52)  # "REAL ESTATE" in the watermark
+
+LISTING = None  # set in main
+PHOTOS = None
 
 
 def font(name, size):
@@ -73,19 +57,34 @@ def ease_out(x):
     return 1 - (1 - x) ** 3
 
 
-def load_photo(key):
-    im = Image.open(PHOTOS / f"{P[key]}-image.jpg").convert("RGB")
+def brighten(im):
+    """Per-photo auto exposure: lift so the bright end sits near 0.86, never darken."""
+    lum = np.asarray(im.convert("L").resize((300, 400))).astype(float) / 255
+    gain = min(max(0.86 / max(np.percentile(lum, 95), 1e-3), 1.0), 1.25)
+    arr = np.asarray(im).astype(float) / 255 * gain
+    # soft shoulder instead of hard clipping
+    arr = np.where(arr > 0.9, 0.9 + (1 - np.exp(-(arr - 0.9) / 0.1)) * 0.1, arr)
+    im = Image.fromarray((arr * 255).clip(0, 255).astype(np.uint8))
     im = ImageEnhance.Color(im).enhance(1.12)
-    im = ImageEnhance.Contrast(im).enhance(1.06)
-    return im
+    return ImageEnhance.Contrast(im).enhance(1.05)
+
+
+def load_photo(key):
+    for ext in (".jpg", ".jpeg", ".png", ".webp"):
+        p = PHOTOS / f"{key}{ext}"
+        if p.exists():
+            return brighten(Image.open(p).convert("RGB"))
+    raise FileNotFoundError(PHOTOS / key)
 
 
 class Renderer:
     def __init__(self, W, H, tag):
         self.W, self.H, self.tag = W, H, tag
+        self.tall = H / W > 1.5
         self.u = H / 1920  # vertical layout unit
-        self.fs = 1.0 if H / W > 1.5 else 0.86  # font scale
-        self.photos = {k: load_photo(k) for k, *_ in SHOTS}
+        self.fs = 1.0 if self.tall else 0.86  # font scale
+        self.shots = [tuple(s) for s in LISTING["shots"]]
+        self.photos = {s[0]: load_photo(s[0]) for s in self.shots}
         self.build_overlays()
 
     # ---------- camera ----------
@@ -140,40 +139,89 @@ class Renderer:
         sh.alpha_composite(lay)
         return sh
 
+    def build_watermark(self, logo):
+        """Badge + 'Xəzər Sahil Əmlak' + 'REAL ESTATE', as on the approved sample."""
+        W = self.W
+        k = W / 1080
+        badge_px = int(92 * k)
+        # the rounded badge sits at x,y 144..719 in the 2688x864 transparent logo
+        badge = logo.crop((144, 144, 720, 720)).resize((badge_px, badge_px), Image.LANCZOS)
+        ft = font("Playfair700.ttf", 36 * k)
+        fr = font("DejaVuSans-Bold.ttf", 20 * k)
+        tmp = ImageDraw.Draw(Image.new("RGBA", (10, 10)))
+        w1 = tmp.textlength("Xəzər Sahil ", font=ft)
+        w2 = tmp.textlength("Əmlak", font=ft)
+        tx = badge_px + int(16 * k)
+        lw, lh = int(tx + w1 + w2 + 10 * k), badge_px + int(10 * k)
+        lay = Image.new("RGBA", (lw, lh), (0, 0, 0, 0))
+        lay.alpha_composite(badge, (0, 0))
+        text = Image.new("RGBA", (lw, lh), (0, 0, 0, 0))
+        d = ImageDraw.Draw(text)
+        ty = int(14 * k)
+        d.text((tx, ty), "Xəzər Sahil ", font=ft, fill=WHITE)
+        d.text((tx + w1, ty), "Əmlak", font=ft, fill=GOLD,
+               stroke_width=max(1, int(2 * k)), stroke_fill=(70, 55, 25))
+        x = tx + 2 * k
+        for c in "REAL ESTATE":
+            d.text((x, int(54 * k)), c, font=fr, fill=RE_GREEN)
+            x += tmp.textlength(c, font=fr) + 5.2 * k
+        sh = text.split()[3].filter(ImageFilter.GaussianBlur(3 * k)).point(lambda v: int(v * 0.45))
+        shadow = Image.new("RGBA", (lw, lh), (0, 0, 0, 0))
+        shadow.putalpha(sh)
+        lay.alpha_composite(shadow, (int(1 * k), int(2 * k)))
+        lay.alpha_composite(text)
+        self.watermark = lay
+        self.watermark_pos = (int(93 * k), int(170 * self.u) if self.tall else int(128 * self.H / 1350))
+
+    def build_cta(self):
+        """Dark green box with gold border: CTA line + phone, as on the approved sample."""
+        W, H = self.W, self.H
+        k = W / 1080
+        x0, x1 = int(50 * k), W - int(50 * k)
+        bh = int(150 * k)
+        y0 = int(H * 0.75) if self.tall else int(1160 * H / 1350)
+        lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        d = ImageDraw.Draw(lay)
+        d.rounded_rectangle([x0, y0, x1, y0 + bh], radius=int(30 * k),
+                            fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(2, int(3 * k)))
+        f1 = font("DejaVuSans.ttf", 36 * k)
+        f2 = font("DejaVuSans-Bold.ttf", 70 * k)
+        for text, f, fill, cy in [(LISTING["cta"], f1, GOLD_SOFT, y0 + bh * 0.25),
+                                  (LISTING["phone"], f2, WHITE, y0 + bh * 0.64)]:
+            bb = d.textbbox((0, 0), text, font=f)
+            d.text((W / 2 - (bb[2] + bb[0]) / 2, cy - (bb[3] + bb[1]) / 2), text, font=f, fill=fill)
+        self.cta = lay
+        self.cta_top = y0
+
     def build_overlays(self):
         W, H, u, fs = self.W, self.H, self.u, self.fs
         mx = int(70 * W / 1080)
 
-        # top gradient so the watermark and hook text stay readable
+        # bottom gradient behind the hook text (light, keeps the photo bright)
         g = np.zeros((H, W, 4), np.uint8)
-        g0 = int(H * 0.40)
-        ramp = np.clip(np.linspace(0, 1.6, H - g0), 0, 1) ** 1.3
-        g[g0:, :, 3] = (ramp * 185)[:, None].astype(np.uint8)
+        g0 = int(H * 0.42)
+        ramp = np.clip(np.linspace(0, 1.4, H - g0), 0, 1) ** 1.3
+        g[g0:, :, 3] = (ramp * 120)[:, None].astype(np.uint8)
         self.grad_hook = Image.fromarray(g, "RGBA")
-        g2 = g.copy()
-        h2 = int(H * 0.2)
-        g2[:, :, 3] = 0
-        g2[:h2, :, 3] = np.linspace(90, 0, h2)[:, None].astype(np.uint8)
-        self.grad_top = Image.fromarray(g2, "RGBA")
 
         logo = Image.open(LOGO).convert("RGBA")
-        lw = int(430 * W / 1080)
-        self.logo_small = logo.resize((lw, int(lw * logo.height / logo.width)), Image.LANCZOS)
-        self.logo_pos = (mx, int(150 * u))
+        self.build_watermark(logo)
+        self.build_cta()
 
         # hook
+        hook = LISTING["hook"]
         f_big = font("Playfair700.ttf", 118 * fs)
         f_sub = font("Montserrat600.ttf", 42 * fs)
         y = int(H * 0.50)
-        parts = [("Hovuzlu", f_big, CREAM, mx, y, 0)]
-        y += int(132 * fs)
-        parts.append(("villa", f_big, GOLD, mx, y, 0))
-        y += int(165 * fs)
-        parts.append(("Mərdəkan  •  6.5 sot  •  5 otaq", f_sub, CREAM, mx, y, 0))
+        parts = []
+        for i, line in enumerate(hook["title"]):
+            parts.append((line, f_big, CREAM if i == 0 else GOLD, mx, y, 0))
+            y += int(132 * fs)
+        y += int(33 * fs)
+        parts.append((hook["sub"], f_sub, CREAM, mx, y, 0))
         self.hook = self.text_layer(parts)
-        # "price at the end" pill
         f_pill = font("Montserrat700.ttf", 36 * fs)
-        pill_txt = "QİYMƏTİ SONDA  ↓"
+        pill_txt = hook["pill"]
         tmp = ImageDraw.Draw(Image.new("RGBA", (10, 10)))
         tw = tmp.textlength(pill_txt, font=f_pill)
         py = y + int(85 * fs)
@@ -188,9 +236,10 @@ class Renderer:
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
         self.labels = {}
-        ly = int(1180 * u) if H / W > 1.5 else int(H * 0.70)
-        for _, _, _, lab, _ in SHOTS:
-            if not lab:
+        ly = int(1180 * u) if self.tall else int(H * 0.70)
+        for s in self.shots:
+            lab = s[3]
+            if not lab or lab in self.labels:
                 continue
             lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             d = ImageDraw.Draw(lay)
@@ -205,7 +254,7 @@ class Renderer:
 
     def build_endcard(self, logo):
         W, H, fs = self.W, self.H, self.fs
-        bg = self.kb("facade_pool", "in_slow", 0.0).filter(ImageFilter.GaussianBlur(28))
+        bg = self.kb(self.shots[0][0], self.shots[0][2], 0.0).filter(ImageFilter.GaussianBlur(28))
         bg = Image.blend(bg, Image.new("RGB", bg.size, GREEN), 0.80).convert("RGBA")
         self.end_bg = bg
 
@@ -217,8 +266,7 @@ class Renderer:
             w = sum(d.textlength(c, font=f) + track for c in text) - track
             return (text, f, fill, cx - w / 2, y, track)
 
-        tall = H / W > 1.5
-        y = H * (0.17 if tall else 0.08)
+        y = H * (0.17 if self.tall else 0.08)
         lw = int(W * 0.70)
         lg = logo.resize((lw, int(lw * logo.height / logo.width)), Image.LANCZOS)
         lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -231,7 +279,7 @@ class Renderer:
         # price: Playfair digits + Montserrat manat sign
         fp = font("Playfair700.ttf", 160 * fs)
         fm = font("Montserrat700.ttf", 120 * fs)
-        num, cur = "655 000 ", "₼"
+        num, cur = LISTING["price"] + " ", "₼"
         wn, wc = d.textlength(num, font=fp), d.textlength(cur, font=fm)
         x0 = cx - (wn + wc) / 2
         base = y + fp.getmetrics()[0]
@@ -241,16 +289,14 @@ class Renderer:
         y += 230 * fs
 
         fd = font("Montserrat600.ttf", 44 * fs)
-        for i, line in enumerate(["Mərdəkan  •  6.5 sot  •  Həyət evi",
-                                  "5 otaq  •  3 hamam  •  2 qarderob",
-                                  "Hovuz  •  Qaraj  •  Yay mətbəxi"]):
+        for i, line in enumerate(LISTING["details"]):
             items.append((self.text_layer([centered(line, fd, CREAM, y, 0)], False), 0.5 + 0.1 * i))
             y += 70 * fs
         y += 45 * fs
 
         # phone pill
         fph = font("Montserrat700.ttf", 64 * fs)
-        phone = "010 310 03 02"
+        phone = LISTING["phone"]
         tw = d.textlength(phone, font=fph)
         ph = int(118 * fs)
         pw = tw + 110 * fs
@@ -288,23 +334,19 @@ class Renderer:
 
     # ---------- frame generation ----------
     def shot_frame(self, i, t):
-        key, dur, motion, label, _ = SHOTS[i]
-        tr = SHOTS[i][4]
+        key, dur, motion, label, tr = self.shots[i]
         punch = 0.10 * (1 - ease_out(t / TR)) if tr == "punch" and t < TR else 0.0
-        im = self.kb(key, motion, t / dur, punch).convert("RGBA")
-        return im
+        return self.kb(key, motion, t / dur, punch).convert("RGBA")
 
     def decorate(self, im, i, t):
-        key, dur, motion, label, _ = SHOTS[i]
+        key, dur, motion, label, _ = self.shots[i]
         if i == 0:
             im.alpha_composite(self.grad_hook)
             im.alpha_composite(self.hook)
             # pill pulses gently
             a = 0.75 + 0.25 * math.sin(t * 2 * math.pi * 1.5)
             im.alpha_composite(self.fade(self.hook_pill, a))
-        else:
-            im.alpha_composite(self.grad_top)
-        im.alpha_composite(self.logo_small, self.logo_pos)
+        im.alpha_composite(self.watermark, self.watermark_pos)
         if label:
             a_in = ease_out((t - 0.14) / 0.22)
             a_out = 1 - ease((t - (dur - 0.12)) / 0.12)
@@ -312,6 +354,7 @@ class Renderer:
             lay = self.fade(self.labels[label], a, dy=30 * (1 - a_in))
             if lay:
                 im.alpha_composite(lay)
+        im.alpha_composite(self.cta)
         return im
 
     def full_shot(self, i, t):
@@ -327,8 +370,9 @@ class Renderer:
         return im
 
     def frames(self):
+        shots = self.shots
         starts, acc = [], 0.0
-        for s in SHOTS:
+        for s in shots:
             starts.append(acc)
             acc += s[1]
         end_start = acc
@@ -340,10 +384,8 @@ class Renderer:
             if T >= end_start:
                 t = T - end_start
                 if t < TR:  # flash in from last shot
-                    k = t / TR
-                    prev = self.full_shot(len(SHOTS) - 1, SHOTS[-1][1] + t).convert("RGB")
-                    cur = self.end_frame(t).convert("RGB")
-                    fr = flash(prev, cur, k)
+                    prev = self.full_shot(len(shots) - 1, shots[-1][1] + t).convert("RGB")
+                    fr = flash(prev, self.end_frame(t).convert("RGB"), t / TR)
                 elif t > END_DUR - END_LOOP:
                     k = ease((t - (END_DUR - END_LOOP)) / END_LOOP)
                     fr = Image.blend(self.end_frame(t).convert("RGB"), first, k)
@@ -353,14 +395,13 @@ class Renderer:
                 continue
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
-            tr = SHOTS[i][4]
+            tr = shots[i][4]
             if tr in ("whip", "flash") and t < TR and i > 0:
                 k = t / TR
-                prev = self.full_shot(i - 1, SHOTS[i - 1][1] + t).convert("RGB")
+                prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
                 if tr == "whip":
-                    e = ease(k)
-                    off = int(e * self.W)
+                    off = int(ease(k) * self.W)
                     canvas = Image.new("RGB", (self.W, self.H))
                     canvas.paste(prev, (-off, 0))
                     canvas.paste(cur, (self.W - off, 0))
@@ -371,9 +412,15 @@ class Renderer:
                 fr = self.full_shot(i, t).convert("RGB")
             yield fr
 
-    def render(self):
-        OUT.mkdir(parents=True, exist_ok=True)
-        out = OUT / f"xezer-sahil-merdekan-{self.tag}.mp4"
+    def preview(self):
+        """Hook, a labelled shot and the end card, side by side."""
+        lab = next((i for i, s in enumerate(self.shots) if s[3]), 1)
+        return [self.full_shot(0, 0.5).convert("RGB"),
+                self.full_shot(lab, self.shots[lab][1] * 0.7).convert("RGB"),
+                self.end_frame(2.0).convert("RGB")]
+
+    def render(self, out_dir):
+        out = out_dir / f"{LISTING['slug']}-{self.tag}.mp4"
         cmd = ["ffmpeg", "-y", "-loglevel", "error",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{self.W}x{self.H}", "-r", str(FPS), "-i", "-",
                "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
@@ -388,7 +435,7 @@ class Renderer:
             proc.stdin.write(fr.tobytes())
         proc.stdin.close()
         proc.wait()
-        cover.save(OUT / f"cover-{self.tag}.jpg", quality=93)
+        cover.save(out_dir / f"cover-{self.tag.split('-')[0]}.jpg", quality=93)
         return out
 
 
@@ -399,6 +446,27 @@ def flash(prev, cur, k):
     return Image.blend(cur, white, ease((1 - k) * 2) * 0.85)
 
 
+FORMATS = [(1080, 1920, "9x16-tiktok-reels-story"), (1080, 1350, "4x5-instagram-post")]
+
 if __name__ == "__main__":
-    for W, H, tag in [(1080, 1920, "9x16-tiktok-reels-story"), (1080, 1350, "4x5-instagram-post")]:
-        print("rendered", Renderer(W, H, tag).render())
+    listing_dir = Path(sys.argv[1]).resolve()
+    LISTING = json.loads((listing_dir / "listing.json").read_text())
+    PHOTOS = listing_dir / "photos"
+    out_dir = listing_dir / "out"
+    out_dir.mkdir(exist_ok=True)
+    if "--preview" in sys.argv:
+        frames = []
+        for W, H, tag in FORMATS:
+            frames += Renderer(W, H, tag).preview()
+        h = 960
+        ims = [im.resize((int(im.width * h / im.height), h)) for im in frames]
+        sheet = Image.new("RGB", (sum(i.width + 10 for i in ims) - 10, h), "white")
+        x = 0
+        for im in ims:
+            sheet.paste(im, (x, 0))
+            x += im.width + 10
+        sheet.save(out_dir / "preview.jpg", quality=88)
+        print("preview", out_dir / "preview.jpg")
+    else:
+        for W, H, tag in FORMATS:
+            print("rendered", Renderer(W, H, tag).render(out_dir))
