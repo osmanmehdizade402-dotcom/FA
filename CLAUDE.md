@@ -33,8 +33,8 @@ Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş ka
 `video/reference/approved-end-card.png` (son kadr). Nümunə ev: `video/listings/merdekan-villa/`.
 Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə, yalnız `listing.json` yaz.
 
-- **Loqo (sol yuxarı, bütün kadrlarda):** yaşıl ikon + "Xəzər Sahil" (ağ) "Əmlak" (qızılı) +
-  "REAL ESTATE" (tünd yaşıl, DejaVu Sans Bold). Mənbə: `logo/xezer-sahil-emlak-horizontal-transparent.png`.
+- **Loqo (sol yuxarı, bütün kadrlarda):** yaşıl ikon + "Xəzər Sahil" (ağ) "Əmlak" (qızılı, konturs) +
+  "REAL ESTATE" (qızılı, DejaVu Sans Bold) — qızılı hissələr digər qızılı elementlərlə eyni rəngdə. Mənbə: `logo/xezer-sahil-emlak-horizontal-transparent.png`.
   Brend adı **Xəzər Sahil Əmlak** (Xəzər Sahil Ev yox).
   Ölçü: nümunədən 20% böyük (istifadəçi "1 düyüm böyüt" dedi) — render.py-də `* 1.2`.
 - **Rənglər:** yaşıl `#163E3A`, qızılı `#C2A365`, krem `#F1EFE8`, CTA qutusu `#0F2E2A`.

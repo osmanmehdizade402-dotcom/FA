@@ -37,7 +37,6 @@ GOLD = (194, 163, 101)
 GOLD_SOFT = (214, 186, 124)  # CTA line text
 CREAM = (241, 239, 232)
 WHITE = (255, 255, 255)
-RE_GREEN = (18, 64, 52)  # "REAL ESTATE" in the watermark
 
 LISTING = None  # set in main
 PHOTOS = None
@@ -166,11 +165,10 @@ class Renderer:
         d = ImageDraw.Draw(text)
         ty = int(14 * k)
         d.text((tx, ty), "Xəzər Sahil ", font=ft, fill=WHITE)
-        d.text((tx + w1, ty), "Əmlak", font=ft, fill=GOLD,
-               stroke_width=max(1, int(2 * k)), stroke_fill=(70, 55, 25))
+        d.text((tx + w1, ty), "Əmlak", font=ft, fill=GOLD)
         x = tx + 2 * k
         for c in "REAL ESTATE":
-            d.text((x, int(54 * k)), c, font=fr, fill=RE_GREEN)
+            d.text((x, int(54 * k)), c, font=fr, fill=GOLD)
             x += tmp.textlength(c, font=fr) + 5.2 * k
         sh = text.split()[3].filter(ImageFilter.GaussianBlur(3 * k)).point(lambda v: int(v * 0.45))
         shadow = Image.new("RGBA", (lw, lh), (0, 0, 0, 0))
