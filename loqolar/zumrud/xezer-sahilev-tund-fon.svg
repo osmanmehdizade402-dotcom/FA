@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120">
+  <rect width="120" height="120" rx="24" fill="#1F524C"/>
+  <path d="M24 76 L72 28 M96 76 L48 28" stroke="#F1EFE8" stroke-width="7" stroke-linecap="round"/>
+  <path d="M35 66 V94 M85 66 V94" stroke="#F1EFE8" stroke-width="6" stroke-linecap="round"/>
+  <path d="M67 60 C56 54 46 63 55 71 C64 79 67 86 52 93" fill="none" stroke="#C2A365" stroke-width="6" stroke-linecap="round"/>
+  <path d="M22 106 q9.5 -6 19 0 t19 0 t19 0 t19 0" fill="none" stroke="#F1EFE8" stroke-width="4.5" stroke-linecap="round" opacity=".8"/>
+  <text x="140" y="72" font-family="Literata, Georgia, serif" font-size="52" font-weight="600" fill="#F1EFE8">Xəzər Sahil<tspan fill="#C2A365">Ev</tspan></text>
+  <text x="143" y="104" font-family="Onest, Arial, sans-serif" font-size="19" letter-spacing="9" fill="#C2A365">REAL ESTATE</text>
+</svg>
