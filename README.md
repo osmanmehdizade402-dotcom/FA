@@ -8,20 +8,28 @@ Fəaliyyət: ev və torpaq alqı-satqısı, vasitəçilik. Ərazi: Mərdəkan, X
 | Fayl | Nədir |
 |---|---|
 | `sistem/index.html` | İnteraktiv iş planı: ad variantları və balları, loqo sınağı, A–Z addımlar (işarələnir), FS və MMC müqayisəsi, risklər, xərc və komissiya hesablaması |
-| `loqolar/merdev-loqo.svg` | Tövsiyə olunan ad üçün loqo (MərdEv) |
-| `loqolar/merdev-ikon.svg` | Yalnız ikon: Instagram profili, möhür, favicon üçün |
+| `loqolar/xezer-sahil-emlak-loqo.svg` | **Seçilmiş ad, 1-ci variant:** Xəzər Sahil Əmlak · Real Estate |
+| `loqolar/xezer-sahilev-loqo.svg` | **Seçilmiş ad, 2-ci variant:** Xəzər SahilEv · Real Estate |
+| `loqolar/xezer-sahil-ikon.svg` | Yalnız ikon (sahildə ev, günəş, dalğalar): Instagram profili, möhür üçün |
+| `loqolar/merdev-loqo.svg` | Alternativ: MərdEv |
+| `loqolar/merdev-ikon.svg` | MərdEv ikonu |
 | `loqolar/mehdizade-loqo.svg` | Alternativ: Mehdizadə Əmlak |
 | `loqolar/qala-loqo.svg` | Alternativ: Qala Əmlak (Mərdəkan qalası) |
 
-## Tövsiyə olunan ad: **MərdEv**
+## Seçilmiş ad: **Xəzər Sahil**, iki variantda
 
-Rəsmi ad: “MərdEv Əmlak” MMC. Şüar: *Mərdəkanda mərd sövdələşmə*.
+| | 1-ci variant | 2-ci variant |
+|---|---|---|
+| Loqoda | Xəzər Sahil Əmlak · REAL ESTATE | Xəzər SahilEv · REAL ESTATE |
+| Rəsmi ad | “Xəzər Sahil Əmlak” MMC | “Xəzər SahilEv” MMC |
+| Domen | xezersahil.az | xezersahilev.az |
+| Üstünlük | Tam aydın, ənənəvi | Daha unikal, ticarət nişanı və domen üçün daha asan |
 
-- “Mərd” Mərdəkanı xatırladır və düzlük, sözünün üstündə durmaq deməkdir.
-- “Ev” işi dərhal izah edir.
-- İnternetdə “ə” hərfi olmadığı üçün `mardev.az` və `merdev.az` ikisini də götürün.
+- “Real Estate” brend yazısıdır. Dövlət dili haqqında qanuna görə lövhə və reklamda Azərbaycan dilindəki ad əsas və böyük olmalıdır, ona görə “REAL ESTATE” altda kiçik yazılıb. Rəsmi qeydiyyatda “Real Estate” yazmaq lazım deyil.
+- “Xəzər” sözü ilə çox şirkət var. Adı vergi orqanında və copat.gov.az bazasında mütləq yoxlayın.
+- İnternetdə “ə” hərfi yoxdur: `xezersahil` və `xazarsahil` formalarının ikisini də götürün.
 
-Alternativlər: Mehdizadə Əmlak, Qala Əmlak, Xəzər Sahil Əmlak.
+Alternativlər (müqayisə üçün): MərdEv, Mehdizadə Əmlak, Qala Əmlak.
 “Fədai Əmlak” variantına diqqət: “fədai” sözü Qarabağ kontekstində erməni silahlı dəstələri (fidayi) ilə də əlaqələndirilir.
 
 ## Qısa yol xəritəsi
