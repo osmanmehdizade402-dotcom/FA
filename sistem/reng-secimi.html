@@ -1,0 +1,160 @@
+<title>Xəzər Sahil Rəng Seçimi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Onest:wght@400;500;600&display=swap">
+<style>
+/* Layout: intro + icon explainer, then one card per palette: name, mood, swatches, logo on light and dark, mini card */
+:root{
+  --bg:#F2F3F2;--surface:#FFFFFF;--ink:#1A2226;--muted:#5A666B;--line:#DADFDE;--accent:#8C6D3A;
+  --f-display:"Literata",Georgia,"Times New Roman",serif;
+  --f-body:"Onest","Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101415;--surface:#181E20;--ink:#E7ECEB;--muted:#9FAAAD;--line:#2A3336;--accent:#D2B47C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101415;--surface:#181E20;--ink:#E7ECEB;--muted:#9FAAAD;--line:#2A3336;--accent:#D2B47C;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto;padding-block:28px 64px;display:grid;gap:36px}
+.wrap>*{min-width:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.2;margin:0;text-wrap:balance}
+h1{font-size:clamp(28px,5vw,40px)} h2{font-size:24px} h3{font-size:22px}
+p{margin:0;max-width:68ch}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.muted{color:var(--muted)}
+.intro{display:grid;gap:12px}
+.explain{display:grid;grid-template-columns:minmax(0,180px) 1fr;gap:20px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.explain svg{width:100%;height:auto;max-width:180px}
+.explain ul{margin:8px 0 0;padding-left:18px}
+@media (max-width:560px){.explain{grid-template-columns:1fr}.explain svg{max-width:140px}}
+.controls{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.controls span{font-size:14px;color:var(--muted);margin-right:6px}
+.controls button{font:inherit;font-size:14px;font-weight:500;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.controls button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.list{display:grid;gap:22px}
+.pal{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:grid;gap:16px}
+.pal>*{min-width:0}
+.pal header{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.num{font-family:var(--f-display);font-size:30px;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1}
+.mood{color:var(--muted);font-size:15px}
+.sws{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.sw{display:grid;gap:6px;font-size:13px}
+.sw i{display:block;height:54px;border-radius:8px;border:1px solid var(--line)}
+.sw b{font-weight:600}
+.sw code{color:var(--muted);font-size:12px}
+.prev{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:12px}
+.prev>div{border-radius:12px;padding:22px 18px;display:grid;place-items:center;min-height:130px;border:1px solid var(--line)}
+.prev svg{width:100%;max-width:420px;height:auto}
+.card{aspect-ratio:85/55;max-width:100%;place-items:stretch!important;grid-template-rows:auto 1fr auto;gap:4px;padding:16px 18px!important}
+.card svg{height:36px;width:auto;max-width:100%}
+.card .p{font-family:var(--f-display);font-weight:600;font-size:16px;align-self:end}
+.card .r,.card .c{font-size:12px;opacity:.8}
+.use{font-size:14px;color:var(--muted)}
+.ask{background:var(--surface);border:1px solid var(--accent);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="eyebrow">Xəzər Sahil · Real Estate</span>
+    <h1>Rəng palitrası seçimi</h1>
+    <p class="muted">7 palitra hazırladım. Hamısı bahalı görünür və gözü yormur: parlaq, “qışqıran” rəng yoxdur, tünd əsas rəng yumşaq açıq fonla və metal çalarlı (qızılı, bürünc, şampan) vurğu ilə birləşir. Hər palitrada loqo ağ fonda, tünd fonda və vizit kartında göstərilib.</p>
+  </header>
+
+  <section class="explain" aria-label="Yeni ikon">
+    <svg viewBox="0 0 120 120" role="img" aria-label="XS ev ikonu"><rect width="120" height="120" rx="24" fill="#1B2A41"/><g id="demoIcon"></g></svg>
+    <div>
+      <h2>Yeni ikon: ev sözün özündən qurulub</h2>
+      <ul class="muted">
+        <li>Damın üstündə kəsişən iki xətt <b>X</b> hərfidir (Xəzər). Köhnə evlərdə dam tirləri belə çarpaz bağlanır.</li>
+        <li>Evin içindən dənizə enən qıvrım yol <b>S</b> hərfidir (Sahil).</li>
+        <li>Altdakı dalğa Xəzər dənizidir. Beləliklə ikon “XS” kimi oxunur və ev şəklindədir.</li>
+        <li>Loqonun alt yazısında yalnız <b>REAL ESTATE</b> qalıb, “Mərdəkan” sözü çıxarılıb.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="controls" role="group" aria-label="Ad variantı">
+    <span>Ad variantı:</span>
+    <button type="button" data-v="a" aria-pressed="true">Xəzər Sahil Əmlak</button>
+    <button type="button" data-v="b" aria-pressed="false">Xəzər SahilEv</button>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <div class="ask">
+    <h2>Seçiminizi yazın</h2>
+    <p>Mənə palitranın <b>nömrəsini</b> və ad variantını yazın, məsələn: <b>“2, SahilEv”</b>. İki palitranı qarışdırmaq da olar, məsələn: “3-ün əsas rəngi, 1-in qızılı”. Seçimdən sonra rəngləri və yeni ikonu loqo fayllarına və əsas sistem səhifəsinə tətbiq edəcəyəm.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ikon: X = çarpaz dam tirləri, S = evdən dənizə yol, dalğa = Xəzər */
+  const icon=(tile,line,acc)=>`
+    <rect width="120" height="120" rx="24" fill="${tile}"/>
+    <path d="M24 76 L72 28 M96 76 L48 28" stroke="${line}" stroke-width="7" stroke-linecap="round"/>
+    <path d="M35 66 V94 M85 66 V94" stroke="${line}" stroke-width="6" stroke-linecap="round"/>
+    <path d="M67 60 C56 54 46 63 55 71 C64 79 67 86 52 93" fill="none" stroke="${acc}" stroke-width="6" stroke-linecap="round"/>
+    <path d="M22 106 q9.5 -6 19 0 t19 0 t19 0 t19 0" fill="none" stroke="${line}" stroke-width="4.5" stroke-linecap="round" opacity=".8"/>`;
+  document.getElementById("demoIcon").innerHTML=icon("#1B2A41","#F4F1EA","#D8C3A5").replace(/<rect[^>]*\/>/,"");
+
+  const logo=(v,c,onDark)=>{
+    const word=onDark?c.light:c.ink, acc=c.acc, tag=onDark?c.acc:c.main;
+    const line=onDark?c.light:"#FFFFFF";
+    const tileFix = onDark ? (c.tileDark||"rgba(255,255,255,.08)") : c.main;
+    const txt = v==="a"
+      ? `<text x="140" y="70" font-family="Literata, Georgia, serif" font-size="46" font-weight="600" fill="${word}">Xəzər Sahil <tspan fill="${acc}">Əmlak</tspan></text>`
+      : `<text x="140" y="72" font-family="Literata, Georgia, serif" font-size="52" font-weight="600" fill="${word}">Xəzər Sahil<tspan fill="${acc}">Ev</tspan></text>`;
+    const w = v==="a"?570:500;
+    return `<svg viewBox="0 0 ${w} 120" role="img" aria-label="Loqo">${icon(tileFix,line,acc)}${txt}
+      <text x="143" y="104" font-family="Onest, Arial, sans-serif" font-size="19" letter-spacing="9" fill="${tag}">REAL ESTATE</text></svg>`;
+  };
+
+  const P=[
+    {n:"Gecə Xəzəri və Şampan",mood:"Ən klassik bahalı görünüş. Dəniz, sakitlik, etibar. Premium ev alıcısına uyğundur.",
+     main:"#1B2A41",acc:"#C8AE86",ink:"#1B2A41",light:"#F4F1EA",bg:"#F4F3F0",tileDark:"#24375A",
+     names:["Gecə mavisi","Şampan","Mürəkkəb","İnci ağı"],hex:["#1B2A41","#C8AE86","#26303B","#F4F3F0"]},
+    {n:"Zümrüd və Qızıl",mood:"Dəbdəbəli və təbii. Yaşıl göz üçün ən rahat rəngdir, qızıl ilə “villa” hissi verir.",
+     main:"#163E3A",acc:"#C2A365",ink:"#163E3A",light:"#F1EFE8",bg:"#F2F2EE",tileDark:"#1F524C",
+     names:["Zümrüd","Köhnə qızıl","Tünd meşə","Fil sümüyü"],hex:["#163E3A","#C2A365","#1E2B29","#F2F2EE"]},
+    {n:"Qrafit və Bürünc",mood:"Müasir, minimalist, kişi ruhlu. Yeni tikili və lüks mənzil satışı üçün güclü görünür.",
+     main:"#2C2F33",acc:"#A9805A",ink:"#2C2F33",light:"#EFEDEA",bg:"#F1F0EE",tileDark:"#3A3E43",
+     names:["Qrafit","Bürünc","Kömür","Daş ağı"],hex:["#2C2F33","#A9805A","#1C1E21","#F1F0EE"]},
+    {n:"Abşeron Zeytunu və Qum",mood:"Yerli və isti. Bağ evləri, zeytun bağları, Abşeron qumu. Ailə alıcılarına səmimi görünür.",
+     main:"#47553A",acc:"#C7AA7A",ink:"#38432E",light:"#F2F0E8",bg:"#F2F1EB",tileDark:"#58694A",
+     names:["Zeytun","Qum qızılı","Tünd zeytun","Kətan"],hex:["#47553A","#C7AA7A","#2E3627","#F2F1EB"]},
+    {n:"Bordo və Qızılgül-qızılı",mood:"Zəngin və cəsur. Fərqlənmək istəyirsinizsə, bu rəng elan saytlarında dərhal gözə çarpır.",
+     main:"#5B2230",acc:"#C9A08A",ink:"#4A1C27",light:"#F5EFEC",bg:"#F5F1EF",tileDark:"#702B3B",
+     names:["Bordo","Qızılgül-qızılı","Tünd albalı","Pudra"],hex:["#5B2230","#C9A08A","#3A161F","#F5F1EF"]},
+    {n:"Dəniz Dumanı",mood:"Ən yumşaq palitra. Açıq, havalı, sakit. Sahil evləri və yay evləri üçün çox uyğundur.",
+     main:"#3F5E66",acc:"#B79A5F",ink:"#2B4249",light:"#EEF2F1",bg:"#EEF1F0",tileDark:"#4D717A",
+     names:["Dəniz dumanı","Mat qızıl","Tünd dəniz","Səhər ağı"],hex:["#3F5E66","#B79A5F","#22363C","#EEF1F0"]},
+    {n:"Qara Mərmər və Qızıl",mood:"Ən “bahalı” və ciddi görünüş. Lüks butik kimi. Diqqət: çox tünd olduğu üçün ucuz çapda ağır görünə bilər.",
+     main:"#141414",acc:"#B99B67",ink:"#141414",light:"#EDEBE7",bg:"#EFEEEC",tileDark:"#262626",
+     names:["Qara mərmər","Qızıl","Antrasit","Mərmər ağı"],hex:["#141414","#B99B67","#2A2A2A","#EFEEEC"]}
+  ];
+  let v="a";
+  function render(){
+    document.getElementById("list").innerHTML=P.map((c,i)=>`
+      <article class="pal">
+        <header><span class="num">${i+1}</span><h3>${c.n}</h3></header>
+        <p class="mood">${c.mood}</p>
+        <div class="sws">${c.hex.map((h,j)=>`<div class="sw"><i style="background:${h}"></i><b>${c.names[j]}</b><code>${h}</code></div>`).join("")}</div>
+        <div class="prev">
+          <div style="background:${c.bg}">${logo(v,c,false)}</div>
+          <div style="background:${c.main}">${logo(v,c,true)}</div>
+          <div class="card" style="background:${c.bg};color:${c.ink}">
+            ${logo(v,c,false)}
+            <div><div class="p">Osman Mehdizadə</div><div class="r">Təsisçi · Əmlak məsləhətçisi</div></div>
+            <div class="c">+994 __ ___ __ __ · ${v==="a"?"xezersahil.az":"xezersahilev.az"}</div>
+          </div>
+        </div>
+      </article>`).join("");
+  }
+  document.querySelectorAll(".controls button").forEach(b=>b.addEventListener("click",()=>{
+    v=b.dataset.v;document.querySelectorAll(".controls button").forEach(x=>x.setAttribute("aria-pressed",x===b));render();
+  }));
+  render();
+})();
+</script>
