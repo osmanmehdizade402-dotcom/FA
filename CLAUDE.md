@@ -36,6 +36,7 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
 - **Loqo (sol yuxarı, bütün kadrlarda):** yaşıl ikon + "Xəzər Sahil" (ağ) "Əmlak" (qızılı) +
   "REAL ESTATE" (tünd yaşıl, DejaVu Sans Bold). Mənbə: `logo/xezer-sahil-emlak-horizontal-transparent.png`.
   Brend adı **Xəzər Sahil Əmlak** (Xəzər Sahil Ev yox).
+  Ölçü: nümunədən 20% böyük (istifadəçi "1 düyüm böyüt" dedi) — render.py-də `* 1.2`.
 - **Rənglər:** yaşıl `#163E3A`, qızılı `#C2A365`, krem `#F1EFE8`, CTA qutusu `#0F2E2A`.
 - **Şriftlər** (`video/fonts/`): başlıq Playfair Display Bold, mətn Montserrat 600/700,
   CTA qutusu DejaVu Sans / DejaVu Sans Bold. Ölçülər render.py-dəki kimi qalır.

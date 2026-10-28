@@ -149,7 +149,7 @@ class Renderer:
     def build_watermark(self, logo):
         """Badge + 'Xəzər Sahil Əmlak' + 'REAL ESTATE', as on the approved sample."""
         W = self.W
-        k = W / 1080
+        k = W / 1080 * 1.2  # +20% after user feedback ("1 düyüm böyüt")
         badge_px = int(92 * k)
         # the rounded badge sits at x,y 144..719 in the 2688x864 transparent logo
         badge = logo.crop((144, 144, 720, 720)).resize((badge_px, badge_px), Image.LANCZOS)
@@ -178,7 +178,7 @@ class Renderer:
         lay.alpha_composite(shadow, (int(1 * k), int(2 * k)))
         lay.alpha_composite(text)
         self.watermark = lay
-        self.watermark_pos = (int(93 * k), int(170 * self.u) if self.tall else int(128 * self.H / 1350))
+        self.watermark_pos = (int(93 * W / 1080), int(170 * self.u) if self.tall else int(128 * self.H / 1350))
 
     def build_cta(self):
         """Dark green box with gold border: CTA line + phone, as on the approved sample."""
