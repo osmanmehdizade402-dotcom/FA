@@ -10,10 +10,23 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
 2. **İcazəsiz başlama.** Bütün şəkillər gəldikdən sonra istifadəçidən icazə al
    (və ya istifadəçi özü "başla" desin). Yalnız bundan sonra render et.
 3. İstifadəçi "heçnə yazma" desə, yalnız "✅" ilə cavab ver.
+4. **"Bu məlumatlarıdır, hazırla" = tam iş əmri.** İstifadəçi şəkillər + evin məlumatlarını verib
+   "hazırla" deyəndə (bütün hissələr gəlibsə) əlavə detal soruşmadan bütün işi bu şablonla gör:
+   - **Giriş (başlıq) kadrı:** ən yaxşı fasad/həyət şəkli + evin məlumatları (başlıq, yer • sot • otaq,
+     "QİYMƏTİ SONDA ↓").
+   - **Qalan HƏR şəklin üstündə nə olduğu yazılır:** "Yataq otağı", "Qonaq otağı", "Mətbəx",
+     "Sanuzel", "Qaraj", "Hovuz", "Həyət", "Qarderob", "Dəhliz", "Giriş holu" və s.
+     (`listing.json`-da heç bir kadrın yazısı `null` qalmasın — yalnız giriş kadrının).
+   - **Ən sonda HƏMİŞƏ son kadr şablonu:** `video/reference/approved-end-card.png` kimi — yaşıl fon,
+     loqo, "SATILIR", qiymət ₼, evin bütün məlumatları 3 sətirdə, qızılı düymədə nömrə
+     (`010 310 03 02`, boşluqla), "Zəng et • WhatsApp • DM yaz".
+   - Hər iki formatı (9:16 və 4:5) render et, örtük şəkilləri + paylaşım mətni/heşteqlərlə göndər.
+   - Yalnız həqiqətən çatışmayan məlumatı (məs. qiymət yoxdursa) soruş.
 
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 
-Təsdiqlənmiş nümunə: istifadəçinin göndərdiyi 4:5 kadr (Mərdəkan villa, "Hovuzlu villa").
+Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
+`video/reference/approved-end-card.png` (son kadr). Nümunə ev: `video/listings/merdekan-villa/`.
 Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə, yalnız `listing.json` yaz.
 
 - **Loqo (sol yuxarı, bütün kadrlarda):** yaşıl ikon + "Xəzər Sahil" (ağ) "Əmlak" (qızılı) +

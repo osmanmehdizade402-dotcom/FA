@@ -296,7 +296,7 @@ class Renderer:
 
         # phone pill
         fph = font("Montserrat700.ttf", 64 * fs)
-        phone = LISTING["phone"]
+        phone = LISTING["phone"].replace("-", " ")  # end card shows "010 310 03 02"
         tw = d.textlength(phone, font=fph)
         ph = int(118 * fs)
         pw = tw + 110 * fs
