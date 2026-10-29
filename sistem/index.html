@@ -1,0 +1,573 @@
+<title>Xəzər Sahil Qurulma Planı</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,600;7..72,700&family=Onest:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column; sticky section bar; each section is a working tool (cards, checklist, calculators) */
+:root{
+  --bg:#F1F4F3;          /* Xəzər sahili səhər işığı */
+  --surface:#FFFFFF;
+  --ink:#13252E;
+  --muted:#52666E;
+  --line:#D5DEDD;
+  --sea:#0E5A6B;         /* Xəzər */
+  --stone:#B8893E;       /* Abşeron mişar daşı */
+  --stone-soft:#F4EBDA;
+  --ok:#2E7D4F; --warn:#A8620B; --risk:#B03A2E;
+  --ok-bg:#E3F2E8; --warn-bg:#FBEEDC; --risk-bg:#F8E3E0;
+  --lg-tile:#0E5A6B; --lg-roof:#D4AF6A; --lg-line:#FFFFFF; --lg-word:#13252E; --lg-word2:#B8893E; --lg-tag:#0E5A6B; --lg-dark:#13252E;
+  --f-display:"Literata",Georgia,"Times New Roman",serif;
+  --f-body:"Onest","Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C171B;--surface:#132328;--ink:#E6EEEC;--muted:#9DB0B3;--line:#24383E;--sea:#5FB3C4;--stone:#D9B474;--stone-soft:#2A2518;
+  --ok:#6FCB93;--warn:#E8A951;--risk:#F08273;--ok-bg:#163024;--warn-bg:#33270F;--risk-bg:#3A1C18;
+  --lg-word:#E6EEEC;--lg-word2:#D9B474;--lg-tag:#5FB3C4;--lg-dark:#E6EEEC;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C171B;--surface:#132328;--ink:#E6EEEC;--muted:#9DB0B3;--line:#24383E;--sea:#5FB3C4;--stone:#D9B474;--stone-soft:#2A2518;
+  --ok:#6FCB93;--warn:#E8A951;--risk:#F08273;--ok-bg:#163024;--warn-bg:#33270F;--risk-bg:#3A1C18;
+  --lg-word:#E6EEEC;--lg-word2:#D9B474;--lg-tag:#5FB3C4;--lg-dark:#E6EEEC;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:920px;margin:0 auto;padding-block:28px 64px;display:grid;gap:56px}
+.wrap>*,.stack>*,.calc>*,.mock>*{min-width:0}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(30px,6vw,46px);font-weight:600}
+h2{font-size:clamp(24px,4vw,32px);font-weight:600}
+h3{font-size:19px;font-weight:600}
+p{margin:0;max-width:68ch}
+a{color:var(--sea)}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--stone);font-weight:600}
+.lead{color:var(--muted);font-size:17px}
+.muted{color:var(--muted)}
+.stack{display:grid;gap:14px}
+.sec-head{display:grid;gap:8px;margin-bottom:22px}
+:focus-visible{outline:3px solid var(--stone);outline-offset:2px;border-radius:4px}
+
+/* hero */
+.hero{display:grid;gap:18px;padding-top:8px}
+.hero .who{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px}
+.hero .who b{color:var(--ink);font-weight:600}
+
+/* nav */
+nav.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);
+  margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:10px max(16px,env(safe-area-inset-left,0px));overflow-x:auto}
+nav.bar ul{list-style:none;margin:0 auto;padding:0;display:flex;gap:6px;max-width:920px;white-space:nowrap}
+nav.bar a{display:block;padding:6px 12px;border-radius:999px;text-decoration:none;color:var(--ink);font-size:14px;font-weight:500;border:1px solid var(--line)}
+nav.bar a:hover{border-color:var(--sea);color:var(--sea)}
+
+/* names */
+.names{display:grid;gap:14px}
+.name{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:grid;gap:10px}
+.name.top{border:2px solid var(--stone)}
+.name header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;justify-content:space-between}
+.name .nm{font-family:var(--f-display);font-size:24px;font-weight:600}
+.name .legal{font-size:13px;color:var(--muted)}
+.chip{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;letter-spacing:.02em}
+.chip.ok{background:var(--ok-bg);color:var(--ok)} .chip.warn{background:var(--warn-bg);color:var(--warn)} .chip.risk{background:var(--risk-bg);color:var(--risk)}
+.chip.star{background:var(--stone-soft);color:var(--stone)}
+.slogan{font-style:italic;color:var(--sea)}
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px 18px;font-size:13px}
+.score{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center}
+.score .b{grid-column:1/-1;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.score .b i{display:block;height:100%;background:var(--sea)}
+.score span:last-child{font-variant-numeric:tabular-nums;color:var(--muted)}
+.pick{justify-self:start;font:inherit;font-size:14px;font-weight:600;padding:7px 14px;border-radius:8px;border:1px solid var(--sea);background:transparent;color:var(--sea);cursor:pointer}
+.pick[aria-pressed="true"]{background:var(--sea);color:var(--surface)}
+
+/* logo */
+.logo-stage{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 20px;display:grid;gap:20px}
+.logo-stage.dark{--lg-dark:#0E5A6B;--lg-word:#F1F4F3;--lg-word2:#D4AF6A;--lg-tag:#8CC9D5;background:#13252E;border-color:#13252E}
+.logo-stage.mono{--lg-tile:#13252E;--lg-roof:#FFFFFF;--lg-line:#FFFFFF;--lg-word:#13252E;--lg-word2:#13252E;--lg-tag:#13252E;--lg-dark:#13252E;background:#FFFFFF}
+.logo-big{display:flex;justify-content:center}
+.logo-big svg{width:100%;max-width:460px;height:auto}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:inherit;font-size:13px;font-weight:500;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.controls{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.mock{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card-mock{aspect-ratio:85/55;max-width:100%;border-radius:10px;background:#FFFFFF;color:#13252E;border:1px solid var(--line);padding:16px 18px;display:grid;grid-template-rows:auto 1fr auto;gap:6px;
+  --lg-dark:#13252E;--lg-word:#13252E;--lg-word2:#B8893E;--lg-tag:#0E5A6B}
+.card-mock .person{font-family:var(--f-display);font-weight:600;font-size:16px;align-self:end}
+.card-mock .role{font-size:12px;color:#52666E}
+.card-mock .contact{font-size:11.5px;color:#52666E;display:flex;flex-wrap:wrap;gap:2px 12px;font-variant-numeric:tabular-nums}
+.card-mock svg{height:40px;width:auto;max-width:100%}
+.sign-mock{aspect-ratio:85/55;max-width:100%;border-radius:10px;background:#0E5A6B;display:grid;place-items:center;padding:18px;
+  --lg-tile:#13252E;--lg-dark:#13252E;--lg-word:#FFFFFF;--lg-word2:#D4AF6A;--lg-tag:#BFE3EA}
+.sign-mock svg{width:100%;height:auto}
+.mock figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+.mock figure{margin:0}
+.palette{display:flex;flex-wrap:wrap;gap:10px}
+.sw{display:grid;grid-template-columns:28px auto;gap:0 10px;align-items:center;font-size:13px}
+.sw i{width:28px;height:28px;border-radius:6px;grid-row:span 2;border:1px solid var(--line)}
+.sw code{font-size:12px;color:var(--muted)}
+.btn{font:inherit;font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--sea)}
+.note{background:var(--stone-soft);border-radius:10px;padding:12px 16px;font-size:14px}
+
+/* checklist */
+.progress{display:grid;gap:6px;margin-bottom:8px}
+.progress .track{height:8px;border-radius:4px;background:var(--line);overflow:hidden}
+.progress .track i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.phase{display:grid;gap:10px;margin-top:22px}
+.phase h3{display:flex;gap:10px;align-items:baseline}
+.phase h3 small{font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:500}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.step input{width:20px;height:20px;margin:3px 0 0;accent-color:var(--ok);cursor:pointer}
+.step label{font-weight:600;cursor:pointer}
+.step .n{font-variant-numeric:tabular-nums;color:var(--stone);margin-right:6px}
+.step .d{grid-column:2;color:var(--muted);font-size:15px;min-width:0}
+.step .d ul{margin:6px 0 0;padding-left:18px}
+.step.done{background:var(--bg)}
+.step.done label{text-decoration:line-through;text-decoration-color:var(--muted)}
+.where{font-size:13px;color:var(--sea);font-weight:500}
+
+/* compare table */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:14px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+
+/* risks */
+.risks{display:grid;gap:10px}
+.risk{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:10px;padding:12px 16px;display:grid;gap:4px}
+.risk.hi{border-left-color:var(--risk)}
+.risk b{font-weight:600}
+.risk p{color:var(--muted);font-size:15px}
+
+/* calc */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:12px;align-content:start}
+.field{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;font-size:14px}
+.field input{font:inherit;font-size:14px;padding:6px 8px;border-radius:6px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%;text-align:right;font-variant-numeric:tabular-nums}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:10px;font-weight:600}
+.total output{font-family:var(--f-display);font-size:22px;font-variant-numeric:tabular-nums}
+.ex{font-size:12px;color:var(--warn);font-weight:600}
+
+/* week */
+.week{counter-reset:w;display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.week li{counter-increment:w;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.week li::before{content:counter(w);font-family:var(--f-display);font-weight:700;font-size:20px;color:var(--stone);text-align:center}
+footer{color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:18px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">Şirkət qurma sistemi · Mərdəkan, Xəzər rayonu</span>
+    <h1>Ev alqı-satqısı şirkəti: addır, loqodan qeydiyyata qədər</h1>
+    <p class="lead">Bu səhifə sizin üçün iş planıdır. Ad variantlarını müqayisə edin, loqonu sınayın, addımları bir-bir işarələyin. Qeydləriniz bu brauzerdə saxlanılır.</p>
+    <div class="who">
+      <span>Təsisçi: <b>Osman Mehdizadə Fədai oğlu</b></span>
+      <span>Fəaliyyət: <b>Ev və torpaq alqı-satqısı, vasitəçilik</b></span>
+      <span>Ərazi: <b>Mərdəkan qəsəbəsi</b></span>
+    </div>
+  </header>
+
+  <nav class="bar" aria-label="Bölmələr">
+    <ul>
+      <li><a href="#ad">1. Ad</a></li>
+      <li><a href="#loqo">2. Loqo</a></li>
+      <li><a href="#addimlar">3. A–Z addımlar</a></li>
+      <li><a href="#forma">4. FS yoxsa MMC</a></li>
+      <li><a href="#diqqet">5. Diqqət</a></li>
+      <li><a href="#hesab">6. Hesablama</a></li>
+      <li><a href="#hefte">7. Bu həftə</a></li>
+    </ul>
+  </nav>
+
+  <!-- 1. AD -->
+  <section id="ad">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 1</span>
+      <h2>Şirkətin adı</h2>
+      <p class="muted">Hər variant 5 meyarla qiymətləndirilib (10 bal üzərindən): yadda qalmaq, Mərdəkanla bağlılıq, etibar hissi, unikallıq, internetə uyğunluq (domen, Instagram). Bəyəndiyiniz adı "Seç" düyməsi ilə işarələyin, loqo bölməsi ona keçəcək.</p>
+    </div>
+    <div class="names" id="names"></div>
+    <p class="note" style="margin-top:16px"><b>Ad seçərkən qayda:</b> qısa olsun (1–2 söz), deyiləndə yazılışı aydın olsun, telefonda deyə biləsiniz, rəqiblərin adına bənzəməsin. Sonra bu ardıcıllıqla yoxlayın: vergi orqanında ad məşğuldurmu → Əqli Mülkiyyət Agentliyində ticarət nişanı varmı → <b>.az</b> domeni və Instagram adı boşdurmu. Üçü də boşdursa, ad sizindir.</p>
+  </section>
+
+  <!-- 2. LOQO -->
+  <section id="loqo">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 2</span>
+      <h2>Loqo</h2>
+      <p class="muted">Seçdiyiniz ad üçün iki variant var: <b>Xəzər Sahil Əmlak · Real Estate</b> və <b>Xəzər SahilEv · Real Estate</b>. İkisində də ikon eynidir: sahildə ev, üfüqdə günəş və Xəzər dalğaları. Digər loqolar müqayisə üçün saxlanılıb. Fonu dəyişib loqonun ağ, tünd və tək rəngdə necə göründüyünü yoxlayın. Yaxşı loqo üçündə də oxunmalıdır.</p>
+    </div>
+    <div class="stack">
+      <div class="controls">
+        <div class="seg" id="logoPick" role="group" aria-label="Loqo variantı"></div>
+        <div class="seg" id="bgPick" role="group" aria-label="Fon">
+          <button type="button" data-bg="" aria-pressed="true">Rəngli</button>
+          <button type="button" data-bg="dark" aria-pressed="false">Tünd fon</button>
+          <button type="button" data-bg="mono" aria-pressed="false">Tək rəng (möhür, faks)</button>
+        </div>
+      </div>
+      <div class="logo-stage" id="stage"><div class="logo-big" id="logoBig"></div></div>
+      <div class="mock">
+        <figure><div class="card-mock">
+          <div id="cardLogo"></div>
+          <div><div class="person">Osman Mehdizadə</div><div class="role">Təsisçi · Əmlak məsləhətçisi</div></div>
+          <div class="contact"><span>+994 __ ___ __ __</span><span>Mərdəkan, Bakı</span><span id="cardWeb">xezersahil.az</span></div>
+        </div><figcaption>Vizit kartı (85×55 mm)</figcaption></figure>
+        <figure><div class="sign-mock" id="signLogo"></div><figcaption>Ofis lövhəsi, mağaza vitrini</figcaption></figure>
+      </div>
+      <div class="palette" aria-label="Rəng palitrası">
+        <div class="sw"><i style="background:#0E5A6B"></i><span>Xəzər mavisi</span><code>#0E5A6B</code></div>
+        <div class="sw"><i style="background:#D4AF6A"></i><span>Mişar daşı qızılı</span><code>#D4AF6A</code></div>
+        <div class="sw"><i style="background:#13252E"></i><span>Gecə tünd</span><code>#13252E</code></div>
+        <div class="sw"><i style="background:#F1F4F3"></i><span>Sahil ağı</span><code>#F1F4F3</code></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <button class="btn" type="button" id="copySvg">SVG kodunu kopyala</button>
+        <span class="muted" id="copyMsg" style="font-size:14px" aria-live="polite"></span>
+      </div>
+      <p class="note"><b>“Real Estate” yazısı haqqında:</b> Dövlət dili haqqında qanuna görə lövhə, reklam və elanlarda əsas yazı Azərbaycan dilində olmalıdır. Əcnəbi söz yalnız Azərbaycan dilindəki adla birlikdə və ondan kiçik şriftlə yazıla bilər. Ona görə loqoda “Xəzər Sahil Əmlak” böyük, “REAL ESTATE” altda kiçik yazılıb. Rəsmi qeydiyyatda şirkətin adı “Xəzər Sahil Əmlak” MMC və ya “Xəzər SahilEv” MMC olsun, “Real Estate” isə brend yazısı kimi istifadə edilsin.</p>
+      <p class="note">Bu loqolar ilkin dizayndır (eskizdir). Çapa göndərməzdən əvvəl dizayner loqonu vektor formatda (SVG, PDF, AI) son hala gətirsin, yazını əyriyə (outline) çevirsin və sizə 3 versiya versin: rəngli, ağ, qara. Loqo hazır olandan sonra Əqli Mülkiyyət Agentliyində ticarət nişanı kimi qeydiyyata verin (bax: addım 15).</p>
+    </div>
+  </section>
+
+  <!-- 3. ADDIMLAR -->
+  <section id="addimlar">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 3</span>
+      <h2>A-dan Z-yə addımlar</h2>
+      <p class="muted">Addımlar görülmə ardıcıllığı ilə düzülüb. Bitirdiyinizi işarələyin.</p>
+    </div>
+    <div class="progress"><div style="display:flex;justify-content:space-between;font-size:14px"><b>Ümumi irəliləyiş</b><span id="progTxt" style="font-variant-numeric:tabular-nums">0 / 0</span></div><div class="track"><i id="progBar"></i></div></div>
+    <div id="steps"></div>
+  </section>
+
+  <!-- 4. FORMA -->
+  <section id="forma">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 4</span>
+      <h2>Fərdi sahibkar, yoxsa MMC?</h2>
+      <p class="muted">Bu, ilk böyük qərardır. Brend adı ilə işləmək, ortaq götürmək və şəxsi əmlakınızı qorumaq istəyirsinizsə, MMC daha uyğundur.</p>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Meyar</th><th>Fərdi sahibkar (FS)</th><th>MMC</th></tr></thead>
+      <tbody>
+        <tr><td>Açılış</td><td>Çox sadə, bir neçə gün</td><td>Sadə, elektron qaydada nizamnamə ilə</td></tr>
+        <tr><td>Məsuliyyət</td><td>Borclara görə <b>şəxsi əmlakınızla</b> cavabdehsiniz</td><td>Yalnız şirkətin əmlakı ilə cavabdehdir</td></tr>
+        <tr><td>Brend adı</td><td>Rəsmi sənədlərdə sizin adınız yazılır</td><td>"Xəzər Sahil Əmlak MMC" kimi şirkət adı olur</td></tr>
+        <tr><td>Ortaq</td><td>Ortaq əlavə etmək olmur</td><td>Bir neçə təsisçi ola bilər, payları bölünür</td></tr>
+        <tr><td>Mühasibat</td><td>Daha yüngül</td><td>Daha çox hesabat, mühasib mütləqdir</td></tr>
+        <tr><td>Müştəri gözündə</td><td>Kiçik agent</td><td>Ciddi şirkət, daha çox etibar</td></tr>
+        <tr><td>Kimə uyğundur</td><td>Tək işləyən, sınaq mərhələsi</td><td>Ofis, işçi, brend, böyüməyi planlayan</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:14px"><b>Tövsiyə:</b> məqsədiniz brend və loqo ilə tanınan şirkət olduğu üçün <b>MMC</b> açın. Büdcə azdırsa, FS kimi başlayıb müştəri bazası yarananda MMC-yə keçmək də olar, amma onda brendi iki dəfə qurmalı olacaqsınız.</p>
+  </section>
+
+  <!-- 5. DİQQƏT -->
+  <section id="diqqet">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 5</span>
+      <h2>Diqqət etməli olduğunuz məsələlər</h2>
+      <p class="muted">Qırmızı xətt ciddi hüquqi və ya maliyyə riski deməkdir. Narıncı xətt vaxtında edilməsə problem yaradacaq işlərdir.</p>
+    </div>
+    <div class="risks" id="risks"></div>
+  </section>
+
+  <!-- 6. HESAB -->
+  <section id="hesab">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 6</span>
+      <h2>Hesablama</h2>
+      <p class="muted">Rəqəmlər <b>nümunədir</b>, real qiymətləri öyrəndikcə öz rəqəmlərinizi yazın. Hesablama dərhal yenilənir.</p>
+    </div>
+    <div class="calc">
+      <div class="panel" id="startCost">
+        <h3>Açılış xərcləri (bir dəfəlik)</h3>
+        <span class="ex">Nümunə rəqəmlər, AZN</span>
+      </div>
+      <div class="panel" id="monthCost">
+        <h3>Aylıq xərclər</h3>
+        <span class="ex">Nümunə rəqəmlər, AZN</span>
+      </div>
+      <div class="panel" id="commission">
+        <h3>Komissiya gəliri və zərərsizlik nöqtəsi</h3>
+        <div class="field"><label for="c-price">Orta ev qiyməti, AZN</label><input id="c-price" type="number" min="0" step="1000" value="150000"></div>
+        <div class="field"><label for="c-pct">Komissiya, %</label><input id="c-pct" type="number" min="0" step="0.5" value="2"></div>
+        <div class="field"><label for="c-deals">Ayda bağlanan sövdələşmə</label><input id="c-deals" type="number" min="0" step="1" value="2"></div>
+        <div class="total"><span>Aylıq gəlir</span><output id="c-income">0</output></div>
+        <div class="total"><span>Xərcdən sonra qalır</span><output id="c-net">0</output></div>
+        <p class="muted" style="font-size:14px" id="c-break"></p>
+        <p class="muted" style="font-size:13px">Vergi bu hesaba daxil deyil. Mərdəkanda komissiya adətən satış qiymətinin 1–3%-i olur, bölgədəki agentliklərdən soruşub dəqiqləşdirin.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. HƏFTƏ -->
+  <section id="hefte">
+    <div class="sec-head">
+      <span class="eyebrow">Bölmə 7</span>
+      <h2>Bu həftə ediləcək 7 iş</h2>
+      <p class="muted">Bütün siyahı böyük görünür. Bu həftə yalnız bunlarla başlayın.</p>
+    </div>
+    <ol class="week">
+      <li><span>Ad variantlarından ikisini seçin, ailənizə və 5 tanışınıza deyin. Hansını ilk dəfədən düzgün yazdılar, hansı yadda qaldı, qeyd edin.</span></li>
+      <li><span>e-taxes.gov.az saytında və ya ASAN Xidmətdə seçdiyiniz adın məşğul olub-olmadığını yoxlayın.</span></li>
+      <li><span>copat.gov.az (Əqli Mülkiyyət Agentliyi) bazasında həmin adla ticarət nişanı olub-olmadığına baxın.</span></li>
+      <li><span>Domeni (xezersahil.az, xezersahilev.az) və Instagram, Facebook, TikTok adlarını dərhal götürün. Bunlar ucuzdur, amma itirmək bahadır.</span></li>
+      <li><span>ASAN imza alın. Elektron qeydiyyat, vergi kabineti, bank işləri onsuz olmur.</span></li>
+      <li><span>Mərdəkanda əsas yol üstündə ofis yeri axtarın və hüquqi ünvan üçün icarə müqaviləsi bağlayın.</span></li>
+      <li><span>Bir mühasib tapın, qeydiyyatdan <b>əvvəl</b> vergi rejimi və fəaliyyət kodu barədə onunla danışın.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    <p>Bu səhifədəki hüquqi və vergi məlumatları ümumi istiqamət üçündür. Vergi dərəcələri, hədlər və rüsumlar dəyişə bilər. Qərar verməzdən əvvəl rəsmi mənbələrdən (taxes.gov.az, e-qanun.az, copat.gov.az) və ya mühasib, hüquqşünasdan təsdiq alın.</p>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const store = {
+    get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
+    set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+  };
+
+  /* ---------- LOGOS ---------- */
+  const XS_ICON = `<rect x="0" y="0" width="120" height="120" rx="24" fill="var(--lg-tile,#0E5A6B)"/>
+  <circle cx="86" cy="36" r="11" fill="var(--lg-roof,#D4AF6A)"/>
+  <polyline points="24,64 48,40 72,64" fill="none" stroke="var(--lg-line,#FFFFFF)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 58 V86 M63 58 V86" stroke="var(--lg-line,#FFFFFF)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M42 86 V74 a6 6 0 0 1 12 0 V86" fill="none" stroke="var(--lg-roof,#D4AF6A)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M20 99 q10 -7 20 0 t20 0 t20 0 t20 0" fill="none" stroke="var(--lg-line,#FFFFFF)" stroke-width="5" stroke-linecap="round" opacity=".85"/>`;
+  const LOGOS = {
+    xezer:{label:"Xəzər Sahil Əmlak · Real Estate", web:"xezersahil.az", svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 610 120" role="img" aria-label="Xəzər Sahil Əmlak Real Estate loqosu">
+  ${XS_ICON}
+  <text x="140" y="70" font-family="Literata, Georgia, serif" font-size="46" font-weight="600" fill="var(--lg-word,#13252E)">Xəzər Sahil <tspan fill="var(--lg-word2,#B8893E)">Əmlak</tspan></text>
+  <text x="143" y="104" font-family="Onest, Arial, sans-serif" font-size="16" letter-spacing="7" fill="var(--lg-tag,#0E5A6B)">REAL ESTATE · MƏRDƏKAN</text>
+</svg>`},
+    xezerev:{label:"Xəzər SahilEv · Real Estate", web:"xezersahilev.az", svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 120" role="img" aria-label="Xəzər SahilEv Real Estate loqosu">
+  ${XS_ICON}
+  <text x="140" y="72" font-family="Literata, Georgia, serif" font-size="52" font-weight="600" fill="var(--lg-word,#13252E)">Xəzər Sahil<tspan fill="var(--lg-word2,#B8893E)">Ev</tspan></text>
+  <text x="143" y="104" font-family="Onest, Arial, sans-serif" font-size="16" letter-spacing="7" fill="var(--lg-tag,#0E5A6B)">REAL ESTATE · MƏRDƏKAN</text>
+</svg>`},
+    merdev:{label:"MərdEv", web:"mardev.az", svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 120" role="img" aria-label="MərdEv Əmlak loqosu">
+  <rect x="0" y="0" width="120" height="120" rx="24" fill="var(--lg-tile,#0E5A6B)"/>
+  <polyline points="22,62 41,36 60,58 79,36 98,62" fill="none" stroke="var(--lg-roof,#D4AF6A)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 58 V86 M87 58 V86" stroke="var(--lg-line,#FFFFFF)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M53 86 V72 a7 7 0 0 1 14 0 V86" fill="none" stroke="var(--lg-line,#FFFFFF)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M20 99 q10 -7 20 0 t20 0 t20 0 t20 0" fill="none" stroke="var(--lg-line,#FFFFFF)" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+  <text x="142" y="74" font-family="Literata, Georgia, serif" font-size="58" font-weight="600" fill="var(--lg-word,#13252E)">Mərd<tspan fill="var(--lg-word2,#B8893E)">Ev</tspan></text>
+  <text x="145" y="104" font-family="Onest, Arial, sans-serif" font-size="15" letter-spacing="5" fill="var(--lg-tag,#0E5A6B)">ƏMLAK · MƏRDƏKAN</text>
+</svg>`},
+    mehdizade:{label:"Mehdizadə Əmlak", web:"mehdizade.az", svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="Mehdizadə Əmlak loqosu">
+  <path d="M28 112 V54 a32 32 0 0 1 64 0 V112 Z" fill="var(--lg-dark,#13252E)"/>
+  <path d="M42 98 V58 L60 80 L78 58 V98" fill="none" stroke="var(--lg-roof,#D4AF6A)" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="112" y="72" font-family="Literata, Georgia, serif" font-size="52" font-weight="600" fill="var(--lg-word,#13252E)">Mehdizadə</text>
+  <text x="115" y="102" font-family="Onest, Arial, sans-serif" font-size="15" letter-spacing="5" fill="var(--lg-tag,#0E5A6B)">ƏMLAK · EV ALQI-SATQISI</text>
+</svg>`},
+    qala:{label:"Qala Əmlak", web:"qalaemlak.az", svg:`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 120" role="img" aria-label="Qala Əmlak loqosu">
+  <path d="M32 98 V28 H40 V36 H48 V28 H56 V36 H64 V28 H72 V36 H80 V28 H88 V98 Z" fill="var(--lg-tile,#0E5A6B)"/>
+  <path d="M53 98 V78 a7 7 0 0 1 14 0 V98 Z" fill="var(--lg-roof,#D4AF6A)"/>
+  <rect x="56" y="50" width="8" height="13" rx="4" fill="var(--lg-roof,#D4AF6A)"/>
+  <path d="M18 110 q10.5 -7 21 0 t21 0 t21 0 t21 0" fill="none" stroke="var(--lg-tag,#0E5A6B)" stroke-width="5" stroke-linecap="round"/>
+  <text x="112" y="72" font-family="Literata, Georgia, serif" font-size="56" font-weight="600" fill="var(--lg-word,#13252E)">Qala</text>
+  <text x="115" y="102" font-family="Onest, Arial, sans-serif" font-size="15" letter-spacing="5" fill="var(--lg-tag,#0E5A6B)">ƏMLAK · MƏRDƏKAN</text>
+</svg>`}
+  };
+
+  /* ---------- NAMES ---------- */
+  const NAMES = [
+    {id:"xezer", nm:"Xəzər Sahil Əmlak · Real Estate", legal:"Rəsmi: “Xəzər Sahil Əmlak” MMC", top:true, logo:"xezer",
+     slogan:"Dənizə yaxın, sizə yaxın",
+     why:"Mərdəkanın Xəzər sahilində olmasını vurğulayır. Bağ evi və yay evi axtaran alıcılar üçün cəlbedicidir. “Real Estate” əlavəsi xaricdən gələn və Bakıdan alış edən müştərilər üçün işi dərhal anlaşılan edir.",
+     tags:[["ok","Sizin seçiminiz"],["ok","Dəniz, istirahət hissi"],["warn","“Xəzər” sözü ilə çox şirkət var, adı vergi orqanında mütləq yoxlayın"],["warn","Uzundur, gündəlik danışıqda “Xəzər Sahil” deyiləcək"]],
+     s:[7,8,8,5,5]},
+    {id:"xezerev", nm:"Xəzər SahilEv · Real Estate", legal:"Rəsmi: “Xəzər SahilEv” MMC", logo:"xezerev",
+     slogan:"Sahildə öz eviniz",
+     why:"Eyni dəniz mövzusu, amma “SahilEv” bitişik yazıldığı üçün brendə çevrilir: daha fərqli görünür, ticarət nişanı kimi qeydiyyatı və domen tapmaq asanlaşır. “Ev” sözü işinizi izah edir.",
+     tags:[["ok","Daha unikal"],["ok","Ticarət nişanı üçün daha güclü"],["warn","Domendə “xezersahilev” yazılır (ə hərfi yoxdur)"]],
+     s:[8,8,8,7,6]},
+    {id:"merdev", nm:"MərdEv", legal:"Rəsmi: “MərdEv Əmlak” MMC", logo:"merdev",
+     slogan:"Mərdəkanda mərd sövdələşmə",
+     why:"“Mərd” sözü həm Mərdəkanı xatırladır, həm də düzlük, sözünün üstündə durmaq deməkdir. “Ev” isə işinizi dərhal izah edir. Qısa, fərqli və yadda qalandır.",
+     tags:[["ok","Yerli bağlılıq"],["warn","Domendə “mardev” yazılır (ə hərfi yoxdur)"]],
+     s:[9,10,9,9,8]},
+    {id:"mehdizade", nm:"Mehdizadə Əmlak", legal:"Rəsmi: “Mehdizadə Əmlak” MMC", logo:"mehdizade",
+     slogan:"Ailə adı ilə verilən söz",
+     why:"Soyadınızla şəxsi brend qurur. Əmlak işində müştəri şirkətə yox, insana inanır. Soyad şirkətin adında olanda zəmanət kimi qəbul olunur.",
+     tags:[["ok","Etibar"],["warn","Şirkəti satmaq və ya ortaq götürmək çətinləşir"]],
+     s:[7,4,10,8,7]},
+    {id:"qala", nm:"Qala Əmlak", legal:"Rəsmi: “Qala Əmlak Mərdəkan” MMC", logo:"qala",
+     slogan:"Qala kimi möhkəm sövdələşmə",
+     why:"Mərdəkan qalası qəsəbənin ən tanınmış simvoludur. “Qala” möhkəmlik və təhlükəsizlik hissi verir.",
+     tags:[["ok","Güclü simvol"],["risk","“Qala” adlı şirkətlər çoxdur, ad məşğul ola bilər"]],
+     s:[8,8,8,4,5]},
+    {id:"fedai", nm:"Fədai Əmlak", legal:"Rəsmi: “Fədai Əmlak” MMC", logo:"mehdizade",
+     slogan:"Müştəriyə fədakar xidmət",
+     why:"Atanızın adına hörmətdir və “fədakar, sadiq” mənası verir.",
+     tags:[["risk","Diqqət: “fədai” sözü Qarabağ tarixində erməni silahlı dəstələri (fidayi) ilə də əlaqələndirilir. Bəzi müştərilərdə mənfi təsir yarada bilər"]],
+     s:[6,3,6,7,7]}
+  ];
+  const CRIT = ["Yadda qalmaq","Mərdəkanla bağlılıq","Etibar","Unikallıq","İnternet"];
+  let chosen = store.get("fa.name2","xezer");
+  if(!NAMES.some(n=>n.id===chosen)) chosen="xezer";
+
+  function renderNames(){
+    const box=document.getElementById("names");
+    box.innerHTML = NAMES.map(n=>{
+      const total=n.s.reduce((a,b)=>a+b,0);
+      return `<article class="name${n.top?" top":""}">
+        <header><div><div class="nm">${n.nm}</div><div class="legal">${n.legal}</div></div>
+          <div>${n.top?'<span class="chip star">Əsas variant</span> ':""}<span class="chip ${total>=40?"ok":total>=30?"warn":"risk"}" style="font-variant-numeric:tabular-nums">${total} / 50</span></div></header>
+        <div class="slogan">“${n.slogan}”</div>
+        <p>${n.why}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">${n.tags.map(t=>`<span class="chip ${t[0]}">${t[1]}</span>`).join("")}</div>
+        <div class="scores">${n.s.map((v,i)=>`<div class="score"><span>${CRIT[i]}</span><span>${v}</span><span class="b"><i style="width:${v*10}%"></i></span></div>`).join("")}</div>
+        <button type="button" class="pick" data-id="${n.id}" aria-pressed="${chosen===n.id}">${chosen===n.id?"Seçildi":"Seç"}</button>
+      </article>`;
+    }).join("");
+    box.querySelectorAll(".pick").forEach(b=>b.addEventListener("click",()=>{
+      chosen=b.dataset.id; store.set("fa.name2",chosen); renderNames();
+      const n=NAMES.find(x=>x.id===chosen); logoId=n.logo; store.set("fa.logo2",logoId); renderLogo();
+    }));
+  }
+
+  /* ---------- LOGO UI ---------- */
+  let logoId = store.get("fa.logo2","xezer"); if(!LOGOS[logoId]) logoId="xezer";
+  let bg = "";
+  function renderLogo(){
+    const L=LOGOS[logoId];
+    document.getElementById("logoPick").innerHTML = Object.entries(LOGOS).map(([k,v])=>`<button type="button" data-k="${k}" aria-pressed="${k===logoId}">${v.label}</button>`).join("");
+    document.querySelectorAll("#logoPick button").forEach(b=>b.addEventListener("click",()=>{logoId=b.dataset.k;store.set("fa.logo2",logoId);renderLogo()}));
+    document.getElementById("logoBig").innerHTML=L.svg;
+    document.getElementById("cardLogo").innerHTML=L.svg;
+    document.getElementById("signLogo").innerHTML=L.svg;
+    document.getElementById("cardWeb").textContent=L.web;
+    document.getElementById("stage").className="logo-stage"+(bg?" "+bg:"");
+  }
+  document.querySelectorAll("#bgPick button").forEach(b=>b.addEventListener("click",()=>{
+    bg=b.dataset.bg; document.querySelectorAll("#bgPick button").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderLogo();
+  }));
+  document.getElementById("copySvg").addEventListener("click",()=>{
+    const raw=LOGOS[logoId].svg.replace(/var\(--[a-z0-9-]+,(#[0-9A-Fa-f]{6})\)/g,"$1");
+    const msg=document.getElementById("copyMsg");
+    const fallback=()=>{msg.textContent="Kopyalamaq alınmadı. Fayllar repozitoriyada “loqolar” qovluğundadır.";};
+    try{navigator.clipboard.writeText(raw).then(()=>{msg.textContent="Kopyalandı. .svg faylı kimi saxlaya bilərsiniz.";},fallback);}catch(e){fallback();}
+  });
+
+  /* ---------- STEPS ---------- */
+  const PHASES = [
+    {t:"Hazırlıq", s:"1–2 həftə", items:[
+      ["Biznes modelini müəyyən edin","Siz vasitəçi olacaqsınız (alıcı ilə satıcını tapışdırıb komissiya alırsınız), yoxsa evləri özünüz alıb satacaqsınız? Vasitəçilik az kapital tələb edir. Özün alıb satmaq böyük kapital və fərqli vergi deməkdir. Çox vaxt vasitəçilikdən başlanır.",""],
+      ["Hüquqi formanı seçin: FS və ya MMC","Bölmə 4-də müqayisəyə baxın. Brend və loqo ilə işləmək üçün MMC tövsiyə olunur.","#forma"],
+      ["Adı seçin və yoxlayın","2–3 ad seçin. Vergi orqanında, Əqli Mülkiyyət Agentliyində (copat.gov.az) və domen/sosial şəbəkədə yoxlayın. İlk ad məşğul olarsa, ikinci hazır olsun.","#ad"],
+      ["Domen və sosial şəbəkə adlarını tutun",".az domeni (məs. xezersahil.az, xezersahilev.az), Instagram, Facebook, TikTok, WhatsApp Business. Hamısında eyni ad olsun.",""],
+      ["ASAN imza alın","ASAN Xidmət mərkəzindən. Elektron qeydiyyat, vergi kabineti, bank işləri, bəyannamələr ASAN imza ilə edilir.","ASAN Xidmət"],
+      ["Hüquqi ünvanı hazırlayın","Şirkətin qeydiyyat ünvanı lazımdır. Mərdəkanda ofis icarəyə götürürsünüzsə, icarə müqaviləsini yazılı bağlayın. İcarə müqaviləsi qeydiyyatda tələb oluna bilər.",""]
+    ]},
+    {t:"Rəsmi qeydiyyat", s:"1–2 həftə", items:[
+      ["Şirkəti qeydiyyatdan keçirin (VÖEN alın)","e-taxes.gov.az portalında elektron qeydiyyat və ya ASAN Xidmət vasitəsilə. MMC üçün nizamnamə (hazır nümunə var), təsisçi qərarı, nizamnamə kapitalı və direktor məlumatı lazımdır. Nəticədə VÖEN və dövlət reyestrindən çıxarış alırsınız.","Dövlət Vergi Xidməti"],
+      ["Fəaliyyət kodlarını düzgün seçin","Əsas: <b>68.31 Daşınmaz əmlak agentliklərinin fəaliyyəti</b>. Əlavə: 68.10 öz əmlakının alqı-satqısı (özünüz alıb satacaqsınızsa), 68.20 icarəyə vermə (kirayə ilə də məşğul olacaqsınızsa).",""],
+      ["Vergi rejimini seçin","Dövriyyə kiçikdirsə, adətən <b>sadələşdirilmiş vergi</b> seçilir (dövriyyədən faizlə). Dövriyyə qanunda göstərilən həddi keçəndə ƏDV ödəyicisi olmaq məcburidir. Dərəcələri və hədləri mühasibinizlə Vergi Məcəlləsinin son redaksiyasına görə dəqiqləşdirin.","Mühasib"],
+      ["Şirkət üçün ASAN imza və elektron kabinet","Direktor adına şirkət ASAN imzası. Vergi kabinetinə daxil olub elektron poçt və telefonu təsdiq edin, bildirişlərə vaxtında baxın.",""],
+      ["Bank hesabı açın","Şirkət adına cari hesab. Komissiyanı mümkün qədər bank hesabına (köçürmə və ya POS) qəbul edin, nağd pulu az istifadə edin.",""],
+      ["Mühasib tapın","Əmlak sahəsini bilən autsorsinq mühasib. Aylıq və rüblük bəyannamələr, işçilərin sosial sığortası və hesabatlar onun işidir. Gecikmiş bəyannamə cərimə gətirir.",""],
+      ["Kassa aparatı","Nağd ödəniş qəbul edəcəksinizsə, qanunla onlayn nəzarət-kassa aparatı (NKA) və ya POS-terminal tələb olunur. Mühasiblə dəqiqləşdirin.",""],
+      ["Maliyyə Monitorinqi tələblərini yoxlayın","Daşınmaz əmlak vasitəçiləri çirkli pulların yuyulmasına qarşı qanunvericilik üzrə öhdəlik daşıya bilər (müştərinin şəxsiyyətini yoxlamaq, şübhəli əməliyyatı bildirmək). Maliyyə Monitorinqi Xidmətinin (fiu.az) tələblərini öyrənin.","fiu.az"]
+    ]},
+    {t:"Brend və ofis", s:"2–4 həftə", items:[
+      ["Loqonu son hala gətirin","Dizaynerə bu səhifədəki eskizi göstərin. Rəngli, ağ və qara versiya, vektor fayllar, şrift adları istəyin. Kiçik ölçüdə (Instagram profil şəkli) yoxlayın.","#loqo"],
+      ["Ticarət nişanını qeydiyyatdan keçirin","Ad və loqonu Əqli Mülkiyyət Agentliyində qeydiyyata verin. Sinif <b>36</b> (daşınmaz əmlak xidmətləri), istəsəniz sinif <b>35</b> (reklam). Qeydiyyat aylarla çəkə bilər, ona görə tez müraciət edin. Qeydiyyat olmadan başqası eyni adı götürə bilər.","copat.gov.az"],
+      ["Ofis və lövhə","Mərdəkanda görünən yerdə, əsas yol üstündə ofis. Küçə lövhəsi (reklam qurğusu) üçün Xəzər rayon İcra Hakimiyyəti və ya bələdiyyədən icazə lazım ola bilər. Lövhədəki yazılar dövlət dilində (Azərbaycan dilində) olmalıdır.","Xəzər rayonu"],
+      ["Çap materialları","Vizit kartı, ofis lövhəsi, satılan evlərə asılan “SATILIR” banneri (loqo və telefonla), möhür, blank.",""],
+      ["Google Xəritələrdə qeydiyyat","Google Business Profile açın. “Mərdəkanda əmlak” axtaranlar sizi xəritədə görsün. Hər sövdələşmədən sonra müştəridən rəy istəyin.",""],
+      ["Elan saytlarında hesab","bina.az, tap.az, yeniemlak.az, emlak.az kimi saytlarda agentlik hesabı. Hər elanda eyni loqo, eyni telefon, keyfiyyətli şəkillər.",""]
+    ]},
+    {t:"Sənədlər və iş qaydası", s:"açılışdan əvvəl", items:[
+      ["Vasitəçilik müqaviləsi şablonu","Satıcı ilə yazılı müqavilə: komissiyanın faizi, kim ödəyir, müddət, eksklüziv (yalnız siz satırsınız) yoxsa deyil. Şablonu bir dəfə hüquqşünasa yoxlatdırın.","Hüquqşünas"],
+      ["Baxış aktı","Alıcıya ev göstərəndə ünvan, tarix və alıcının imzası olan qısa sənəd. Alıcı sonra satıcı ilə sizi kənarda qoyub razılaşarsa, komissiyanızı bu sənədlə tələb edirsiniz.",""],
+      ["Beh (avans) qaydası","Beh alınanda yazılı qəbz və ya beh müqaviləsi: məbləğ, ev, son tarix, imtina olarsa nə olur. Behi şəxsi cibdə yox, müqavilə ilə saxlayın.",""],
+      ["Obyekt yoxlama siyahısı","Hər evi elana qoymazdan əvvəl sənədləri yoxlayın (Bölmə 5-də ətraflı): dövlət reyestrindən çıxarış, sahiblərin hamısı, həbs/ipoteka, torpağın təyinatı, kommunal borclar.","#diqqet"],
+      ["Müştəri və obyekt bazası (CRM)","Ən sadəsi Google Sheets: ev, ünvan, qiymət, sahib, sənəd statusu, şəkillər; alıcı, büdcə, istədiyi ev, son əlaqə tarixi. Hər zəngi qeyd edin.",""],
+      ["İşçi götürəcəksinizsə","Əmək müqaviləsini işə başlamazdan əvvəl elektron sistemdə (e-sosial) qeydiyyatdan keçirin. Sosial sığorta, işsizlikdən sığorta və icbari tibbi sığorta haqları ödənilir. Rəsmiləşdirilməmiş işçiyə görə cərimə böyükdür.",""]
+    ]},
+    {t:"İşə başlama və böyümə", s:"ilk 90 gün", items:[
+      ["İlk 20 obyekti toplayın","Mərdəkanda tanışlar, bələdiyyə əhatəsi, qonşular, bağ evi sahibləri. Ofis açılanda elanlarınız artıq hazır olsun.",""],
+      ["Peşəkar şəkil və video","Hər evin gün işığında şəkli, qısa video tur. Dron çəkilişi üçün qanunla icazə tələb olunur, icazəsiz uçurmayın.",""],
+      ["Notarius və bank əlaqələri","Mərdəkana yaxın 1–2 notarius və ipoteka verən bank əməkdaşı ilə tanış olun. Sövdələşmə sürətli bağlanar.",""],
+      ["Mövsümə hazırlıq","Mərdəkanda yay aylarında bağ evi alqı-satqısı və kirayə tələbi artır. Reklam büdcəsini yazdan əvvəl artırın.",""],
+      ["Aylıq hesabat","Hər ay: neçə zəng, neçə baxış, neçə sövdələşmə, hansı reklam işlədi. Rəqəm olmadan nəyin işlədiyini bilməyəcəksiniz.",""]
+    ]}
+  ];
+  let done = store.get("fa.steps",{});
+  function renderSteps(){
+    let i=0;
+    document.getElementById("steps").innerHTML = PHASES.map((p,pi)=>`<div class="phase"><h3>${String.fromCharCode(65+pi)}. ${p.t} <small>${p.s}</small></h3>${p.items.map(it=>{
+      i++; const id="st"+i; const c=!!done[id];
+      const where = it[2] ? (it[2].startsWith("#") ? `<a class="where" href="${it[2]}">Bölməyə keç</a>` : `<span class="where">Harada: ${it[2]}</span>`) : "";
+      return `<div class="step${c?" done":""}"><input type="checkbox" id="${id}"${c?" checked":""}><label for="${id}"><span class="n">${i}.</span>${it[0]}</label><div class="d">${it[1]} ${where}</div></div>`;
+    }).join("")}</div>`).join("");
+    document.querySelectorAll("#steps input").forEach(cb=>cb.addEventListener("change",()=>{
+      done[cb.id]=cb.checked; store.set("fa.steps",done); cb.closest(".step").classList.toggle("done",cb.checked); prog();
+    }));
+    prog();
+  }
+  function prog(){
+    const all=document.querySelectorAll("#steps input").length, c=document.querySelectorAll("#steps input:checked").length;
+    document.getElementById("progTxt").textContent=c+" / "+all;
+    document.getElementById("progBar").style.width=(all?c/all*100:0)+"%";
+  }
+
+  /* ---------- RISKS ---------- */
+  const RISKS = [
+    ["hi","Sənədsiz və ya yarımçıq sənədli evlər","Mərdəkanda çoxlu köhnə bağ evi var: bəzilərində yalnız köhnə bağ kooperativi kağızı və ya “müqavilə ilə alınıb” deyə sənəd olur. Satmazdan əvvəl daşınmaz əmlakın dövlət reyestrindən çıxarış (mülkiyyət sənədi) mütləq yoxlanılmalıdır. Sənədsiz evi satarkən alıcıya bunu yazılı bildirin."],
+    ["hi","Bütün sahiblərin razılığı","Ev nikah dövründə alınıbsa, həyat yoldaşının notarial razılığı lazımdır. Miras evdirsə, bütün varislər. Bir sahib razı deyilsə, sövdələşmə sonradan ləğv oluna bilər."],
+    ["hi","Həbs, ipoteka, girov","Əmlak bankda girovdadırsa və ya üzərinə həbs qoyulubsa, satıla bilməz. Notariusa getməzdən əvvəl yoxlatdırın."],
+    ["hi","Etibarnamə ilə satış və saxta sənəd","Sahib yox, etibarnamə ilə başqası satırsa, etibarnamənin həqiqi və qüvvədə olduğunu notariusda yoxlayın. Eyni evin iki alıcıya satılması ən çox yayılmış fırıldaqdır."],
+    ["hi","Torpağın təyinatı və qanunsuz tikili","Torpaq kənd təsərrüfatı və ya bağ təyinatlıdırsa, üzərindəki ev yaşayış evi kimi qeydiyyatda olmaya bilər. Sənəddə olmayan əlavə mərtəbə və tikililər problem yaradır. Dəniz sahilinə yaxın sahələrdə tikinti məhdudiyyətləri ola bilər."],
+    ["hi","Nağd pul və şübhəli əməliyyatlar","Böyük məbləğlər bank vasitəsilə ödənməlidir. Pulun mənbəyi şübhəlidirsə, sövdələşməyə qoşulmayın. Vasitəçi də məsuliyyət daşıya bilər."],
+    ["","“Fədai” sözü","Atanızın adını şirkət adında istifadə etmək istəsəniz, “fədai” sözünün Qarabağ kontekstində erməni silahlı dəstələri ilə əlaqələndirildiyini nəzərə alın. Hörməti başqa cür göstərə bilərsiniz: məsələn, “Fədai oğlu” imzasını təsisçi kimi saytda “Haqqımızda” bölməsində."],
+    ["","Ə hərfi internetdə","Domen və sosial şəbəkə adlarında “ə” olmur. “Xəzər Sahil” internetdə “xezersahil” və ya “xazarsahil” olacaq. İkisini də götürün ki, səhv yazan da sizi tapsın."],
+    ["","Komissiyanı yazılı razılaşdırın","Şifahi razılaşma ən çox mübahisə yaradan səbəbdir. Müqavilə və baxış aktı olmadan ev göstərməyin."],
+    ["","Satıcının vergisi","Evi satan fiziki şəxs üçün də satışdan vergi yarana bilər (əmlakın yerindən, sahəsindən və neçə il sahiblik etdiyindən asılı olaraq). Müştərinizə bunu notariusda əvvəlcədən öyrənməyi tövsiyə edin. Bu, sizə etibarı artırır."],
+    ["","Kommunal borclar","Qaz (Azəriqaz), su (Azərsu), işıq (Azərişıq) borclarının olmadığını təhvildən əvvəl yoxlayın, borc yeni sahibə keçməsin."],
+    ["","Fərdi məlumatlar","Müştərilərin şəxsiyyət vəsiqəsi surətini, telefonlarını qoruyun, icazəsiz paylaşmayın. Elanda sahibin şəxsi məlumatlarını göstərməyin."],
+    ["","Bəyannamə müddətləri","Vergi bəyannaməsi vaxtında verilməsə, hətta heç gəlir olmasa belə, cərimə yaranır. Mühasibinizlə təqvim qurun."],
+    ["","Qanunlar dəyişir","Vergi dərəcələri, hədlər, rüsumlar ildən-ilə dəyişə bilər. Hər il mühasiblə yenidən yoxlayın."]
+  ];
+  document.getElementById("risks").innerHTML = RISKS.map(r=>`<div class="risk ${r[0]}"><b>${r[1]}</b><p>${r[2]}</p></div>`).join("");
+
+  /* ---------- CALC ---------- */
+  const START=[["Qeydiyyat və notarial xərclər",100],["Ticarət nişanı rüsumları",300],["Loqo (dizayner, son hal)",300],["Domen və sayt",400],["Lövhə, kart, banner, möhür",600],["Ofis mebeli və texnika",2000],["İlk ay icarə və depozit",1200]];
+  const MONTH=[["Ofis icarəsi",600],["Mühasib (autsorsinq)",250],["Elan saytları və reklam",300],["Telefon, internet",60],["Kommunal",80],["Nəqliyyat, yanacaq",200]];
+  const saved=store.get("fa.calc",{});
+  function buildPanel(id,rows,prefix){
+    const p=document.getElementById(id);
+    rows.forEach((r,i)=>{const k=prefix+i;const v=saved[k]??r[1];
+      p.insertAdjacentHTML("beforeend",`<div class="field"><label for="${k}">${r[0]}</label><input id="${k}" type="number" min="0" step="10" value="${v}"></div>`);});
+    p.insertAdjacentHTML("beforeend",`<div class="total"><span>Cəmi</span><output id="${prefix}tot">0</output></div>`);
+  }
+  buildPanel("startCost",START,"s");
+  buildPanel("monthCost",MONTH,"m");
+  ["c-price","c-pct","c-deals"].forEach(k=>{if(saved[k]!=null)document.getElementById(k).value=saved[k]});
+  const fmt=n=>Math.round(n).toLocaleString("az-AZ").replace(/ /g," ")+" ₼";
+  function calc(){
+    const val=id=>Math.max(0,parseFloat(document.getElementById(id).value)||0);
+    let s=0; START.forEach((_,i)=>s+=val("s"+i)); let m=0; MONTH.forEach((_,i)=>m+=val("m"+i));
+    document.getElementById("stot").textContent=fmt(s); document.getElementById("mtot").textContent=fmt(m);
+    const per=val("c-price")*val("c-pct")/100, inc=per*val("c-deals");
+    document.getElementById("c-income").textContent=fmt(inc);
+    const net=inc-m; const o=document.getElementById("c-net"); o.textContent=fmt(net); o.style.color=net<0?"var(--risk)":"var(--ok)";
+    const need=per>0?Math.ceil(m/per):null;
+    document.getElementById("c-break").textContent = per>0
+      ? `Bir sövdələşmədən ${fmt(per)} qazanırsınız. Aylıq xərci ödəmək üçün ayda ən azı ${need} sövdələşmə lazımdır. Açılış xərcini qaytarmaq üçün təxminən ${net>0?Math.ceil(s/net)+" ay":"gəlir xərcdən çox olmalıdır"}.`
+      : "Komissiya faizini və qiyməti daxil edin.";
+    const snap={}; document.querySelectorAll(".calc input").forEach(x=>snap[x.id]=x.value); store.set("fa.calc",snap);
+  }
+  document.querySelectorAll(".calc input").forEach(x=>x.addEventListener("input",calc));
+
+  renderNames(); renderLogo(); renderSteps(); calc();
+})();
+</script>

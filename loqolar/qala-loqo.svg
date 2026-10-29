@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 120" role="img" aria-label="Qala Əmlak loqosu">
+  <path d="M32 98 V28 H40 V36 H48 V28 H56 V36 H64 V28 H72 V36 H80 V28 H88 V98 Z" fill="#0E5A6B"/>
+  <path d="M53 98 V78 a7 7 0 0 1 14 0 V98 Z" fill="#D4AF6A"/>
+  <rect x="56" y="50" width="8" height="13" rx="4" fill="#D4AF6A"/>
+  <path d="M18 110 q10.5 -7 21 0 t21 0 t21 0 t21 0" fill="none" stroke="#0E5A6B" stroke-width="5" stroke-linecap="round"/>
+  <text x="112" y="72" font-family="Literata, Georgia, 'Times New Roman', serif" font-size="56" font-weight="600" fill="#13252E">Qala</text>
+  <text x="115" y="102" font-family="Onest, Arial, sans-serif" font-size="15" letter-spacing="5" fill="#0E5A6B">ƏMLAK · MƏRDƏKAN</text>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="MərdEv ikon">
+  <rect x="0" y="0" width="120" height="120" rx="24" fill="#0E5A6B"/>
+  <polyline points="22,62 41,36 60,58 79,36 98,62" fill="none" stroke="#D4AF6A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 58 V86 M87 58 V86" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <path d="M53 86 V72 a7 7 0 0 1 14 0 V86" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M20 99 q10 -7 20 0 t20 0 t20 0 t20 0" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+</svg>

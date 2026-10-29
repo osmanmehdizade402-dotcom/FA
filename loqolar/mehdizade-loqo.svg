@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" role="img" aria-label="Mehdizadə Əmlak loqosu">
+  <path d="M28 112 V54 a32 32 0 0 1 64 0 V112 Z" fill="#13252E"/>
+  <path d="M42 98 V58 L60 80 L78 58 V98" fill="none" stroke="#D4AF6A" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <text x="112" y="72" font-family="Literata, Georgia, 'Times New Roman', serif" font-size="52" font-weight="600" fill="#13252E">Mehdizadə</text>
+  <text x="115" y="102" font-family="Onest, Arial, sans-serif" font-size="15" letter-spacing="5" fill="#0E5A6B">ƏMLAK · EV ALQI-SATQISI</text>
+</svg>
