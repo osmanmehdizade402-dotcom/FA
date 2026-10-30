@@ -46,6 +46,13 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    rəqəmi 1 artır, söhbətin adını `set_session_title` ilə "FA <rəqəm>" qoy (məs. "FA 2"),
    faylı commit + push et. Söhbət adı heç vaxt sadəcə "FA" olmasın. "FA 1" = ilk söhbət.
 
+8. **Müəllif hüququ xəbərdarlığı (QANUN — bütün işlərdə, istifadəçi xatırlatmasa belə):**
+   hər hansı layihədə (video, şəkil, musiqi/səs, mətn, şrift, loqo, başqasının elanı və s.)
+   müəllif hüququnun pozulması riski varsa, işə başlamazdan ƏVVƏL istifadəçiyə açıq xəbərdarlıq et:
+   nə risklidir, kimin hüququdur, və YouTube/Instagram/TikTok/Facebook-da paylaşılarsa videonun
+   silinə, səssizləşdirilə və ya hesabın cərimələnə biləcəyini de. Təhlükəsiz alternativ təklif et
+   və qərarı istifadəçi versin — qərar gəlməmiş riskli hissəni etmə.
+
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 
 Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
