@@ -1,0 +1,30 @@
+{
+  "slug": "merdekan-3sot",
+  "hook": {
+    "title": ["Hovuzlu", "villa"],
+    "sub": "Mərdəkan  •  3 sot  •  4 otaq",
+    "pill": "QİYMƏTİ SONDA  ↓"
+  },
+  "price": "390 000",
+  "details": [
+    "Mərdəkan  •  3 sot  •  160 m²",
+    "4 otaq  •  2 sanuzel  •  Yeni tikili",
+    "Hovuz  •  Manqal  •  Çıxarış"
+  ],
+  "phone": "010-310-03-02",
+  "shots": [
+    ["pool_facade", 3.2, "in_slow", null, null],
+    ["yard", 2.0, "in", "Həyət", "whip"],
+    ["gazebo", 2.0, "left", "Besetka", "punch"],
+    ["bbq", 2.0, "in", "Manqal", "whip"],
+    ["parking", 2.0, "out", "Parking zonası", "punch"],
+    ["hall", 2.0, "in", "Hol", "flash"],
+    ["living", 2.0, "in", "Qonaq otağı", "whip"],
+    ["kitchen", 2.0, "out", "Mətbəx", "punch"],
+    ["bed1", 2.0, "in", "Yataq otağı", "whip"],
+    ["bed2", 2.0, "right", "Yataq otağı", "punch"],
+    ["bed3", 2.0, "in", "Yataq otağı", "whip"],
+    ["bath1", 2.0, "out", "Sanuzel", "punch"],
+    ["bath2", 2.0, "in_fast", "Sanuzel", "whip"]
+  ]
+}

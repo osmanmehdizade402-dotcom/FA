@@ -17,6 +17,10 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    - **Qalan HƏR şəklin üstündə nə olduğu yazılır:** "Yataq otağı", "Qonaq otağı", "Mətbəx",
      "Sanuzel", "Qaraj", "Hovuz", "Həyət", "Qarderob", "Dəhliz", "Giriş holu" və s.
      (`listing.json`-da heç bir kadrın yazısı `null` qalmasın — yalnız giriş kadrının).
+   - **Zal (QANUN):** qonaq otağı/zal şəklində yemək masası olsa belə yazı "Qonaq otağı" olur —
+     heç vaxt "Yemək zonası"/"Yemək otağı" yazma.
+   - Nömrə: istifadəçinin göndərdiyi elan mətnində başqa nömrə olsa belə HƏMİŞƏ öz nömrəmiz
+     (`010-310-03-02`) — istifadəçi açıq desə dəyiş.
    - **Ən sonda HƏMİŞƏ son kadr şablonu:** `video/reference/approved-end-card.png` kimi — yaşıl fon,
      loqo, "SATILIR", qiymət ₼, evin bütün məlumatları 3 sətirdə, qızılı düymədə nömrə
      (`010 310 03 02`, boşluqla), "Zəng et • WhatsApp • DM yaz".
