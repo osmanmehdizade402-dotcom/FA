@@ -27,6 +27,16 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
      (məs. `[0.30, 0.58, 1.45]`) şəklin həmin hissəsinə yaxınlaşır — hər kadra öz yazısı.
    - CTA mətnini evə uyğun yaz; "Dərhal köçməyə hazır" yalnız istifadəçi bunu deyibsə.
 
+5. **Hər faylın altında hansı tətbiq üçün olduğu yazılır.** Video/şəkil göndərəndə hər faylı
+   ayrıca göndər və altlığında (caption) yaz, məs.:
+   - 9:16 video → "TikTok, Instagram Reels və Instagram Story üçün"
+   - 4:5 video → "Instagram post (lent) və Facebook post üçün"
+   - cover-9x16.jpg → "TikTok / Reels örtük şəkli"; cover-4x5.jpg → "Instagram post örtük şəkli"
+   - paylasim-metni.md → "TikTok / Instagram / Facebook paylaşım mətni və heşteqlər"
+6. **Qanun verəndə yalnız deyiləni et.** İstifadəçi yeni qayda verəndə qaydanı qeyd et və təsdiqlə —
+   köhnə evləri/prototipləri yenidən render edib təkrar göndərmə. Bunu yalnız istifadəçi özü
+   desə et.
+
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 
 Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
