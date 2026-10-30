@@ -32,6 +32,8 @@ TR = 0.30  # transition length, seconds
 HOOK_MIN = 3.2   # hook shot: title, sub line and pill
 SHOT_MIN = 2.0   # every labelled shot
 END_DUR = 4.8    # end card: price, details, phone
+# CTA line above the phone number (user rule; same for every listing until the user changes it)
+CTA_TEXT = "Ətraflı məlumat və baxış üçün zəng et"
 END_LOOP = 0.4  # final crossfade back into frame 0 for a seamless loop
 
 # ---- brand ----
@@ -196,7 +198,7 @@ class Renderer:
                             fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(2, int(3 * k)))
         f1 = font("DejaVuSans.ttf", 36 * k)
         f2 = font("DejaVuSans-Bold.ttf", 70 * k)
-        for text, f, fill, cy in [(LISTING["cta"], f1, GOLD_SOFT, y0 + bh * 0.25),
+        for text, f, fill, cy in [(CTA_TEXT, f1, GOLD_SOFT, y0 + bh * 0.25),
                                   (LISTING["phone"], f2, WHITE, y0 + bh * 0.64)]:
             bb = d.textbbox((0, 0), text, font=f)
             d.text((W / 2 - (bb[2] + bb[0]) / 2, cy - (bb[3] + bb[1]) / 2), text, font=f, fill=fill)
@@ -369,7 +371,8 @@ class Renderer:
             lay = self.fade(self.labels[label], a, dy=30 * (1 - a_in))
             if lay:
                 im.alpha_composite(lay)
-        im.alpha_composite(self.cta)
+        if i == 0:  # phone box only on the hook shot (user rule)
+            im.alpha_composite(self.cta)
         return im
 
     def full_shot(self, i, t):

@@ -25,7 +25,8 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
      girişdə "ƏTRAFLI SONDA ↓"), render et və qiyməti verərsə yenidən render edəcəyini de.
    - Şəkil az olanda bir şəkildən bir neçə kadr çıxar: kadrın 6-cı elementi `[fx, fy, zoom]`
      (məs. `[0.30, 0.58, 1.45]`) şəklin həmin hissəsinə yaxınlaşır — hər kadra öz yazısı.
-   - CTA mətnini evə uyğun yaz; "Dərhal köçməyə hazır" yalnız istifadəçi bunu deyibsə.
+   - Nömrə qutusunun üst yazısı HƏMİŞƏ "Ətraflı məlumat və baxış üçün zəng et" (render.py
+     `CTA_TEXT`) — istifadəçi "dəyişdir" deyənə qədər bütün evlərdə eyni.
 
 5. **Hər faylın altında hansı tətbiq üçün olduğu yazılır.** Video/şəkil göndərəndə hər faylı
    ayrıca göndər və altlığında (caption) yaz, məs.:
@@ -52,8 +53,10 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
   CTA qutusu DejaVu Sans / DejaVu Sans Bold. Ölçülər render.py-dəki kimi qalır.
 - **Giriş kadrı:** ən yaxşı fasad şəkli + 2 sətirli başlıq (1-ci krem, 2-ci qızılı) +
   alt sətir (yer • sot • otaq) + qızılı "QİYMƏTİ SONDA ↓" düyməsi.
-- **CTA qutusu (aşağıda, bütün kadrlarda):** tünd yaşıl, qızılı çərçivə; üst sətir CTA mətni,
-  alt sətir böyük ağ telefon nömrəsi (`010-310-03-02` formatında, defislə).
+- **Nömrə qutusu (QANUN — YALNIZ giriş/başlıq kadrında):** tünd yaşıl, qızılı çərçivə; üst sətir
+  "Ətraflı məlumat və baxış üçün zəng et", alt sətir böyük ağ nömrə (`010-310-03-02`, defislə).
+  Sonrakı kadrlarda nömrə qutusu YOXDUR — orada yalnız loqo və kadrın yazısı (Hovuz, Mətbəx...) olur.
+  Nömrə yenə son kadrda görünür.
 - **Şəkillər işıqlandırılır:** hər şəkil öz parlaqlığına görə avtomatik (render.py `brighten`).
 - **Sonluq:** yaşıl fon, loqo, "SATILIR", qiymət + ₼, 3 sətir xüsusiyyət, qızılı telefon düyməsi;
   sonda girişə keçid (loop).
@@ -65,7 +68,7 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
 
 ## Hər ev üçün dəyişənlər (`video/listings/<slug>/listing.json`)
 
-Başlıq (məs. "Hovuzlu / villa"), alt sətir, qiymət, 3 xüsusiyyət sətri, CTA mətni,
+Başlıq (məs. "Hovuzlu / villa"), alt sətir, qiymət, 3 xüsusiyyət sətri,
 telefon (default `010-310-03-02` — istifadəçi başqa nömrə verməsə dəyişmə), kadr siyahısı
 (şəkil, saniyə, hərəkət, yazı, keçid). Şəkilləri `photos/<ad>.jpg` kimi kopyala.
 Çatışmayan məlumatı (yer, sot, otaq, hamam, qiymət, xüsusiyyətlər) istifadəçidən soruş.
