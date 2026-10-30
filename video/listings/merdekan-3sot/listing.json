@@ -12,6 +12,7 @@
     "Hovuz  •  Manqal  •  Çıxarış"
   ],
   "phone": "010-310-03-02",
+  "music": true,
   "shots": [
     ["pool_facade", 3.2, "in_slow", null, null],
     ["yard", 2.0, "in", "Həyət", "whip"],

@@ -439,11 +439,19 @@ class Renderer:
                 self.full_shot(lab, self.shots[lab][1] * 0.7).convert("RGB"),
                 self.end_frame(2.0).convert("RGB")]
 
+    def audio_input(self, out_dir):
+        """Original synthesised soundtrack when the listing asks for music, else silence."""
+        if LISTING.get("music"):
+            from audio import soundtrack
+            wav = soundtrack(self.shots, TR, END_DUR, out_dir / "soundtrack.wav")
+            return ["-i", str(wav)]
+        return ["-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo"]
+
     def render(self, out_dir):
         out = out_dir / f"{LISTING['slug']}-{self.tag}.mp4"
         cmd = ["ffmpeg", "-y", "-loglevel", "error",
                "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{self.W}x{self.H}", "-r", str(FPS), "-i", "-",
-               "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+               *self.audio_input(out_dir),
                "-shortest", "-c:v", "libx264", "-preset", "slow", "-crf", "17",
                "-pix_fmt", "yuv420p", "-profile:v", "high", "-c:a", "aac", "-b:a", "128k",
                "-movflags", "+faststart", str(out)]
