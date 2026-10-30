@@ -2,26 +2,33 @@
 
 ## TikTok / Instagram Reels / Facebook
 
-Mərdəkanda tam əşyalı hovuzlu villa 🏡✨
-📍 Mərdəkan (Bravo marketin arxası, əsas yola yaxın)
-🏠 1 mərtəbə • 4.2 sot • 180 m² • Əşyalı
-🛏 4 otaq: qonaq otağı + 3 yataq otağı • Mətbəx • Hol • Qarderoblar
-🚿 2 sanuzel
-🌴 Filterli hovuz • Manqal • Landşaft • Söhbətgah • Qış mətbəxi • Parking zonası
-💡 Qaz / su / işıq daimidir • Optik internet
-📄 Çıxarış var • İpotekaya hazırdır
-💰 460 000 ₼ (başlanğıc qiymət)
+Səhər qəhvəsi hovuz kənarında, axşam manqal başında dostlarla… ☀️🔥
+Mərdəkanda, Bravo marketə yaxın sakit küçədə bu villa yeni sahibini gözləyir.
 
-📞 010-310-03-02 (Zəng / WhatsApp)
-Ətraflı məlumat və baxış üçün zəng edin 👇
+✨ Nə təklif edir?
+• 4.2 sot həyət, 180 m² birmərtəbəli ev
+• Geniş qonaq otağı, 3 yataq otağı, ayrıca mətbəx
+• 2 sanuzel, hol, qarderoblar
+• İçi tam əşyalıdır — çamadanla köçmək kifayətdir
 
-#mərdəkan #mardakan #satılırev #həyətevi #villa #hovuzluev #əşyalıev #bakıəmlak #əmlak #ipotekaylaev #bakurealestate #xəzərsahiləmlak #realestate
+🌿 Həyətdə:
+filterli hovuz, manqal, söhbətgah, qış mətbəxi, landşaft dizaynı və maşın üçün yer
+
+🔑 Rahatlıq:
+qaz, su, işıq fasiləsiz • optik internet • çıxarış hazırdır, ipoteka ilə almaq mümkündür
+
+💰 Başlanğıc qiymət: 460 000 ₼
+📞 Baxış üçün: 010-310-03-02 (zəng / WhatsApp)
+
+Hovuzlu ev xəyalınızdadırsa, şərhə "🏡" yazın 👇
+
+#mərdəkan #villa #hovuzluev #həyətevi #satılırev #əşyalıev #ipotekaylaev #bakıəmlak #bakuhomes #xəzərsahiləmlak
 
 ## Instagram post (4:5) — qısa variant
 
-Mərdəkanda hovuzlu villa satılır 🏡
-4.2 sot • 180 m² • 4 otaq • 2 sanuzel • Tam əşyalı
-Hovuz • Manqal • Qış mətbəxi • Çıxarış, ipotekaya hazır
-💰 460 000 ₼ | 📞 010-310-03-02
+Mərdəkanda tam əşyalı, hovuzlu villa 🏡
+180 m² • 4.2 sot • 3 yataq otağı + qonaq otağı • 2 sanuzel
+Hovuz, manqal, söhbətgah, qış mətbəxi • Çıxarış var, ipotekaya uyğundur
+💰 460 000 ₼-dən | 📞 010-310-03-02
 
-#mərdəkan #satılırev #həyətevi #villa #bakıəmlak #xəzərsahiləmlak
+#mərdəkan #villa #hovuzluev #bakıəmlak #xəzərsahiləmlak

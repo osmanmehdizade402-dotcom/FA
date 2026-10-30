@@ -2,26 +2,32 @@
 
 ## TikTok / Instagram Reels / Facebook
 
-Mərdəkanda müasir təmirli hovuzlu villa 🏡✨
-📍 Mərdəkan (Bravo marketin arxası, əsas yola yaxın)
-🏠 1 mərtəbə • 3 sot • 160 m² • Yeni tikili
-🛏 4 otaq: qonaq otağı + 3 yataq otağı • Mətbəx • Hol • Qarderob
-🚿 2 sanuzel
-🌴 Filterli hovuz • Manqal • Landşaft • Besetka • Parking zonası
-💡 Qaz / su / işıq daimidir • Optik internet
-📄 Çıxarış var • İpotekaya hazırdır
-💰 390 000 ₼ (başlanğıc qiymət)
+Təzə tikilib, təzə təmir olunub — sadəcə içində yaşamaq qalıb 🗝️✨
+Mərdəkanda, əsas yola bir addım məsafədə müasir üslubda hovuzlu villa.
 
-📞 010-310-03-02 (Zəng / WhatsApp)
-Ətraflı məlumat və baxış üçün zəng edin 👇
+🏠 Ev haqqında:
+• 160 m², birmərtəbəli, 3 sot torpaq üzərində
+• İşıqlı qonaq otağı, 3 yataq otağı, mətbəx
+• 2 sanuzel, hol, qarderob
 
-#mərdəkan #mardakan #satılırev #həyətevi #villa #hovuzluev #yenitikili #bakıəmlak #əmlak #ipotekaylaev #bakurealestate #xəzərsahiləmlak #realestate
+🌴 Həyətdə istirahət üçün hər şey:
+filterli hovuz, besetka, manqal, yaşıl landşaft və parking zonası
+
+⚡ Kommunal: qaz, su, işıq daimi • optik internet
+📄 Çıxarış hazırdır — ipoteka ilə də almaq olar
+
+💰 Başlanğıc qiymət: 390 000 ₼
+📞 Ətraflı məlumat və baxış: 010-310-03-02 (zəng / WhatsApp)
+
+Bu evi kimə göstərmək istərdiniz? Onu şərhdə qeyd edin 👇
+
+#mərdəkan #villa #yenitikili #hovuzluev #həyətevi #satılırev #ipotekaylaev #bakıəmlak #bakuhomes #xəzərsahiləmlak
 
 ## Instagram post (4:5) — qısa variant
 
-Mərdəkanda hovuzlu villa satılır 🏡
-3 sot • 160 m² • 4 otaq • 2 sanuzel • Yeni tikili
-Hovuz • Manqal • Besetka • Çıxarış, ipotekaya hazır
-💰 390 000 ₼ | 📞 010-310-03-02
+Mərdəkanda yeni tikili, hovuzlu villa 🏡
+160 m² • 3 sot • qonaq otağı + 3 yataq otağı • 2 sanuzel
+Hovuz, besetka, manqal • Çıxarış var, ipotekaya uyğundur
+💰 390 000 ₼-dən | 📞 010-310-03-02
 
-#mərdəkan #satılırev #həyətevi #villa #bakıəmlak #xəzərsahiləmlak
+#mərdəkan #villa #yenitikili #bakıəmlak #xəzərsahiləmlak

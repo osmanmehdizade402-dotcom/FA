@@ -53,6 +53,12 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    silinə, səssizləşdirilə və ya hesabın cərimələnə biləcəyini de. Təhlükəsiz alternativ təklif et
    və qərarı istifadəçi versin — qərar gəlməmiş riskli hissəni etmə.
 
+9. **Partnyor elanlarının mətni (QANUN):** istifadəçi birgə işlədiyi agentliklərin elan mətnini
+   göndərəndə məlumatları (yer, sot, m², otaqlar, xüsusiyyətlər, qiymət) götür, amma mətni
+   HEÇ VAXT birə-bir köçürmə — öz üslubumuzda, fərqli quruluş və ifadələrlə yenidən yaz ki,
+   paylaşım təkrar görünməsin (cəlbedici giriş cümləsi, qruplaşdırılmış xüsusiyyətlər, şərhə çağırış).
+   Şəkillər istifadəçinin özünə aiddir — onlar üçün müəllif hüququ xəbərdarlığı lazım deyil.
+
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 
 Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
