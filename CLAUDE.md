@@ -47,7 +47,10 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
 - **Şəkillər işıqlandırılır:** hər şəkil öz parlaqlığına görə avtomatik (render.py `brighten`).
 - **Sonluq:** yaşıl fon, loqo, "SATILIR", qiymət + ₼, 3 sətir xüsusiyyət, qızılı telefon düyməsi;
   sonda girişə keçid (loop).
-- **Formatlar:** 9:16 (TikTok/Reels/Story) və 4:5 (Instagram post), ~22 san, 30fps, səssiz audio
+- **Temp (QANUN):** yavaş — hər yazı növbəti keçidə qədər rahat oxunmalıdır. render.py-də minimum:
+  giriş kadrı 3.2 san, hər yazılı kadr 2.0 san, son kadr 4.8 san, keçid 0.3 san. Bunları azaltma.
+  Video çox uzanırsa (>~35 san), kadrları sürətləndirmə — ən zəif/təkrar şəkilləri çıxar.
+- **Formatlar:** 9:16 (TikTok/Reels/Story) və 4:5 (Instagram post), 30fps, səssiz audio
   trek (trend səsi istifadəçi tətbiqdə əlavə edir).
 
 ## Hər ev üçün dəyişənlər (`video/listings/<slug>/listing.json`)

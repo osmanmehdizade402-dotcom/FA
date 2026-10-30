@@ -26,8 +26,12 @@ ROOT = Path(__file__).resolve().parent
 FONTS = ROOT / "fonts"
 LOGO = ROOT.parent / "logo" / "xezer-sahil-emlak-horizontal-transparent.png"
 FPS = 30
-TR = 0.24  # transition length, seconds
-END_DUR = 3.4
+TR = 0.30  # transition length, seconds
+# Pacing (user rule: slow enough that every label can be read before the next cut).
+# Listing durations are minimums-adjusted here, so all listings get the same pace.
+HOOK_MIN = 3.2   # hook shot: title, sub line and pill
+SHOT_MIN = 2.0   # every labelled shot
+END_DUR = 4.8    # end card: price, details, phone
 END_LOOP = 0.4  # final crossfade back into frame 0 for a seamless loop
 
 # ---- brand ----
@@ -82,7 +86,8 @@ class Renderer:
         self.tall = H / W > 1.5
         self.u = H / 1920  # vertical layout unit
         self.fs = 1.0 if self.tall else 0.86  # font scale
-        self.shots = [tuple(s[:5]) for s in LISTING["shots"]]
+        self.shots = [(s[0], max(s[1], HOOK_MIN if i == 0 else SHOT_MIN)) + tuple(s[2:5])
+                      for i, s in enumerate(LISTING["shots"])]
         self.focus = [s[5] if len(s) > 5 else None for s in LISTING["shots"]]
         self.photos = {s[0]: load_photo(s[0]) for s in self.shots}
         self.build_overlays()
