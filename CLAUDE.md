@@ -38,6 +38,10 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    köhnə evləri/prototipləri yenidən render edib təkrar göndərmə. Bunu yalnız istifadəçi özü
    desə et.
 
+7. **Söhbət adları sıra nömrəli (QANUN):** hər YENİ söhbətin əvvəlində `session-counter.txt`-dəki
+   rəqəmi 1 artır, söhbətin adını `set_session_title` ilə "FA <rəqəm>" qoy (məs. "FA 2"),
+   faylı commit + push et. Söhbət adı heç vaxt sadəcə "FA" olmasın. "FA 1" = ilk söhbət.
+
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 
 Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
