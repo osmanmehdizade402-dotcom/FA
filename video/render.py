@@ -22,6 +22,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont
 
+from straighten import straighten
+
 ROOT = Path(__file__).resolve().parent
 FONTS = ROOT / "fonts"
 LOGO = ROOT.parent / "logo" / "xezer-sahil-emlak-horizontal-transparent.png"
@@ -78,7 +80,7 @@ def load_photo(key):
     for ext in (".jpg", ".jpeg", ".png", ".webp"):
         p = PHOTOS / f"{key}{ext}"
         if p.exists():
-            return brighten(Image.open(p).convert("RGB"))
+            return brighten(straighten(Image.open(p).convert("RGB"))[0])
     raise FileNotFoundError(PHOTOS / key)
 
 

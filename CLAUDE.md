@@ -61,7 +61,11 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
   "Ətraflı məlumat və baxış üçün zəng et", alt sətir böyük ağ nömrə (`010-310-03-02`, defislə).
   Sonrakı kadrlarda nömrə qutusu YOXDUR — orada yalnız loqo və kadrın yazısı (Hovuz, Mətbəx...) olur.
   Nömrə yenə son kadrda görünür.
-- **Şəkillər işıqlandırılır:** hər şəkil öz parlaqlığına görə avtomatik (render.py `brighten`).
+- **Şəkillər düzəldilir (QANUN):** azacıq əyri şəkillər avtomatik düzəldilir (`video/straighten.py`:
+  şaquli xətlərə — divar, qapı, sütun — görə 0.25°–4° əyilmə düzəldilir, kənarlar kəsilir).
+  OpenCV lazımdır: `pip install opencv-python-headless`.
+- **Şəkillər işıqlandırılır (QANUN):** qaranlıq tonlar hər şəklin öz parlaqlığına görə avtomatik
+  işıqlandırılır (render.py `brighten`) — əvvəl düzəltmə, sonra işıqlandırma.
 - **Sonluq:** yaşıl fon, loqo, "SATILIR", qiymət + ₼, 3 sətir xüsusiyyət, qızılı telefon düyməsi;
   sonda girişə keçid (loop).
 - **Temp (QANUN):** yavaş — hər yazı növbəti keçidə qədər rahat oxunmalıdır. render.py-də minimum:
