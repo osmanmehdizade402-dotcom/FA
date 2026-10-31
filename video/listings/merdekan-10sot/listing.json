@@ -109,102 +109,95 @@
    "punch"
   ],
   [
-   "stairs2",
-   2.0,
-   "left",
-   "Pilləkən",
-   "whip"
-  ],
-  [
    "hall2",
    2.0,
    "out",
    "2-ci mərtəbə holu",
-   "punch"
+   "whip"
   ],
   [
    "living",
    2.0,
    "right",
    "Qonaq otağı",
-   "whip"
+   "punch"
   ],
   [
    "bed1",
    2.0,
    "in",
    "Yataq otağı",
-   "punch"
+   "whip"
   ],
   [
    "bed2",
    2.0,
    "up",
    "Yataq otağı",
-   "whip"
+   "punch"
   ],
   [
    "bed3",
    2.0,
    "in",
    "Yataq otağı",
-   "punch"
+   "whip"
   ],
   [
    "bed4",
    2.0,
    "left",
    "Yataq otağı",
-   "whip"
+   "punch"
   ],
   [
    "bed5",
    2.0,
    "out",
    "Yataq otağı",
-   "punch"
+   "whip"
   ],
   [
    "closet1",
    2.0,
    "right",
    "Qarderob",
-   "whip"
+   "punch"
   ],
   [
    "closet2",
    2.0,
    "in",
    "Qarderob",
-   "punch"
+   "whip"
   ],
   [
    "bath1",
    2.0,
    "up",
    "Sanuzel",
-   "whip"
+   "punch"
   ],
   [
    "bath2",
    2.0,
    "in",
    "Sanuzel",
-   "punch"
+   "whip"
   ],
   [
    "bath3",
    2.0,
    "left",
    "Sanuzel",
-   "whip"
+   "punch"
   ],
   [
    "bath4",
    2.0,
    "out",
    "Sanuzel",
-   "punch"
+   "whip"
   ]
  ]
 }
