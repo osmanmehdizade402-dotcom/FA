@@ -1,37 +1,37 @@
-# Paylaşım mətni — Mərdəkan, 5 sot, hovuzlu villa (225 m²)
+# Paylaşım mətni — Mərdəkan, 6 sot, hovuzlu villa (220 m²)
 
 ## TikTok / Instagram Reels / Facebook
 
-Sütunlu fasad, isti hovuz, palma ağacları… Bu Mərdəkandır, xarici kurort yox 🌴✨
-Yeni tikilmiş, tam əşyalı birmərtəbəli villa sizi gözləyir.
+Şlaqbaumla girişli qapalı şəhərcikdə, sütunlu fasadı və daşma hovuzu olan villa 🏛️💎
+Mərdəkanda, Bravo marketə yaxın, əsas yoldan cəmi 150 m.
 
 🏠 Ev haqqında:
-• 225 m², 5 sot torpaq üzərində
-• Geniş hol, qonaq otağı, mətbəx
-• 4 yataq otağı + ayrıca qarderob otağı
-• 2+1 sanuzel
-• İçi tam əşyalıdır
+• 220 m², 6 sot torpaq üzərində
+• 5 otaq, 3 hamam otağı + həyətdə ayrıca sanuzel
+• Bütün otaqlarda isti döşəmə, müasir isitmə sistemi
+• Pultla idarə olunan giriş qapısı
 
-🌿 Həyətdə:
-filterli isti daşma hovuz, yay-qış mətbəxi, söhbətgah, açıq veranda, manqal, dekorativ ağaclar və güllər
+✨ İçəridə:
+tam təchiz olunmuş mətbəx mebeli, bahalı aksesuarlı hamamlar, zərif çilçıraqlar, dekorativ güzgülər və keyfiyyətli pərdələr
 
-🔐 Rahatlıq:
-nəzarət sistemi • qaz, su, işıq daimi • qapıya qədər asfalt yol
-📄 Kupça var • ipotekaya uyğundur
-🔥 Müştərilərimizə xüsusi endirim
+🌴 Həyətdə:
+daşma hovuz, şüşəli besedka (mətbəx mebeli ilə), terras, manqal, landşaft dizaynı və üstü bağlı parking
 
-💰 Başlanğıc qiymət: 545 000 ₼
-📞 Baxış üçün: 010-310-03-02 (zəng / WhatsApp)
+💧 İçməli su, qaz, işıq daimi
+📄 Çıxarış var • ipotekaya uyğundur
+🔥 Bizə müraciət edənlərə xüsusi endirim
 
-Bu villada ilk nə edərdiniz: hovuza girmək, yoxsa manqal qurmaq? 👇
+📞 Qiymət və baxış üçün: 010-310-03-02 (zəng / WhatsApp)
 
-#mərdəkan #villa #hovuzluev #həyətevi #yenitikili #əşyalıev #satılırev #ipotekaylaev #bakıəmlak #xəzərsahiləmlak
+Qapalı şəhərcikdə yaşamaq sizin üçün vacibdirmi? Şərhdə yazın 👇
+
+#mərdəkan #villa #hovuzluev #həyətevi #qapalışəhərcik #satılırev #ipotekaylaev #bakıəmlak #bakuhomes #xəzərsahiləmlak
 
 ## Instagram post (4:5) — qısa variant
 
-Mərdəkanda tam əşyalı, isti hovuzlu villa 🏡
-5 sot • 225 m² • 4 yataq otağı + qonaq otağı • 3 sanuzel
-Yay-qış mətbəxi • söhbətgah • manqal • kupça, ipotekaya uyğundur
-💰 545 000 ₼-dən | 📞 010-310-03-02
+Mərdəkanda qapalı şəhərcikdə hovuzlu villa 🏡
+6 sot • 220 m² • 5 otaq • 3 hamam • isti döşəmə
+Daşma hovuz • şüşəli besedka • üstü bağlı parking • çıxarış, ipotekaya uyğundur
+📞 010-310-03-02
 
 #mərdəkan #villa #hovuzluev #bakıəmlak #xəzərsahiləmlak
