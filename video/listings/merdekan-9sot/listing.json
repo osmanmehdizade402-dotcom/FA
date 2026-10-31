@@ -1,0 +1,153 @@
+{
+ "slug": "merdekan-9sot",
+ "hook": {
+  "title": [
+   "Modern",
+   "villa"
+  ],
+  "sub": "Mərdəkan  •  9 sot  •  5 otaq",
+  "pill": "ƏTRAFLI SONDA  ↓"
+ },
+ "price": null,
+ "details": [
+  "Mərdəkan  •  9 sot  •  200 m²",
+  "5 otaq  •  5 sanuzel  •  Tam əşyalı",
+  "Hovuz  •  Şüşəli besedka  •  Çıxarış"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_pool",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "left",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "garden",
+   2.0,
+   "out",
+   "Landşaft həyət",
+   "punch"
+  ],
+  [
+   "pool",
+   2.0,
+   "right",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "yard",
+   2.0,
+   "in",
+   "Həyət",
+   "punch"
+  ],
+  [
+   "besedka",
+   2.0,
+   "up",
+   "Şüşəli besedka",
+   "whip"
+  ],
+  [
+   "besedka_kitchen",
+   2.0,
+   "in",
+   "Besedka mətbəxi",
+   "punch"
+  ],
+  [
+   "hall",
+   2.0,
+   "left",
+   "Hol",
+   "flash"
+  ],
+  [
+   "living",
+   2.0,
+   "out",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "living2",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "corridor",
+   2.0,
+   "in",
+   "Dəhliz",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "kitchen2",
+   2.0,
+   "in",
+   "Mətbəx",
+   "punch"
+  ],
+  [
+   "bed1",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed3",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bath1",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ],
+  [
+   "bath2",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath3",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}

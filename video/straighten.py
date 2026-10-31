@@ -112,7 +112,24 @@ def _x_at(line, y):
     return -(b * y + c) / a
 
 
+def _lean(im):
+    """Length-weighted mean |lean| (deg) of near-vertical segments."""
+    segs, _ = _segments(im)
+    if not segs:
+        return 0.0
+    l = [abs(math.degrees(math.atan2(s[2] - s[0], abs(s[3] - s[1]) + 1e-9))) for s in segs]
+    return float(np.average(l, weights=[s[4] for s in segs]))
+
+
 def straighten(im):
+    """Perspective-correct, but keep the original if the result is not clearly straighter."""
+    out, shift = _straighten(im)
+    if shift and _lean(out) > _lean(im) - 0.1:
+        return im, 0.0
+    return out, shift
+
+
+def _straighten(im):
     """Returns (corrected image, max corner shift in degrees-equivalent for logging)."""
     v = vanishing_point(im)
     if v is None:
