@@ -1,0 +1,34 @@
+{
+  "slug": "merdekan-6sot-400m",
+  "hook": {
+    "title": ["Lüks", "villa"],
+    "sub": "Mərdəkan  •  6 sot  •  400 m²",
+    "pill": "QİYMƏTİ SONDA  ↓"
+  },
+  "price": "770 000",
+  "details": [
+    "Mərdəkan  •  6 sot  •  400 m²",
+    "5 yataq otağı  •  6 sanuzel  •  2 mərtəbə",
+    "İsti hovuz  •  Yay-qış mətbəxi  •  Kupça"
+  ],
+  "phone": "010-310-03-02",
+  "music": "spa",
+  "shots": [
+    ["hook_pool", 3.2, "in_slow", null, null],
+    ["pool", 2.0, "in", "İsti hovuz", "whip"],
+    ["veranda", 2.0, "out", "Açıq veranda", "punch"],
+    ["facade", 2.0, "up", "Fasad", "whip"],
+    ["yard", 2.0, "right", "Həyət", "punch"],
+    ["summer_kitchen", 2.0, "in", "Yay-qış mətbəxi", "whip"],
+    ["entry_hall", 2.0, "in", "Giriş holu", "flash"],
+    ["stairs", 2.0, "up", "Pilləkən", "whip"],
+    ["living", 2.0, "in", "Qonaq otağı", "punch"],
+    ["kitchen", 2.0, "out", "Mətbəx", "whip"],
+    ["bed1", 2.0, "in", "Yataq otağı", "punch"],
+    ["bed2", 2.0, "right", "Yataq otağı", "whip"],
+    ["bed3", 2.0, "in", "Yataq otağı", "punch"],
+    ["bed4", 2.0, "left", "Yataq otağı", "whip"],
+    ["bed5", 2.0, "in", "Yataq otağı", "punch"],
+    ["bath", 2.0, "in_fast", "Sanuzel", "whip"]
+  ]
+}
