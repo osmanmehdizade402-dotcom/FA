@@ -1,0 +1,33 @@
+{
+  "slug": "merdekan-16sot",
+  "hook": {
+    "title": ["Klassik", "villa"],
+    "sub": "Mərdəkan  •  16 sot  •  6 otaq",
+    "pill": "QİYMƏTİ SONDA  ↓"
+  },
+  "price": "1 400 000",
+  "details": [
+    "Mərdəkan  •  16 sot  •  360 m²",
+    "5 yataq otağı  •  6 sanuzel  •  2 mərtəbə",
+    "Hovuz  •  Qış mətbəxi  •  Çıxarış"
+  ],
+  "phone": "010-310-03-02",
+  "music": "spa",
+  "shots": [
+    ["hook_facade", 3.2, "in_slow", null, null],
+    ["pool", 2.0, "in", "Filterli hovuz", "whip"],
+    ["veranda", 2.0, "in", "Veranda", "punch"],
+    ["garden", 2.0, "right", "Landşaft həyət", "whip"],
+    ["winter_kitchen", 2.0, "out", "Qış mətbəxi", "punch"],
+    ["hall", 2.0, "in", "Geniş hol", "flash"],
+    ["living", 2.0, "in", "Qonaq otağı", "whip"],
+    ["kitchen", 2.0, "out", "Mətbəx", "punch"],
+    ["stairs", 2.0, "up", "Pilləkən", "whip"],
+    ["bed1", 2.0, "in", "Yataq otağı", "punch"],
+    ["bed2", 2.0, "right", "Yataq otağı", "whip"],
+    ["bed3", 2.0, "in", "Yataq otağı", "punch"],
+    ["bed4", 2.0, "left", "Yataq otağı", "whip"],
+    ["bath1", 2.0, "out", "Sanuzel", "punch"],
+    ["bath2", 2.0, "in_fast", "Sanuzel", "whip"]
+  ]
+}
