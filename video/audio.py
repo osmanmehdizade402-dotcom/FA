@@ -1,23 +1,35 @@
 """Original soundtrack generator — no samples, no third-party music, so no copyright issues.
 
-Everything is synthesised here from sine waves and noise: a warm "luxury lounge" groove
-(FM electric piano, soft pad, sub bass, light drums) whose bars land exactly on the video's
-cuts, plus a sound effect for every transition (whoosh for whip, low boom for punch,
-shimmer for flash). The intro and the end card are calm so the loop back to the hook is smooth.
+Style: bright, upbeat "tropical house" in F major (I–V–vi–IV), the kind of feel-good groove
+used for luxury real-estate reels. Everything is synthesised here: a plucked-string lead
+(Karplus–Strong) carrying a catchy 4-bar hook with a dotted-eighth echo, warm piano chords,
+a pumping pad, off-beat bass and soft house drums. Each video shot is exactly one bar, so the
+chord changes and the kick land on every cut — no whoosh/transition sound effects (user rule).
+The intro is soft and builds into the first cut; the end card resolves and fades for the loop.
 """
+import wave
+
 import numpy as np
 
 SR = 44100
-rng = np.random.default_rng(7)
+rng = np.random.default_rng(11)
 
-# A minor colour: Am9 – Fmaj9 – Cmaj7 – G(add9), one chord per shot
-CHORDS = [
-    [57, 60, 64, 67, 71],   # Am9
-    [53, 57, 60, 64, 67],   # Fmaj9
-    [48, 55, 59, 64, 67],   # Cmaj7
-    [55, 59, 62, 67, 69],   # Gadd9
+# F – C – Dm – Bb
+CHORDS = [[65, 69, 72, 77], [64, 67, 72, 76], [62, 65, 69, 74], [62, 65, 70, 74]]
+ROOTS = [41, 36, 38, 34]
+# catchy hook, 8 eighth-notes per bar (None = rest); answers itself every 4 bars
+HOOK = [
+    [69, None, 72, None, 74, 72, 69, None],
+    [67, None, 72, None, 76, 74, 72, None],
+    [77, None, 76, 74, None, 72, 69, None],
+    [74, None, 72, None, 69, 67, 65, None],
 ]
-BASS = [45, 41, 36, 43]
+HOOK_B = [  # higher, more excited answer used in the last cycle
+    [81, None, 79, 77, None, 76, 77, None],
+    [79, None, 76, None, 72, 74, 76, None],
+    [77, None, 81, None, 79, 77, 74, None],
+    [74, 76, 77, None, 72, None, 77, None],
+]
 
 
 def hz(m):
@@ -29,29 +41,31 @@ def t_axis(dur):
 
 
 def place(buf, sig, at, gain=1.0):
-    i = int(at * SR)
+    i = int(round(at * SR))
+    if i < 0:
+        sig, i = sig[-i:], 0
     if i >= len(buf):
         return
     n = min(len(sig), len(buf) - i)
     buf[i:i + n] += sig[:n] * gain
 
 
-def fft_filter(x, lo=None, hi=None):
-    """Smooth band filter in the frequency domain (lo = highpass edge, hi = lowpass edge)."""
+def fft_filter(x, lo=None, hi=None, order=4):
     X = np.fft.rfft(x)
     f = np.fft.rfftfreq(len(x), 1 / SR)
     g = np.ones_like(f)
     if hi:
-        g *= 1 / (1 + (f / hi) ** 4)
+        g *= 1 / (1 + (f / hi) ** order)
     if lo:
-        g *= 1 / (1 + (lo / np.maximum(f, 1e-3)) ** 4)
+        g *= 1 / (1 + (lo / np.maximum(f, 1e-3)) ** order)
     return np.fft.irfft(X * g, len(x))
 
 
-def reverb(x, secs=2.2, mix=0.28):
+def reverb(x, secs=2.0, mix=0.22, seed=0):
+    r = np.random.default_rng(seed)
     n = int(secs * SR)
-    ir = rng.standard_normal(n) * np.exp(-np.arange(n) / SR * 3.2)
-    ir = fft_filter(ir, lo=200, hi=6000)
+    ir = r.standard_normal(n) * np.exp(-np.arange(n) / SR * 3.5)
+    ir = fft_filter(ir, lo=250, hi=7000)
     ir /= np.sqrt(np.sum(ir ** 2))
     L = len(x) + n
     wet = np.fft.irfft(np.fft.rfft(x, L) * np.fft.rfft(ir, L), L)[:len(x)]
@@ -59,95 +73,85 @@ def reverb(x, secs=2.2, mix=0.28):
 
 
 # ---------------- instruments ----------------
-def epiano(m, dur, vel=1.0):
+def pluck(m, dur, vel=1.0, bright=0.5):
+    """Karplus–Strong plucked string: bright attack that mellows naturally."""
+    f = hz(m)
+    p = int(SR / f)
+    n = int(dur * SR)
+    buf = fft_filter(rng.uniform(-1, 1, p * 8), hi=2000 + 6000 * bright)[:p]
+    out = np.empty(n)
+    out[:p] = buf
+    decay = 0.996
+    for i in range(p, n):  # tight loop, short notes only
+        out[i] = decay * 0.5 * (out[i - p] + out[i - p + 1 if i - p + 1 < i else i - p])
+    t = np.arange(n) / SR
+    out *= np.clip((dur - t) / 0.03, 0, 1)
+    return out * vel * 0.5
+
+
+def piano(m, dur, vel=1.0):
     t = t_axis(dur)
     f = hz(m)
-    idx = 1.6 * np.exp(-t * 5)
-    s = np.sin(2 * np.pi * f * t + idx * np.sin(2 * np.pi * f * t))
-    s += 0.25 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t * 7)
-    env = np.minimum(t / 0.004, 1) * np.exp(-t * 1.6)
-    rel = np.clip((dur - t) / 0.08, 0, 1)
-    return s * env * rel * vel * 0.22
+    s = (np.sin(2 * np.pi * f * t) + 0.45 * np.sin(2 * np.pi * 2 * f * t) * np.exp(-t * 3)
+         + 0.2 * np.sin(2 * np.pi * 3 * f * t) * np.exp(-t * 6))
+    env = np.minimum(t / 0.003, 1) * np.exp(-t * 1.3) * np.clip((dur - t) / 0.1, 0, 1)
+    return s * env * vel * 0.12
 
 
 def pad(ms, dur):
     t = t_axis(dur)
     s = np.zeros_like(t)
     for m in ms:
-        for d in (-0.07, 0.0, 0.07):
-            f = hz(m + d)
-            s += np.sin(2 * np.pi * f * t + rng.uniform(0, 6.28))
-            s += 0.3 * np.sin(2 * np.pi * 2 * f * t)
-    env = np.minimum(t / 0.6, 1) * np.clip((dur - t) / 0.6, 0, 1)
-    return fft_filter(s * env, hi=1800) * 0.018
+        for d in (-0.08, 0.0, 0.08):
+            ph = 2 * np.pi * hz(m + d) * t + rng.uniform(0, 6.28)
+            s += 2 / np.pi * np.arctan(np.tan(ph / 2))  # saw-ish
+    env = np.minimum(t / 0.15, 1) * np.clip((dur - t) / 0.2, 0, 1)
+    return fft_filter(s * env, hi=1400, order=2) * 0.012
 
 
-def bass(m, dur):
+def sub_bass(m, dur):
     t = t_axis(dur)
     f = hz(m)
-    s = np.sin(2 * np.pi * f * t) + 0.2 * np.sin(2 * np.pi * 2 * f * t)
-    env = np.minimum(t / 0.01, 1) * np.exp(-t * 1.2) * np.clip((dur - t) / 0.05, 0, 1)
-    return np.tanh(1.5 * s * env) * 0.30
+    s = np.sin(2 * np.pi * f * t) + 0.25 * np.sin(2 * np.pi * 2 * f * t)
+    env = np.minimum(t / 0.008, 1) * np.exp(-t * 4) * np.clip((dur - t) / 0.02, 0, 1)
+    return np.tanh(2 * s * env) * 0.32
 
 
 def kick():
-    t = t_axis(0.45)
-    f = 45 + 110 * np.exp(-t * 28)
-    ph = 2 * np.pi * np.cumsum(f) / SR
-    return np.sin(ph) * np.exp(-t * 7) * 0.75
+    t = t_axis(0.35)
+    f = 48 + 120 * np.exp(-t * 35)
+    return np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 9) * 0.7
 
 
 def clap():
-    t = t_axis(0.25)
-    s = fft_filter(rng.standard_normal(len(t)), lo=900, hi=5000)
-    return s * np.exp(-t * 22) * 0.16
+    t = t_axis(0.3)
+    n = fft_filter(rng.standard_normal(len(t)), lo=1000, hi=6000)
+    env = sum(np.exp(-np.maximum(t - d, 0) * 60) * (t >= d) for d in (0, 0.011, 0.022)) / 3
+    env += np.exp(-t * 14) * 0.5
+    return n * env * 0.22
 
 
-def hat(open_=False):
-    t = t_axis(0.18 if open_ else 0.06)
-    s = fft_filter(rng.standard_normal(len(t)), lo=7000)
-    return s * np.exp(-t * (18 if open_ else 70)) * 0.09
+def shaker(acc=1.0):
+    t = t_axis(0.07)
+    n = fft_filter(rng.standard_normal(len(t)), lo=6000)
+    return n * np.minimum(t / 0.01, 1) * np.exp(-t * 55) * 0.06 * acc
 
 
-def whoosh(dur=0.55):
-    """Rising filtered noise that peaks at the end (place so the end hits the cut)."""
-    t = t_axis(dur)
-    n = rng.standard_normal(len(t))
-    out = np.zeros_like(t)
-    seg = 2048
-    for i in range(0, len(t), seg):  # sweep the band upward
-        k = i / len(t)
-        out[i:i + seg] = fft_filter(n[i:i + seg], lo=300 + 2500 * k, hi=1200 + 9000 * k)
-    env = (t / dur) ** 2.2
-    return out * env * 0.55
+def open_hat():
+    t = t_axis(0.22)
+    return fft_filter(rng.standard_normal(len(t)), lo=8000) * np.exp(-t * 16) * 0.07
 
 
-def boom():
-    t = t_axis(1.2)
-    f = 38 + 60 * np.exp(-t * 9)
-    s = np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-t * 3.2)
-    s += fft_filter(rng.standard_normal(len(t)), hi=900) * np.exp(-t * 16) * 0.35
-    return s * 0.55
-
-
-def shimmer():
-    t = t_axis(1.0)
-    s = sum(np.sin(2 * np.pi * hz(m) * t) for m in (88, 91, 95, 100))
-    s += fft_filter(rng.standard_normal(len(t)), lo=6000) * 0.4
-    return s * np.minimum(t / 0.02, 1) * np.exp(-t * 3.5) * 0.06
-
-
-def riser(dur):
-    t = t_axis(dur)
-    f = 300 * 2 ** (2.5 * t / dur)
-    s = np.sin(2 * np.pi * np.cumsum(f) / SR) * 0.2
-    s += fft_filter(rng.standard_normal(len(t)), lo=2000) * 0.5
-    return s * (t / dur) ** 2 * 0.18
+def snare_roll(dur):
+    out = np.zeros(int(dur * SR))
+    k = 16
+    for j in range(k):
+        place(out, clap(), dur * j / k, 0.25 + 0.75 * j / k)
+    return out
 
 
 # ---------------- arrangement ----------------
 def soundtrack(shots, tr, end_dur, out_wav):
-    """shots: [(key, dur, motion, label, transition), ...] after pacing; writes a 16-bit wav."""
     starts, acc = [], 0.0
     for s in shots:
         starts.append(acc)
@@ -155,79 +159,85 @@ def soundtrack(shots, tr, end_dur, out_wav):
     end_start = acc
     total = end_start + end_dur
     n = int(total * SR) + 1
-    music = np.zeros(n)
+    lead = np.zeros(n)
+    keys = np.zeros(n)
+    padb = np.zeros(n)
+    bassb = np.zeros(n)
     drums = np.zeros(n)
-    fx = np.zeros(n)
-    duck = np.ones(n)
+    pump = np.ones(n)
+    beat = shots[1][1] / 4 if len(shots) > 1 else 0.5
+    e8 = beat / 2
 
-    # intro (hook shot): pad + slow e-piano arpeggio + riser into the first cut
+    # ---- intro (hook shot): soft piano chords, filtered pad, melody pickup into the drop
     hook = shots[0][1]
-    place(music, pad(CHORDS[0], hook + 0.6), 0)
-    arp = [57, 64, 67, 71, 72, 71, 67, 64]
-    step = hook / 8
-    for i, m in enumerate(arp):
-        place(music, epiano(m + 12, step * 2.5, 0.8), i * step)
-    place(fx, riser(1.0), hook - 1.0)
+    place(padb, pad(CHORDS[0], hook + 0.3), 0, 0.7)
+    for j, m in enumerate([65, 69, 72, 77, 72, 69]):
+        place(keys, piano(m, 1.8, 0.8), j * hook / 7)
+    for j, m in enumerate([72, 74, 76]):  # "C–D–E" pickup lands on the first cut
+        place(lead, pluck(m, 0.5, 0.8), hook - (3 - j) * e8)
+    place(drums, snare_roll(1.0), hook - 1.0, 0.7)
 
-    # groove: one bar per shot, beats spread over the shot length
-    for i in range(1, len(shots)):
-        t0, d = starts[i], shots[i][1]
-        beat = d / 4
-        ch = CHORDS[(i - 1) % 4]
-        place(music, pad(ch, d + 0.4), t0)
-        place(music, bass(BASS[(i - 1) % 4], beat * 2.6), t0)
-        place(music, bass(BASS[(i - 1) % 4] + 12 if i % 2 else BASS[(i - 1) % 4], beat * 1.2), t0 + beat * 2.5)
-        # e-piano: chord stab on 1, syncopated stabs on the "and" of 2 and on 4
-        for at, v in ((0, 1.0), (beat * 1.5, 0.6), (beat * 3, 0.7)):
-            for m in ch[1:]:
-                place(music, epiano(m + 12, beat * 1.4, v * 0.55), t0 + at)
-        # top melody note per bar, gently moving
-        mel = [76, 72, 71, 74][(i - 1) % 4]
-        place(music, epiano(mel + 12, beat * 2, 0.7), t0 + beat * 2)
-        # drums (last groove bar builds with extra hats)
-        for b in range(4):
-            bt = t0 + b * beat
-            if b in (0, 2):
-                place(drums, kick(), bt)
-                k = int(bt * SR)
-                m_ = min(n - k, int(0.25 * SR))
-                duck[k:k + m_] = np.minimum(duck[k:k + m_], 0.55 + 0.45 * np.linspace(0, 1, m_))
-            if b in (1, 3):
+    # ---- groove: one bar per shot
+    nb = len(shots) - 1
+    for b in range(nb):
+        i = b + 1
+        t0 = starts[i]
+        c = b % 4
+        full = b >= 4
+        place(padb, pad(CHORDS[c], beat * 4 + 0.2), t0)
+        for st, v in ((0, 1.0), (1.5, 0.6), (3, 0.75)):  # piano rhythm
+            for m in CHORDS[c]:
+                place(keys, piano(m, beat * 1.4, v), t0 + st * beat)
+        for k in range(4):  # off-beat house bass
+            place(bassb, sub_bass(ROOTS[c] + (12 if k == 3 and full else 0), e8 * 0.95), t0 + k * beat + e8)
+        phrase = HOOK_B[c] if b >= 8 else HOOK[c]
+        for j, m in enumerate(phrase):
+            if m is not None:
+                place(lead, pluck(m, e8 * 2.2, 0.95 if j % 2 == 0 else 0.75, 0.6 if b < 8 else 0.8), t0 + j * e8)
+        for k in range(4):
+            bt = t0 + k * beat
+            place(drums, kick(), bt, 0.8 if not full else 1.0)
+            ks = int(bt * SR)
+            m_ = min(n - ks, int(beat * SR))
+            pump[ks:ks + m_] = np.minimum(pump[ks:ks + m_], 0.35 + 0.65 * np.linspace(0, 1, m_) ** 0.6)
+            if full and k in (1, 3):
                 place(drums, clap(), bt)
-            place(drums, hat(), bt + beat / 2)
-            place(drums, hat(open_=(b == 3)), bt + beat / 2 + (beat / 4 if i == len(shots) - 1 else 0))
+            place(drums, open_hat(), bt + e8, 0.6 if full else 0.35)
+            for s16 in range(4):
+                place(drums, shaker(1.0 if s16 % 2 else 0.5), bt + s16 * beat / 4)
+        if b == nb - 1:  # fill into the end card
+            place(drums, snare_roll(beat * 2), t0 + beat * 2, 0.8)
 
-    # transition sound effects, centred on the visual transition
-    for i in range(1, len(shots)):
-        t0, kind = starts[i], shots[i][4]
-        if kind == "whip":
-            place(fx, whoosh(0.45), t0 + tr * 0.5 - 0.45)
-        elif kind == "punch":
-            place(fx, boom(), t0)
-        elif kind == "flash":
-            place(fx, shimmer(), t0)
-            place(fx, whoosh(0.35), t0 + tr * 0.5 - 0.35, 0.6)
+    # ---- end card: big resolving F chord, hook tail, gentle fade for the loop
+    place(drums, kick(), end_start)
+    place(padb, pad(CHORDS[0], end_dur), end_start, 1.2)
+    place(bassb, sub_bass(ROOTS[0], 1.5), end_start)
+    for m in CHORDS[0] + [81]:
+        place(keys, piano(m, end_dur, 1.0), end_start)
+    for j, m in enumerate([77, 76, 72, 69, 72, 77]):
+        place(lead, pluck(m, 0.9, 0.8 - j * 0.08), end_start + 0.2 + j * beat)
 
-    # end card: flash into it, drums drop, resolving chord + piano, fade for a clean loop
-    place(fx, whoosh(0.5), end_start + tr * 0.5 - 0.5, 0.8)
-    place(fx, shimmer(), end_start)
-    place(fx, boom(), end_start, 0.7)
-    place(music, pad(CHORDS[0], end_dur), end_start)
-    place(music, bass(BASS[0], 2.4), end_start)
-    for j, m in enumerate([69, 72, 76, 79, 83]):
-        place(music, epiano(m + 12, 3.0, 0.7), end_start + 0.15 + j * 0.18)
-
-    mix = 1.5 * reverb(music * duck) + 0.6 * drums + reverb(fx, 1.4, 0.2)
-    fade = np.clip((total - np.arange(n) / SR) / 0.9, 0, 1)
-    fade *= np.clip(np.arange(n) / SR / 0.05, 0, 1)
-    mix = np.tanh(mix * fade * 1.2)
-    mix /= np.max(np.abs(mix)) / 0.89
-    stereo = np.stack([mix, np.roll(mix, int(0.012 * SR)) * 0.96 + mix * 0.04], axis=1)
-    pcm = (stereo * 32767).astype("<i2")
-    import wave
+    # ---- mix (stereo): lead with ping-pong dotted-eighth echo, pumping pad/bass
+    d = int(e8 * 1.5 * SR)
+    echo_l = np.zeros(n)
+    echo_r = np.zeros(n)
+    echo_l[d:] = lead[:-d] * 0.32
+    echo_r[2 * d:] = lead[:-2 * d] * 0.22
+    lead_l = reverb(lead + echo_l, 1.6, 0.25, 1)
+    lead_r = reverb(lead + echo_r, 1.6, 0.25, 2)
+    bed = reverb(keys * 0.9 + padb * pump, 2.2, 0.28, 3)
+    bass_m = bassb * pump
+    dr = reverb(drums, 0.8, 0.08, 4)
+    L = 1.15 * lead_l + bed + 0.75 * bass_m + 0.55 * dr
+    R = 1.15 * lead_r + np.roll(bed, int(0.009 * SR)) + 0.75 * bass_m + 0.55 * dr
+    tt = np.arange(n) / SR
+    fade = np.clip((total - tt) / 1.2, 0, 1) * np.clip(tt / 0.03, 0, 1)
+    st = np.stack([L, R], axis=1) * fade[:, None]
+    st = np.tanh(st * 1.3)
+    st /= np.max(np.abs(st)) / 0.9
     with wave.open(str(out_wav), "wb") as w:
         w.setnchannels(2)
         w.setsampwidth(2)
         w.setframerate(SR)
-        w.writeframes(pcm.tobytes())
+        w.writeframes((st * 32767).astype("<i2").tobytes())
     return out_wav
