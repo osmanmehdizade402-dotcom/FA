@@ -21,7 +21,7 @@ daşma hovuz, şüşəli besedka (mətbəx mebeli ilə), terras, manqal, landşa
 📄 Çıxarış var • ipotekaya uyğundur
 🔥 Bizə müraciət edənlərə xüsusi endirim
 
-💰 Qiymət: 650 000 ₼
+💰 Qiymət: 655 000 ₼
 
 📞 Baxış üçün: 010-310-03-02 (zəng / WhatsApp)
 
@@ -34,6 +34,6 @@ Qapalı şəhərcikdə yaşamaq sizin üçün vacibdirmi? Şərhdə yazın 👇
 Mərdəkanda qapalı şəhərcikdə hovuzlu villa 🏡
 6 sot • 220 m² • 5 otaq • 3 hamam • isti döşəmə
 Daşma hovuz • şüşəli besedka • üstü bağlı parking • çıxarış, ipotekaya uyğundur
-💰 650 000 ₼ | 📞 010-310-03-02
+💰 655 000 ₼ | 📞 010-310-03-02
 
 #mərdəkan #villa #hovuzluev #bakıəmlak #xəzərsahiləmlak
