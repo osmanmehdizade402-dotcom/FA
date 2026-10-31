@@ -504,6 +504,39 @@ def s10_future(out):
     s.render(out, rev=0.22, pump=s.pump(0.7))
 
 
+def s11_trend(out):
+    """Trend Chill-Pop — axıcı, yumşaq ritm, 'vokal' melodiya; ağır bas/kick yoxdur."""
+    s = Song(104)
+    prog = [(53, "maj7"), (57, "min7"), (50, "min7"), (46, "maj7")]  # F – Am – Dm – Bb
+    hook = [[81, 79, 77, None, 76, 77, 79, None],
+            [76, None, 74, 72, None, 74, 76, None],
+            [77, 76, 74, None, 72, 74, 69, None],
+            [70, 72, 74, None, 77, None, 76, 74]]
+    for bar in range(s.bars):
+        r, k = prog[bar % 4]
+        ct = chord_tones(r + 12, k)
+        s.put("pad", strings(ct, s.b * 4.3, 0.7, 0.5, 1600), s.at(bar, 0))
+        for pos in (0.5, 1.5, 2.5, 3.0, 3.5):  # soft off-beat chord plucks
+            for m in ct:
+                s.put("keys", pluck(m + 12, s.b * 0.5, 0.28, 0.5), s.at(bar, pos))
+        if bar >= 1:
+            s.put("bass", bass(r - 12, s.b * 1.7, 0.45, 0.7), s.at(bar, 0))
+            s.put("bass", bass(r - 12, s.b * 0.9, 0.35, 0.7), s.at(bar, 2.5))
+        if bar >= 2:
+            s.put("drums", kick(0.38, 58), s.at(bar, 0))
+            s.put("drums", kick(0.28, 58), s.at(bar, 2.5))
+            s.put("drums", snare(0.35, 420, 40), s.at(bar, 1))  # light rim click
+            s.put("drums", clap(0.45), s.at(bar, 3))
+            for q in range(8):
+                s.put("drums", hat(0.35 if q % 2 else 0.2), s.at(bar, q / 2 + 0.25))
+        if bar >= 2:
+            for j, m in enumerate(hook[bar % 4]):
+                if m is not None:
+                    s.put("lead", lead(m, s.b * 0.55, 0.85, 0.01), s.at(bar, j / 2))
+                    s.put("lead", lead(m - 12, s.b * 0.55, 0.25, 0.01), s.at(bar, j / 2))
+    s.render(out, rev=0.3, pump=s.pump(0.3))
+
+
 STYLES = [
     ("01-zerif-fortepiano", s01_piano),
     ("02-deep-house", s02_deep_house),
@@ -515,13 +548,14 @@ STYLES = [
     ("08-caz-lounge", s08_jazz),
     ("09-serq-motivi", s09_oriental),
     ("10-future-bass", s10_future),
+    ("11-trend-chill-pop", s11_trend),
 ]
 
 # short keys used by listing.json "music"
 STYLE_KEYS = [("piano", s01_piano), ("deephouse", s02_deep_house), ("lofi", s03_lofi),
               ("cinematic", s04_cinematic), ("acoustic", s05_acoustic), ("spa", s06_spa),
               ("inspire", s07_inspire), ("jazz", s08_jazz), ("oriental", s09_oriental),
-              ("future", s10_future)]
+              ("future", s10_future), ("trend", s11_trend)]
 
 if __name__ == "__main__":
     out = Path(sys.argv[1])
