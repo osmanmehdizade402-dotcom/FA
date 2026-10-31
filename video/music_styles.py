@@ -517,6 +517,12 @@ STYLES = [
     ("10-future-bass", s10_future),
 ]
 
+# short keys used by listing.json "music"
+STYLE_KEYS = [("piano", s01_piano), ("deephouse", s02_deep_house), ("lofi", s03_lofi),
+              ("cinematic", s04_cinematic), ("acoustic", s05_acoustic), ("spa", s06_spa),
+              ("inspire", s07_inspire), ("jazz", s08_jazz), ("oriental", s09_oriental),
+              ("future", s10_future)]
+
 if __name__ == "__main__":
     out = Path(sys.argv[1])
     out.mkdir(parents=True, exist_ok=True)
