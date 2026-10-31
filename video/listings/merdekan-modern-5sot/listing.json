@@ -1,7 +1,10 @@
 {
   "slug": "merdekan-modern-5sot",
   "hook": {
-    "title": ["Modern", "villa"],
+    "title": [
+      "Modern",
+      "villa"
+    ],
     "sub": "Mərdəkan  •  5 sot  •  5 otaq",
     "pill": "QİYMƏTİ SONDA  ↓"
   },
@@ -14,20 +17,124 @@
   "phone": "010-310-03-02",
   "music": "jazz",
   "shots": [
-    ["hook_yard", 3.2, "in_slow", null, null],
-    ["pool", 2.0, "in", "İsti hovuz", "whip"],
-    ["pool_stones", 2.0, "out", "Daşma hovuz", "punch"],
-    ["veranda", 2.0, "in", "Açıq veranda", "whip"],
-    ["sohbetgah", 2.0, "left", "Söhbətgah", "punch"],
-    ["yard", 2.0, "right", "Həyət", "whip"],
-    ["manqal", 2.0, "in", "Manqal", "punch"],
-    ["glass_kitchen", 2.0, "out", "Yay-qış mətbəxi", "whip"],
-    ["hall", 2.0, "up", "Hol", "flash"],
-    ["living", 2.0, "in", "Qonaq otağı", "whip"],
-    ["kitchen", 2.0, "out", "Mətbəx", "punch"],
-    ["bed1", 2.0, "in", "Yataq otağı", "whip"],
-    ["bed2", 2.0, "right", "Yataq otağı", "punch"],
-    ["closet", 2.0, "left", "Qarderob", "whip"],
-    ["bath", 2.0, "in_fast", "Sanuzel", "punch"]
+    [
+      "hook_yard",
+      3.2,
+      "in_slow",
+      null,
+      null
+    ],
+    [
+      "pool",
+      2.0,
+      "in",
+      "İsti hovuz",
+      "whip"
+    ],
+    [
+      "pool_stones",
+      2.0,
+      "out",
+      "Daşma hovuz",
+      "punch"
+    ],
+    [
+      "veranda",
+      2.0,
+      "in",
+      "Açıq veranda",
+      "whip"
+    ],
+    [
+      "sohbetgah",
+      2.0,
+      "left",
+      "Söhbətgah",
+      "punch"
+    ],
+    [
+      "yard",
+      2.0,
+      "right",
+      "Həyət",
+      "whip"
+    ],
+    [
+      "manqal",
+      2.0,
+      "in",
+      "Manqal",
+      "punch"
+    ],
+    [
+      "glass_kitchen",
+      2.0,
+      "out",
+      "Yay-qış mətbəxi",
+      "whip"
+    ],
+    [
+      "hall",
+      2.0,
+      "up",
+      "Hol",
+      "flash"
+    ],
+    [
+      "living",
+      2.0,
+      "in",
+      "Qonaq otağı",
+      "whip"
+    ],
+    [
+      "kitchen",
+      2.0,
+      "out",
+      "Mətbəx",
+      "punch"
+    ],
+    [
+      "bed1",
+      2.0,
+      "in",
+      "Yataq otağı",
+      "whip"
+    ],
+    [
+      "bed2",
+      2.0,
+      "right",
+      "Yataq otağı",
+      "punch"
+    ],
+    [
+      "bed3",
+      2.0,
+      "in",
+      "Yataq otağı",
+      "whip"
+    ],
+    [
+      "bed4",
+      2.0,
+      "left",
+      "Yataq otağı",
+      "punch"
+    ],
+    [
+      "closet",
+      2.0,
+      "left",
+      "Qarderob",
+      "whip"
+    ],
+    [
+      "bath",
+      2.0,
+      "in_fast",
+      "Sanuzel",
+      "punch"
+    ]
   ]
 }
