@@ -90,7 +90,12 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
   sonda girişə keçid (loop).
 - **Temp (QANUN):** yavaş — hər yazı növbəti keçidə qədər rahat oxunmalıdır. render.py-də minimum:
   giriş kadrı 3.2 san, hər yazılı kadr 2.0 san, son kadr 4.8 san, keçid 0.3 san. Bunları azaltma.
-  Video çox uzanırsa (>~35 san), kadrları sürətləndirmə — ən zəif/təkrar şəkilləri çıxar.
+  Kadrları sürətləndirmə.
+- **Bütün şəkillər istifadə olunur (QANUN):** istifadəçinin göndərdiyi HƏR şəkil videoya girir —
+  heç bir şəkli çıxarma, video nə qədər uzun olsa belə (bənzər şəkillər də qalır). Şəkilləri
+  məntiqi ardıcıllıqla düz: fasad → həyət/hovuz → giriş/hol → mətbəx → qonaq otağı → yataq otaqları →
+  qarderob → sanuzellər.
+- **Musiqi:** istifadəçi nömrə deyəndə `"music": "pro:NN"` (`video/music_pro_songs.py`, 1–20).
 - **Formatlar:** 9:16 (TikTok/Reels/Story) və 4:5 (Instagram post), 30fps, səssiz audio
   trek (trend səsi istifadəçi tətbiqdə əlavə edir).
 

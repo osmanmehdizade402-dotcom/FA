@@ -1,0 +1,210 @@
+{
+ "slug": "merdekan-10sot",
+ "hook": {
+  "title": [
+   "Premium",
+   "villa"
+  ],
+  "sub": "Mərdəkan  •  10 sot  •  6 otaq",
+  "pill": "QİYMƏTİ SONDA  ↓"
+ },
+ "price": "1 100 000",
+ "details": [
+  "Mərdəkan  •  10 sot  •  400 m²",
+  "5 yataq otağı  •  6 sanuzel  •  2 qarderob",
+  "Daşma hovuz  •  Yay mətbəxi  •  Kupça"
+ ],
+ "phone": "010-310-03-02",
+ "music": "pro:01",
+ "shots": [
+  [
+   "hook_facade",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade2",
+   2.0,
+   "left",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "driveway",
+   2.0,
+   "out",
+   "Həyət",
+   "punch"
+  ],
+  [
+   "side_garden",
+   2.0,
+   "right",
+   "Landşaft həyət",
+   "whip"
+  ],
+  [
+   "pool",
+   2.0,
+   "in",
+   "Daşma hovuz",
+   "punch"
+  ],
+  [
+   "pergola",
+   2.0,
+   "up",
+   "Söhbətgah",
+   "whip"
+  ],
+  [
+   "pergola_view",
+   2.0,
+   "in",
+   "Həyət",
+   "punch"
+  ],
+  [
+   "summer_glass",
+   2.0,
+   "left",
+   "Yay mətbəxi",
+   "whip"
+  ],
+  [
+   "summer_inside",
+   2.0,
+   "out",
+   "Yay mətbəxi + manqal",
+   "punch"
+  ],
+  [
+   "entry",
+   2.0,
+   "right",
+   "Giriş holu",
+   "flash"
+  ],
+  [
+   "hall",
+   2.0,
+   "in",
+   "Hol",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "stairs1",
+   2.0,
+   "in",
+   "Pilləkən",
+   "punch"
+  ],
+  [
+   "stairs2",
+   2.0,
+   "left",
+   "Pilləkən",
+   "whip"
+  ],
+  [
+   "hall2",
+   2.0,
+   "out",
+   "2-ci mərtəbə holu",
+   "punch"
+  ],
+  [
+   "living",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "up",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed4",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed5",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "closet1",
+   2.0,
+   "right",
+   "Qarderob",
+   "whip"
+  ],
+  [
+   "closet2",
+   2.0,
+   "in",
+   "Qarderob",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ],
+  [
+   "bath3",
+   2.0,
+   "left",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath4",
+   2.0,
+   "out",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
