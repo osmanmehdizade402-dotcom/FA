@@ -1,0 +1,32 @@
+{
+  "slug": "merdekan-6sot",
+  "hook": {
+    "title": ["Hovuzlu", "villa"],
+    "sub": "Mərdəkan  •  6 sot  •  6 otaq",
+    "pill": "ƏTRAFLI SONDA  ↓"
+  },
+  "price": null,
+  "details": [
+    "Mərdəkan  •  6 sot  •  450 m²",
+    "6 otaq  •  2 mərtəbə  •  İsti döşəmə",
+    "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+  ],
+  "phone": "010-310-03-02",
+  "shots": [
+    ["pool_facade", 3.2, "in_slow", null, null],
+    ["facade_front", 2.0, "in", "Fasad", "whip"],
+    ["pool", 2.0, "out", "Hovuz", "punch"],
+    ["yard", 2.0, "right", "Landşaft həyət", "whip"],
+    ["kitchen_house", 2.0, "in", "Yay-qış mətbəxi", "punch"],
+    ["terrace", 2.0, "left", "Terras", "whip"],
+    ["entry_hall", 2.0, "in", "Giriş holu", "flash"],
+    ["living", 2.0, "in", "Qonaq otağı", "whip"],
+    ["kitchen", 2.0, "out", "Mətbəx", "punch"],
+    ["stairs", 2.0, "up", "Pilləkən holu", "whip"],
+    ["hall2", 2.0, "in", "2-ci mərtəbə holu", "punch"],
+    ["bed1", 2.0, "in", "Yataq otağı", "whip"],
+    ["bed2", 2.0, "right", "Yataq otağı", "punch"],
+    ["bath1", 2.0, "out", "Sanuzel", "whip"],
+    ["bath2", 2.0, "in_fast", "Sanuzel", "punch"]
+  ]
+}
