@@ -442,6 +442,13 @@ class Renderer:
     def audio_input(self, out_dir):
         """Original synthesised soundtrack when the listing asks for music, else silence."""
         style = LISTING.get("music")
+        if isinstance(style, str) and style.startswith("pro:"):  # music_pro_songs.py, e.g. "pro:07"
+            import music_pro_songs
+            key = style.split(":", 1)[1].zfill(2)
+            mp3 = out_dir / f"soundtrack-pro{key}.mp3"
+            if not mp3.exists():
+                music_pro_songs.KEYS[key](mp3, sum(s[1] for s in self.shots) + END_DUR)
+            return ["-i", str(mp3)]
         if isinstance(style, str):  # one of the approved styles in music_styles.py, e.g. "lofi"
             import music_styles
             music_styles.DUR = sum(s[1] for s in self.shots) + END_DUR
