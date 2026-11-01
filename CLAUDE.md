@@ -22,11 +22,10 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    - Nömrə: istifadəçinin göndərdiyi elan mətnində başqa nömrə olsa belə HƏMİŞƏ öz nömrəmiz
      (`010-310-03-02`) — istifadəçi açıq desə dəyiş.
    - **Ən sonda HƏMİŞƏ son kadr şablonu:** `video/reference/approved-end-card.png` kimi — yaşıl fon,
-     loqo, "SATILIR", qiymət ₼, evin bütün məlumatları 3 sətirdə, qızılı düymədə nömrə
-     (`010 310 03 02`, boşluqla), "Zəng et • WhatsApp • DM yaz".
+     loqo, "SATILIR", evin bütün məlumatları 3 sətirdə, qızılı düymədə nömrə
+     (`010 310 03 02`, boşluqla), "Zəng et • WhatsApp • DM yaz". **Qiymət YAZILMIR** (bax 10-cu qanun).
    - Hər iki formatı (9:16 və 4:5) render et, örtük şəkilləri + paylaşım mətni/heşteqlərlə göndər.
-   - Qiymət verilməyibsə gözləmə: `"price": null` qoy (son kadrda "Qiymət üçün zəng edin",
-     girişdə "ƏTRAFLI SONDA ↓"), render et və qiyməti verərsə yenidən render edəcəyini de.
+   - Qiymət videoya heç vaxt yazılmır (10-cu qanun) — qiymət verilməsə də gözləmə, render et.
    - Şəkil az olanda bir şəkildən bir neçə kadr çıxar: kadrın 6-cı elementi `[fx, fy, zoom]`
      (məs. `[0.30, 0.58, 1.45]`) şəklin həmin hissəsinə yaxınlaşır — hər kadra öz yazısı.
    - Nömrə qutusunun üst yazısı HƏMİŞƏ "Ətraflı məlumat və baxış üçün zəng et" (render.py
@@ -59,7 +58,26 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    paylaşım təkrar görünməsin (cəlbedici giriş cümləsi, qruplaşdırılmış xüsusiyyətlər, şərhə çağırış).
    Şəkillər istifadəçinin özünə aiddir — onlar üçün müəllif hüququ xəbərdarlığı lazım deyil.
 
-## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
+10. **Yeni video qanunları (2026-11-01, istifadəçi təsdiqləyib — köhnə qaydalarla ziddiyyətdə BUNLAR keçərlidir):**
+   - **Hər evin dizaynı fərqli olur.** Heç bir ev videosu əvvəlkilərə bənzəməməlidir: giriş kadrının
+     kompozisiyası, yazıların yeri/düzülüşü, keçidlər, hərəkət, ilk saniyənin fikri hər evdə yenidir.
+     Dəyişməyən yalnız brend kimliyidir: loqo, rənglər, şriftlər, nömrə.
+   - **İlk saniyədə maraq (hook) — əvvəl məsləhət, sonra tətbiq.** Hər ev üçün ilk saniyədə maraq
+     yaradan fikir tap (sual, sürpriz, müqayisə, hərəkət). Render etməzdən ƏVVƏL fikri istifadəçiyə de,
+     nümunə ver (önizləmə şəkli), məsləhətləş — təsdiqdən SONRA tətbiq et.
+   - **"Dostuna göndər" sətri.** Hər videoda oxuyanın marağını çəkən, "hə, dərhal göndərirəm" dedirdən
+     paylaşım çağırışı olur (məs. konkret adama yönəlmiş: "Hovuz arzulayan dostuna göndər"). Hər evə
+     öz mətni — təkrarlanmır; ilk dəfə nümunələri istifadəçi ilə razılaşdır.
+   - **Nömrə qutusu → şərh çağırışı.** Giriş kadrındakı nömrə qutusunun yerinə
+     "Bu ev neçəyə satılır? Şərhdə qeyd et" yazılır (eyni tünd yaşıl qutu, qızılı çərçivə).
+     Nömrə son kadrda qalır.
+   - **Qiymət yazılmır.** İstifadəçinin göndərdiyi məlumatda qiymət olsa belə videoda (giriş, son kadr)
+     qiymət YOXDUR. "QİYMƏTİ SONDA ↓" də yazılmır.
+   - **Uzunluq maksimum 25–30 saniyə.** Bütün video (giriş + kadrlar + son kadr) 30 saniyəni keçmir.
+     Sığmırsa ən zəif şəkilləri çıxar (bənzər, bulanıq, qaranlıq, az məlumat verən) və göndərəndə hansıları
+     çıxardığını yaz. Bu qanun "bütün şəkillər istifadə olunur" qaydasını əvəz edir.
+
+## Brend şablonu (brend kimliyi dəyişmir; hər evin dizaynı fərqli — 10-cu qanun)
 
 Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
 `video/reference/approved-end-card.png` (son kadr). Nümunə ev: `video/listings/merdekan-villa/`.
@@ -73,15 +91,16 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
 - **Şriftlər** (`video/fonts/`): başlıq Playfair Display Bold, mətn Montserrat 600/700,
   CTA qutusu DejaVu Sans / DejaVu Sans Bold. Ölçülər render.py-dəki kimi qalır.
 - **Giriş kadrı:** ən yaxşı fasad şəkli + 2 sətirli başlıq (1-ci krem, 2-ci qızılı) +
-  alt sətir (yer • sot • otaq) + qızılı "QİYMƏTİ SONDA ↓" düyməsi.
+  alt sətir (yer • sot • otaq) + ilk saniyənin maraq elementi (10-cu qanun; "QİYMƏTİ SONDA" yox).
 - **Başlıq təkrarlanmır (QANUN):** hər yeni evin giriş başlığı (`hook.title`, 2 sətir) əvvəlki
   BÜTÜN evlərin başlıqlarından fərqli olmalıdır — "Hovuzlu villa", "Klassik villa", "Modern villa",
   "Premium villa", "Lüks villa", "Hovuzlu bağ evi" artıq işlənib, bir daha yazılmır. Başlığı evin əsl
   üstünlüyündən seç (məs. "Panoramik / villa", "Ailəvi / bağ evi", "Dəniz yaxını / villa", "Yeni tikili /
   malikanə", "Yaşıl həyətli / ev"). Yazmazdan əvvəl `listings/*/listing.json`-dakı başlıqları yoxla;
   render.py təkrar başlıqda xəbərdarlıq verir — xəbərdarlıq çıxsa başlığı dəyiş.
-- **Nömrə qutusu (QANUN — YALNIZ giriş/başlıq kadrında):** tünd yaşıl, qızılı çərçivə; üst sətir
-  "Ətraflı məlumat və baxış üçün zəng et", alt sətir böyük ağ nömrə (`010-310-03-02`, defislə).
+- **Qutu (QANUN — YALNIZ giriş/başlıq kadrında):** tünd yaşıl, qızılı çərçivə; içində nömrə YOX,
+  "Bu ev neçəyə satılır? Şərhdə qeyd et" (10-cu qanun). Əvvəlki variant (köhnə videolar): üst sətir
+  "Ətraflı məlumat və baxış üçün zəng et", alt sətir nömrə.
   Sonrakı kadrlarda nömrə qutusu YOXDUR — orada yalnız loqo və kadrın yazısı (Hovuz, Mətbəx...) olur.
   Nömrə yenə son kadrda görünür.
 - **Şəkillər düzəldilir (QANUN — HƏR montajda, istifadəçi xatırlatmasa belə):** bütün əyri şəkillər
@@ -92,13 +111,13 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
   düzəldildiyini qısa yaz.
 - **Şəkillər işıqlandırılır (QANUN):** qaranlıq tonlar hər şəklin öz parlaqlığına görə avtomatik
   işıqlandırılır (render.py `brighten`) — əvvəl düzəltmə, sonra işıqlandırma.
-- **Sonluq:** yaşıl fon, loqo, "SATILIR", qiymət + ₼, 3 sətir xüsusiyyət, qızılı telefon düyməsi;
+- **Sonluq:** yaşıl fon, loqo, "SATILIR", 3 sətir xüsusiyyət (qiymət yox), qızılı telefon düyməsi;
   sonda girişə keçid (loop).
 - **Temp (QANUN):** yavaş — hər yazı növbəti keçidə qədər rahat oxunmalıdır. render.py-də minimum:
   giriş kadrı 3.2 san, hər yazılı kadr 2.0 san, son kadr 4.8 san, keçid 0.3 san. Bunları azaltma.
   Kadrları sürətləndirmə.
-- **Bütün şəkillər istifadə olunur (QANUN):** istifadəçinin göndərdiyi HƏR şəkil videoya girir —
-  heç bir şəkli çıxarma, video nə qədər uzun olsa belə (bənzər şəkillər də qalır). Şəkilləri
+- **Şəkil seçimi (QANUN, 10-cu qanunla yeniləndi):** video maksimum 25–30 saniyədir; sığmayanda ən zəif
+  şəkillər çıxarılır və istifadəçiyə yazılır. Şəkilləri
   məntiqi ardıcıllıqla düz: fasad → həyət/hovuz → giriş/hol → mətbəx → qonaq otağı → yataq otaqları →
   qarderob → sanuzellər.
 - **Musiqi:** istifadəçi nömrə deyəndə `"music": "pro:NN"` (`video/music_pro_songs.py`, 1–20).
