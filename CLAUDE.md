@@ -74,6 +74,12 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
   CTA qutusu DejaVu Sans / DejaVu Sans Bold. Ölçülər render.py-dəki kimi qalır.
 - **Giriş kadrı:** ən yaxşı fasad şəkli + 2 sətirli başlıq (1-ci krem, 2-ci qızılı) +
   alt sətir (yer • sot • otaq) + qızılı "QİYMƏTİ SONDA ↓" düyməsi.
+- **Başlıq təkrarlanmır (QANUN):** hər yeni evin giriş başlığı (`hook.title`, 2 sətir) əvvəlki
+  BÜTÜN evlərin başlıqlarından fərqli olmalıdır — "Hovuzlu villa", "Klassik villa", "Modern villa",
+  "Premium villa", "Lüks villa", "Hovuzlu bağ evi" artıq işlənib, bir daha yazılmır. Başlığı evin əsl
+  üstünlüyündən seç (məs. "Panoramik / villa", "Ailəvi / bağ evi", "Dəniz yaxını / villa", "Yeni tikili /
+  malikanə", "Yaşıl həyətli / ev"). Yazmazdan əvvəl `listings/*/listing.json`-dakı başlıqları yoxla;
+  render.py təkrar başlıqda xəbərdarlıq verir — xəbərdarlıq çıxsa başlığı dəyiş.
 - **Nömrə qutusu (QANUN — YALNIZ giriş/başlıq kadrında):** tünd yaşıl, qızılı çərçivə; üst sətir
   "Ətraflı məlumat və baxış üçün zəng et", alt sətir böyük ağ nömrə (`010-310-03-02`, defislə).
   Sonrakı kadrlarda nömrə qutusu YOXDUR — orada yalnız loqo və kadrın yazısı (Hovuz, Mətbəx...) olur.

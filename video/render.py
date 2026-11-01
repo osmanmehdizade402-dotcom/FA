@@ -496,6 +496,13 @@ if __name__ == "__main__":
     listing_dir = Path(sys.argv[1]).resolve()
     LISTING = json.loads((listing_dir / "listing.json").read_text())
     PHOTOS = listing_dir / "photos"
+    # user rule: a hook headline is never reused across houses
+    title = " ".join(LISTING["hook"]["title"]).lower()
+    for other in sorted(listing_dir.parent.glob("*/listing.json")):
+        if other.parent != listing_dir:
+            t = " ".join(json.loads(other.read_text())["hook"]["title"]).lower()
+            if t == title:
+                print(f"XƏBƏRDARLIQ: başlıq '{title}' artıq {other.parent.name} evində var — dəyiş (qanun)")
     out_dir = listing_dir / "out"
     out_dir.mkdir(exist_ok=True)
     if "--preview" in sys.argv:
