@@ -17,14 +17,14 @@
  "phone": "010-310-03-02",
  "shots": [
   [
-   "hook_pool",
+   "facade_pool",
    3.2,
    "in_slow",
    null,
    null
   ],
   [
-   "facade_pool",
+   "hook_pool",
    2.0,
    "left",
    "Hovuz",
