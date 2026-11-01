@@ -1,0 +1,153 @@
+{
+ "slug": "merdekan-5sot-230m",
+ "hook": {
+  "title": [
+   "Hovuzlu",
+   "villa"
+  ],
+  "sub": "Mərdəkan  •  5 sot  •  5 otaq",
+  "pill": "QİYMƏTİ SONDA  ↓"
+ },
+ "price": "450 000",
+ "details": [
+  "Mərdəkan  •  5 sot  •  230 m²",
+  "5 otaq  •  3 sanuzel  •  İsti döşəmə",
+  "İsti hovuz  •  Şüşəli balkon  •  Çıxarış"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_facade",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "left",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "pool",
+   2.0,
+   "out",
+   "İsti hovuz",
+   "punch"
+  ],
+  [
+   "pool_view",
+   2.0,
+   "right",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "terrace",
+   2.0,
+   "in",
+   "Terras",
+   "punch"
+  ],
+  [
+   "glass_balcony",
+   2.0,
+   "up",
+   "Şüşəli balkon",
+   "whip"
+  ],
+  [
+   "glass_kitchen",
+   2.0,
+   "in",
+   "Şüşəli balkon mətbəxi",
+   "punch"
+  ],
+  [
+   "hall",
+   2.0,
+   "left",
+   "Hol",
+   "flash"
+  ],
+  [
+   "corridor",
+   2.0,
+   "out",
+   "Dəhliz",
+   "punch"
+  ],
+  [
+   "living",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "living2",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed4",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "closet",
+   2.0,
+   "in",
+   "Qarderob",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
