@@ -1,0 +1,125 @@
+{
+ "slug": "suvelan-4sot-c",
+ "hook": {
+  "title": [
+   "Modern",
+   "villa"
+  ],
+  "sub": "Şüvəlan  •  4 sot  •  4 otaq",
+  "pill": "ƏTRAFLI SONDA  ↓"
+ },
+ "price": null,
+ "details": [
+  "Şüvəlan  •  4 sot  •  160 m²",
+  "4 otaq  •  3 sanuzel  •  4 fəsil",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_pool",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "left",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "entry",
+   2.0,
+   "out",
+   "Giriş",
+   "punch"
+  ],
+  [
+   "pergola_pool",
+   2.0,
+   "right",
+   "Hovuz + pergola",
+   "whip"
+  ],
+  [
+   "pool_yard",
+   2.0,
+   "in",
+   "Hovuz",
+   "punch"
+  ],
+  [
+   "garden",
+   2.0,
+   "up",
+   "Landşaft həyət",
+   "whip"
+  ],
+  [
+   "driveway",
+   2.0,
+   "in",
+   "Parking zonası",
+   "punch"
+  ],
+  [
+   "corridor",
+   2.0,
+   "left",
+   "Dəhliz",
+   "flash"
+  ],
+  [
+   "living",
+   2.0,
+   "out",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "right",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "up",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "left",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "out",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
