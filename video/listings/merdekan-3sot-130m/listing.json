@@ -1,0 +1,111 @@
+{
+ "slug": "merdekan-3sot-130m",
+ "hook": {
+  "title": [
+   "Hovuzlu",
+   "bağ evi"
+  ],
+  "sub": "Mərdəkan  •  3 sot  •  4 otaq",
+  "pill": "QİYMƏTİ SONDA  ↓"
+ },
+ "price": "234 000",
+ "details": [
+  "Mərdəkan  •  3 sot  •  130 m²",
+  "4 otaq  •  2 sanuzel  •  Yeni tikili",
+  "Hovuz  •  Terras + manqal  •  Kupça"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_pool",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_pool",
+   2.0,
+   "left",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "yard",
+   2.0,
+   "out",
+   "Landşaft həyət",
+   "punch"
+  ],
+  [
+   "manqal",
+   2.0,
+   "right",
+   "Terras + manqal",
+   "whip"
+  ],
+  [
+   "hall",
+   2.0,
+   "in",
+   "Hol",
+   "flash"
+  ],
+  [
+   "living",
+   2.0,
+   "up",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "in",
+   "Mətbəx",
+   "punch"
+  ],
+  [
+   "bed1",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed3",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "closet",
+   2.0,
+   "in",
+   "Qarderob",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
