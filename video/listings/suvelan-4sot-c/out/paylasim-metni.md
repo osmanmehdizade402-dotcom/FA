@@ -19,7 +19,8 @@ hovuz, pergola altında istirahət zonası, yay-qış mətbəxi, manqal, yaşıl
 📄 Paket kupça — sənədlər tam qaydasındadır
 🎁 Bizə müraciət edənlərə xüsusi endirim
 
-📞 Qiymət və baxış üçün: 010-310-03-02 (zəng / WhatsApp)
+💰 Qiymət: 245 000 ₼
+📞 Baxış üçün: 010-310-03-02 (zəng / WhatsApp)
 
 Hovuz kənarında səhər qəhvəsi, yoxsa pergola altında axşam çayı? Şərhdə yazın 👇
 
@@ -30,6 +31,6 @@ Hovuz kənarında səhər qəhvəsi, yoxsa pergola altında axşam çayı? Şər
 Şüvəlanda modern hovuzlu villa 🏡
 4 sot • 160 m² • 3 yataq otağı + qonaq otağı • 3 sanuzel
 Hovuz • pergola • yay-qış mətbəxi • manqal • paket kupça
-📞 010-310-03-02
+💰 245 000 ₼ | 📞 010-310-03-02
 
 #şüvəlan #modernvilla #bakıəmlak #xəzərsahiləmlak
