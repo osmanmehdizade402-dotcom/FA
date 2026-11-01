@@ -1,0 +1,111 @@
+{
+ "slug": "suvelan-3-5sot",
+ "hook": {
+  "title": [
+   "Hovuzlu",
+   "villa"
+  ],
+  "sub": "Şüvəlan  •  3.5 sot  •  4 otaq",
+  "pill": "QİYMƏTİ SONDA  ↓"
+ },
+ "price": "265 000",
+ "details": [
+  "Şüvəlan  •  3.5 sot  •  170 m²",
+  "4 otaq  •  2 sanuzel  •  Yeni tikili",
+  "Hovuz  •  Söhbətgah  •  Çıxarış"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_facade",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool",
+   2.0,
+   "left",
+   "Filterli hovuz",
+   "whip"
+  ],
+  [
+   "yard",
+   2.0,
+   "out",
+   "Həyət",
+   "punch"
+  ],
+  [
+   "glass_room",
+   2.0,
+   "right",
+   "Söhbətgah",
+   "whip"
+  ],
+  [
+   "entry",
+   2.0,
+   "in",
+   "Giriş holu",
+   "flash"
+  ],
+  [
+   "hall",
+   2.0,
+   "up",
+   "Hol",
+   "whip"
+  ],
+  [
+   "living",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "left",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
