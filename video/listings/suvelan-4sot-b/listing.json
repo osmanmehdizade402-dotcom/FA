@@ -1,0 +1,125 @@
+{
+ "slug": "suvelan-4sot-b",
+ "hook": {
+  "title": [
+   "Hovuzlu",
+   "villa"
+  ],
+  "sub": "Şüvəlan  •  4 sot  •  4 otaq",
+  "pill": "QİYMƏTİ SONDA  ↓"
+ },
+ "price": "245 000",
+ "details": [
+  "Şüvəlan  •  4 sot  •  150 m²",
+  "4 otaq  •  2 sanuzel  •  Açar təhvil",
+  "Hovuz  •  Besedka  •  Kupça"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_facade",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "left",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "pool",
+   2.0,
+   "out",
+   "Filterli hovuz",
+   "punch"
+  ],
+  [
+   "pool_besedka",
+   2.0,
+   "right",
+   "Hovuz və besedka",
+   "whip"
+  ],
+  [
+   "yard",
+   2.0,
+   "in",
+   "Landşaft həyət",
+   "punch"
+  ],
+  [
+   "besedka",
+   2.0,
+   "up",
+   "Besedka + manqal",
+   "whip"
+  ],
+  [
+   "living",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "flash"
+  ],
+  [
+   "hall",
+   2.0,
+   "left",
+   "Hol",
+   "whip"
+  ],
+  [
+   "corridor",
+   2.0,
+   "out",
+   "Dəhliz",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "right",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "up",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "left",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "out",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
