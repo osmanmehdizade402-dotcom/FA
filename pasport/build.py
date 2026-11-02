@@ -1,6 +1,6 @@
 """Ev Pasportu prototipini qurur: şəkilləri kiçildib template.html-ə yerləşdirir.
 
-python3 ev-pasportu/build.py [pasport_url]   ->  ev-pasportu/out/merdekan-villa.html
+python3 pasport/build.py [pasport_url]   ->  pasport/out/merdekan-villa.html
 """
 import base64
 import io
