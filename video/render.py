@@ -467,6 +467,70 @@ class Renderer:
             parts.append((hook["sub"], fsub, CREAM, W / 2 - dl.textlength(hook["sub"], font=fsub) / 2, y + int(16 * fs), 0))
             lay.alpha_composite(self.text_layer(parts))
             self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int((bh - self.watermark.height) / 2))
+        elif self.hook_style == "beats":
+            # short punchy lines stacked in the middle, revealed one by one (rows reuse check_rows timing)
+            c0, c1 = int(H * 0.28), int(H * 0.72)
+            prof = np.sin(np.linspace(0, np.pi, c1 - c0)) ** 0.8
+            g[c0:c1, :, 3] = (prof * 165)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            fl = font("Playfair700.ttf", 112 * fs)
+            d = ImageDraw.Draw(lay)
+            n = len(hook["lines"])
+            step = int(150 * fs)
+            y = int(H * 0.50) - step * n // 2
+            self.check_rows = []
+            for i, line in enumerate(hook["lines"]):
+                col = GOLD if i == n - 1 else CREAM
+                fz = fl
+                sz = 112 * fs
+                while d.textlength(line, font=fz) > W - 2 * mx and sz > 40:
+                    sz -= 4
+                    fz = font("Playfair700.ttf", sz)
+                self.check_rows.append(self.text_layer([(line, fz, col, W / 2 - d.textlength(line, font=fz) / 2, y + step * i, 0)]))
+            self.watermark_pos = (int(W / 2 - self.watermark.width / 2), self.watermark_pos[1])
+        elif self.hook_style == "ribbon":
+            # thin gold inset frame + diagonal corner ribbon + bottom-left title
+            g0 = int(H * 0.50)
+            ramp = np.clip(np.linspace(0, 1.4, H - g0), 0, 1)
+            g[g0:, :, 3] = (ramp * 200)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            ins = int(28 * W / 1080)
+            d.rectangle([ins, ins, W - ins, H - ins], outline=GOLD + (255,), width=max(2, int(4 * fs)))
+            fr_ = font("Montserrat700.ttf", 44 * fs)
+            rl = int(560 * fs)
+            rh = int(84 * fs)
+            rib = Image.new("RGBA", (rl, rh), GOLD + (255,))
+            dr = ImageDraw.Draw(rib)
+            dr.text((rl / 2, rh / 2), hook["kicker"], font=fr_, fill=GREEN, anchor="mm")
+            rib = rib.rotate(-45, expand=True, resample=Image.BICUBIC)
+            lay.alpha_composite(rib, (W - int(rib.width * 0.78), -int(rib.height * 0.22)))
+            fl = font("Playfair700.ttf", 104 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            y = int(H * (0.53 if self.tall else 0.47))
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(120 * fs)
+            parts.append((hook["sub"], fsub, CREAM, mx, y + int(14 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "split":
+            # photo on top, solid brand panel below with the text
+            p0 = int(H * (0.58 if self.tall else 0.55))
+            d = ImageDraw.Draw(lay)
+            d.rectangle([0, p0, W, H], fill=GREEN + (255,))
+            d.rectangle([0, p0, W, p0 + max(3, int(8 * fs))], fill=GOLD + (255,))
+            fk = font("Montserrat700.ttf", 40 * fs)
+            fl = font("Playfair700.ttf", 100 * fs)
+            fsub = font("Montserrat600.ttf", 40 * fs)
+            y = p0 + int(60 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, y, 6 * fs)]
+            y += int(70 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(115 * fs)
+            parts.append((hook["sub"], fsub, CREAM, mx, y + int(10 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts, shadow=False))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
@@ -612,7 +676,7 @@ class Renderer:
             if self.hook_style == "guess":  # 5..1 countdown over the hook shot
                 n = max(1, 5 - int(t / (dur / 5)))
                 im.alpha_composite(self.guess_nums[n])
-            if self.hook_style == "checklist":  # ticks pop in one by one
+            if self.hook_style in ("checklist", "beats"):  # rows pop in one by one
                 for j, row in enumerate(self.check_rows):
                     a = ease_out((t - 0.35 - 0.35 * j) / 0.25)
                     lay = self.fade(row, a, dy=20 * (1 - a))
