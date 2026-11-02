@@ -1,5 +1,9 @@
 # Xəzər Sahil Əmlak — ev elanı videoları
 
+> **DİQQƏT:** Yeni montajlar `montaj/` qovluğunda aparılır. Bütün qüvvədə olan qanunların
+> yekun, ziddiyyətsiz siyahısı **`montaj/CLAUDE.md`** faylındadır — ona əsaslan.
+> Aşağıdakı mətn tarixçə üçün saxlanılır.
+
 Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videolarını hazırlayır.
 İstifadəçi ilə **azərbaycan dilində** danışılır.
 
