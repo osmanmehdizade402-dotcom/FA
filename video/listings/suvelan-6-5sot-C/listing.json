@@ -1,0 +1,111 @@
+{
+ "slug": "suvelan-6-5sot-C",
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  6.5 sot  •  220 m²",
+  "5 otaq  •  3 sanuzel  •  Tam əşyalı",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "label_style": "chip",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {
+  "style": "guess",
+  "kicker": "saniyədə təxmin et:",
+  "lines": [
+   "Bu ev neçəyə",
+   "satılır?"
+  ],
+  "sub": "Şüvəlan  •  6.5 sot  •  tam əşyalı",
+  "title": [],
+  "pill": "",
+  "cta_style": "answer"
+ },
+ "shots": [
+  [
+   "living3",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "hook_pool",
+   2.0,
+   "left",
+   "Filterli hovuz",
+   "whip"
+  ],
+  [
+   "summer_kitchen",
+   2.0,
+   "out",
+   "Yay-qış mətbəxi",
+   "punch"
+  ],
+  [
+   "summer_in2",
+   2.0,
+   "right",
+   "Yay-qış mətbəxi",
+   "whip"
+  ],
+  [
+   "living1",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed4",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "closet",
+   2.0,
+   "in",
+   "Qarderob",
+   "punch"
+  ],
+  [
+   "bath3",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ]
+ ]
+}

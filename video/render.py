@@ -36,6 +36,8 @@ SHOT_MIN = 2.0   # every labelled shot
 END_DUR = 4.8    # end card: price, details, phone
 # CTA line above the phone number (user rule; same for every listing until the user changes it)
 CTA_TEXT = "Ətraflı məlumat və baxış üçün zəng et"
+COMMENT_Q = "Bu ev neçəyə satılır?"
+COMMENT_A = "Şərhdə qeyd et"
 END_LOOP = 0.4  # final crossfade back into frame 0 for a seamless loop
 
 # ---- brand ----
@@ -235,8 +237,24 @@ class Renderer:
                             fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(2, int(3 * k)))
         f1 = font("DejaVuSans.ttf", 36 * k)
         f2 = font("DejaVuSans-Bold.ttf", 70 * k)
-        for text, f, fill, cy in [(CTA_TEXT, f1, GOLD_SOFT, y0 + bh * 0.25),
-                                  (LISTING["phone"], f2, WHITE, y0 + bh * 0.64)]:
+        rows = [(CTA_TEXT, f1, GOLD_SOFT, y0 + bh * 0.25), (LISTING["phone"], f2, WHITE, y0 + bh * 0.64)]
+        if LISTING.get("comment_cta"):  # user rule: comment prompt instead of the phone number
+            if LISTING["hook"].get("cta_style") in ("pill", "answer"):
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                fp = font("Montserrat700.ttf", 42 * k)
+                t = (COMMENT_Q + " " if LISTING["hook"]["cta_style"] == "pill" else "") + COMMENT_A + " ↓"
+                tw = d.textlength(t, font=fp)
+                ph = int(100 * k)
+                yb = H - int(230 * self.u) - ph
+                d.rounded_rectangle([W / 2 - tw / 2 - 40 * k, yb, W / 2 + tw / 2 + 40 * k, yb + ph], radius=ph // 2,
+                                    fill=GOLD + (255,))
+                d.text((W / 2, yb + ph / 2), t, font=fp, fill=GREEN, anchor="mm")
+                self.cta, self.cta_top = lay, yb
+                return
+            rows = [(COMMENT_Q, font("Montserrat700.ttf", 52 * k), WHITE, y0 + bh * 0.36),
+                    (COMMENT_A + "  ↓", font("Montserrat600.ttf", 38 * k), GOLD, y0 + bh * 0.72)]
+        for text, f, fill, cy in rows:
             bb = d.textbbox((0, 0), text, font=f)
             d.text((W / 2 - (bb[2] + bb[0]) / 2, cy - (bb[3] + bb[1]) / 2), text, font=f, fill=fill)
         self.cta = lay
@@ -259,6 +277,9 @@ class Renderer:
 
         # hook
         hook = LISTING["hook"]
+        self.hook_style = hook.get("style", "classic")
+        if self.hook_style != "classic":
+            self.build_hook_v2(hook, mx)
         f_big = font("Playfair700.ttf", 118 * fs)
         f_sub = font("Montserrat600.ttf", 42 * fs)
         y = int(H * 0.50)
@@ -282,8 +303,29 @@ class Renderer:
         d.text((mx + 28 * fs, py + (ph - (bb[3] - bb[1])) / 2 - bb[1]), pill_txt, font=f_pill, fill=GREEN)
         self.hook_pill = pill
 
+        if self.hook_style != "classic":
+            self.hook, self.hook_pill = self.hook_v2, None
+
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "chip":
+            self.labels = {}
+            fc = font("Montserrat700.ttf", 50 * fs)
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                tw = d.textlength(lab, font=fc)
+                ch = int(96 * fs)
+                yb = H - int(300 * u) - ch
+                d.rounded_rectangle([W / 2 - tw / 2 - 44 * fs, yb, W / 2 + tw / 2 + 44 * fs, yb + ch], radius=ch // 2,
+                                    fill=GREEN_DARK + (225,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                d.text((W / 2, yb + ch / 2), lab, font=fc, fill=CREAM, anchor="mm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         self.labels = {}
         ly = int(1180 * u) if self.tall else int(H * 0.70)
         for s in self.shots:
@@ -300,6 +342,53 @@ class Renderer:
             self.labels[lab] = lay
 
         self.build_endcard(logo)
+
+    def build_hook_v2(self, hook, mx):
+        """Alternative hook designs (user rule: every house looks different)."""
+        W, H, fs, u = self.W, self.H, self.fs, self.u
+        lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        g = np.zeros((H, W, 4), np.uint8)
+        if self.hook_style == "pov":
+            n = int(H * 0.45)
+            g[:n, :, 3] = (np.linspace(1, 0, n) ** 1.2 * 205)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            parts = [("POV:", font("Montserrat700.ttf", 58 * fs), GOLD, mx, int(330 * u), 0)]
+            fl = font("Playfair700.ttf", 92 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, WHITE, mx, int(410 * u) + int(108 * fs) * i, 0))
+            lay.alpha_composite(self.text_layer(parts))
+            self.watermark_pos = (W - self.watermark.width - int(60 * W / 1080), self.watermark_pos[1])
+        elif self.hook_style == "guess":
+            g0 = int(H * 0.52)
+            ramp = np.clip(np.linspace(0, 1.5, H - g0), 0, 1)
+            g[g0:, :, 3] = (ramp * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cy = int(H * (0.24 if self.tall else 0.27))
+            self.guess_center = (W // 2, cy)
+            self.guess_r = int(120 * fs)
+            lay.alpha_composite(self.text_layer([(hook["kicker"], font("Montserrat700.ttf", 60 * fs), WHITE,
+                                                  W / 2 - ImageDraw.Draw(lay).textlength(hook["kicker"], font=font("Montserrat700.ttf", 60 * fs)) / 2,
+                                                  cy + self.guess_r + int(30 * fs), 0)]))
+            fq = font("Playfair700.ttf", 120 * fs)
+            y = int(H * (0.53 if self.tall else 0.55))
+            d = ImageDraw.Draw(lay)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fq, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fq) / 2, y, 0))
+                y += int(130 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            parts.append((hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, y + int(10 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            self.guess_nums = {}
+            fn = font("Playfair700.ttf", 190 * fs)
+            for n in range(1, 6):
+                L = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                dd = ImageDraw.Draw(L)
+                x, yc, r = W // 2, cy, self.guess_r
+                dd.ellipse([x - r, yc - r, x + r, yc + r], fill=GOLD + (255,))
+                dd.text((x, yc + int(8 * fs)), str(n), font=fn, fill=GREEN, anchor="mm")
+                self.guess_nums[n] = L
+        self.hook_v2 = lay
 
     def build_endcard(self, logo):
         W, H, fs = self.W, self.H, self.fs
@@ -325,6 +414,8 @@ class Renderer:
 
         items.append((self.text_layer([centered("SATILIR", font("Montserrat700.ttf", 40 * fs), GOLD, y, 14 * fs)], False), 0.15))
         y += 70 * fs
+        if LISTING.get("comment_cta"):
+            return self.build_endcard_v2(items, centered, y, cx)
         if not LISTING.get("price"):  # no price given: invite a call instead
             fq = font("Playfair700.ttf", 92 * fs)
             items.append((self.text_layer([centered("Qiymət üçün zəng edin", fq, GOLD, y + 40 * fs)], False), 0.3))
@@ -364,6 +455,44 @@ class Renderer:
         items.append((self.text_layer([centered("Zəng et  •  WhatsApp  •  DM yaz", font("Montserrat600.ttf", 38 * fs), CREAM, y)], False), 1.0))
         self.end_items = items
 
+    def build_endcard_v2(self, items, centered, y, cx):
+        """End card without price or phone (user rules): details, share line, comment prompt."""
+        W, H, fs = self.W, self.H, self.fs
+        d = ImageDraw.Draw(Image.new("RGBA", (10, 10)))
+        y += 20 * fs
+        fd = font("Montserrat600.ttf", 44 * fs)
+        for i, line in enumerate(LISTING["details"]):
+            items.append((self.text_layer([centered(line, fd, CREAM, y, 0)], False), 0.3 + 0.1 * i))
+            y += 70 * fs
+        y += 40 * fs
+        fq = font("Playfair700.ttf", 78 * fs)
+        items.append((self.text_layer([centered(COMMENT_Q, fq, GOLD, y)], False), 0.7))
+        y += 110 * fs
+        fp = font("Montserrat700.ttf", 46 * fs)
+        t = COMMENT_A + "  ↓"
+        tw = d.textlength(t, font=fp)
+        ph = int(100 * fs)
+        lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        dd = ImageDraw.Draw(lay)
+        dd.rounded_rectangle([cx - tw / 2 - 50 * fs, y, cx + tw / 2 + 50 * fs, y + ph], radius=ph // 2, fill=GOLD + (255,))
+        dd.text((cx, y + ph / 2), t, font=fp, fill=GREEN, anchor="mm")
+        items.append((lay, 0.85))
+        y += ph + 60 * fs
+        share = LISTING.get("share")
+        if share:
+            fs1 = font("Montserrat700.ttf", 46 * fs)
+            words, lines, cur = share.split(), [], ""
+            for w_ in words:
+                if d.textlength((cur + " " + w_).strip(), font=fs1) > W * 0.82:
+                    lines.append(cur)
+                    cur = w_
+                else:
+                    cur = (cur + " " + w_).strip()
+            lines.append(cur)
+            for j, ln in enumerate(lines):
+                items.append((self.text_layer([centered(ln, fs1, WHITE, y + j * 62 * fs)], False), 1.1))
+        self.end_items = items
+
     # ---------- compositing helpers ----------
     @staticmethod
     def fade(layer, a, dy=0):
@@ -395,11 +524,15 @@ class Renderer:
     def decorate(self, im, i, t):
         key, dur, motion, label, _ = self.shots[i]
         if i == 0:
-            im.alpha_composite(self.grad_hook)
+            if self.hook_style == "classic":
+                im.alpha_composite(self.grad_hook)
             im.alpha_composite(self.hook)
-            # pill pulses gently
-            a = 0.75 + 0.25 * math.sin(t * 2 * math.pi * 1.5)
-            im.alpha_composite(self.fade(self.hook_pill, a))
+            if self.hook_pill is not None:  # pill pulses gently
+                a = 0.75 + 0.25 * math.sin(t * 2 * math.pi * 1.5)
+                im.alpha_composite(self.fade(self.hook_pill, a))
+            if self.hook_style == "guess":  # 5..1 countdown over the hook shot
+                n = max(1, 5 - int(t / (dur / 5)))
+                im.alpha_composite(self.guess_nums[n])
         im.alpha_composite(self.watermark, self.watermark_pos)
         if label:
             a_in = ease_out((t - 0.14) / 0.22)
