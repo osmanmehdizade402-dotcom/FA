@@ -86,6 +86,11 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
   düzəldildiyini qısa yaz.
 - **Şəkillər işıqlandırılır (QANUN):** qaranlıq tonlar hər şəklin öz parlaqlığına görə avtomatik
   işıqlandırılır (render.py `brighten`) — əvvəl düzəltmə, sonra işıqlandırma.
+- **Rəng tonu (QANUN — bütün yeni evlərdə):** nümunə `video/reference/reng-tonu-numune.mp4`
+  (payız meşəsi və göl). Şəkillər rəngli, canlı və maraqlı olur: güclü doyğunluq (vibrance), isti
+  narıncı/qırmızı/taxta tonları zənginləşir, səma/hovuz mavisi dərinləşir, kölgələr soyuq-firuzəyi,
+  işıqlı yerlər qızılı-isti, yumşaq S-əyrisi və kənarlarda yüngül vinyet (render.py `grade`).
+  Sıra: düzəltmə → işıqlandırma → rəng tonu. Nəticə: `video/reference/reng-tonu-evvel-sonra.jpg`.
 - **Sonluq:** yaşıl fon, loqo, "SATILIR", qiymət + ₼, 3 sətir xüsusiyyət, qızılı telefon düyməsi;
   sonda girişə keçid (loop).
 - **Temp (QANUN):** yavaş — hər yazı növbəti keçidə qədər rahat oxunmalıdır. render.py-də minimum:

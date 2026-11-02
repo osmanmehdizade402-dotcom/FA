@@ -76,11 +76,46 @@ def brighten(im):
     return ImageEnhance.Contrast(im).enhance(1.05)
 
 
+def grade(im):
+    """Colour look (user rule, ref: autumn-lake reel): rich saturated warm colours, glowing
+    highlights, cool teal-blue shadows, gentle S-curve and soft vignette. Keeps brightness."""
+    a = np.asarray(im).astype(np.float32) / 255
+    hsv = np.asarray(im.convert("HSV")).astype(np.float32) / 255
+    h, s = hsv[..., 0], hsv[..., 1]
+    # vibrance: lift muted colours more than already-strong ones
+    lum = a @ np.array([0.299, 0.587, 0.114], np.float32)
+    amt = 0.35 + 0.6 * (1 - s) ** 1.5
+    a = lum[..., None] + (a - lum[..., None]) * (1 + amt[..., None])
+    # warm hues (red/orange/yellow/wood/brick) get extra richness
+    warm = np.clip(1 - np.minimum(np.abs(h - 0.07), np.abs(h - 1.07)) / 0.10, 0, 1) * np.clip(s * 3, 0, 1)
+    a = lum[..., None] + (a - lum[..., None]) * (1 + 0.45 * warm[..., None])
+    a[..., 0] += 0.04 * warm
+    a[..., 2] -= 0.02 * warm
+    # blue/teal hues (sky, water, pool) a touch deeper
+    cool = np.clip(1 - np.abs(h - 0.56) / 0.10, 0, 1) * np.clip(s * 3, 0, 1)
+    a = lum[..., None] + (a - lum[..., None]) * (1 + 0.35 * cool[..., None])
+    # split toning: teal shadows, warm golden highlights
+    lum = np.clip(a @ np.array([0.299, 0.587, 0.114], np.float32), 0, 1)
+    sh = np.clip(1 - lum / 0.4, 0, 1)[..., None]
+    hi = np.clip((lum - 0.55) / 0.45, 0, 1)[..., None]
+    a += sh * np.array([-0.04, 0.01, 0.05], np.float32) + hi * np.array([0.045, 0.018, -0.03], np.float32)
+    # gentle S-curve
+    a = np.clip(a, 0, 1)
+    a = a + 0.35 * (a - a * a) * (2 * a - 1)  # S-curve: deeper shadows, brighter highlights
+    a = np.clip(0.5 + (a - 0.5) * 1.05, 0, 1)
+    # soft vignette
+    H, W = lum.shape
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    r = np.sqrt(((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) / np.sqrt(2)
+    a *= (1 - 0.22 * np.clip((r - 0.45) / 0.55, 0, 1) ** 1.6)[..., None]
+    return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
+
+
 def load_photo(key):
     for ext in (".jpg", ".jpeg", ".png", ".webp"):
         p = PHOTOS / f"{key}{ext}"
         if p.exists():
-            return brighten(straighten(Image.open(p).convert("RGB"))[0])
+            return grade(brighten(straighten(Image.open(p).convert("RGB"))[0]))
     raise FileNotFoundError(PHOTOS / key)
 
 
