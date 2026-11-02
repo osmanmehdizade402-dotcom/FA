@@ -118,7 +118,24 @@ def grade(im):
     return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
 
 
-def load_photo(key):
+def load_clip(key, dur):
+    """'video:clip.mov@0.5' -> list of graded RGB frames (FPS) from <listing>/video/, dur seconds."""
+    spec = key.split(":", 1)[1]
+    name, _, start = spec.partition("@")
+    src = PHOTOS.parent / "video" / name
+    w, h = 1080, 1920
+    cmd = ["ffmpeg", "-v", "error", "-ss", start or "0", "-i", str(src), "-t", f"{dur + 0.5:.2f}",
+           "-vf", f"fps={FPS},scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h}",
+           "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+    raw = subprocess.run(cmd, capture_output=True, check=True).stdout
+    n = len(raw) // (w * h * 3)
+    return [grade(brighten(Image.frombuffer("RGB", (w, h), raw[i * w * h * 3:(i + 1) * w * h * 3])))
+            for i in range(n)]
+
+
+def load_photo(key, dur=0):
+    if key.startswith("video:"):
+        return load_clip(key, dur)
     for ext in (".jpg", ".jpeg", ".png", ".webp"):
         p = PHOTOS / f"{key}{ext}"
         if p.exists():
@@ -135,12 +152,15 @@ class Renderer:
         self.shots = [(s[0], (HOOK_MIN if i == 0 else max(s[1], SHOT_MIN))) + tuple(s[2:5])
                       for i, s in enumerate(LISTING["shots"])]
         self.focus = [s[5] if len(s) > 5 else None for s in LISTING["shots"]]
-        self.photos = {s[0]: load_photo(s[0]) for s in self.shots}
+        self.photos = {s[0]: load_photo(s[0], s[1]) for s in self.shots}
         self.build_overlays()
 
     # ---------- camera ----------
     def kb(self, key, motion, p, punch=0.0, focus=None):
         im = self.photos[key]
+        if isinstance(im, list):  # video clip: real camera motion, no extra Ken Burns
+            im = im[min(len(im) - 1, int(p * (len(im) - 1)))]
+            motion = "none"
         iw, ih = im.size
         ar = self.W / self.H
         bw, bh = (ih * ar, ih) if iw / ih > ar else (iw, iw / ar)
@@ -313,6 +333,41 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("band", "tag"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "band":  # full-width translucent band, tracked capitals between gold rules
+                    fb = font("Montserrat700.ttf", 46 * fs)
+                    txt = lab.upper()
+                    tr_ = 9 * fs
+                    tw = sum(d.textlength(c, font=fb) + tr_ for c in txt) - tr_
+                    bh_ = int(120 * fs)
+                    yb = H - int(330 * u) - bh_
+                    d.rectangle([0, yb, W, yb + bh_], fill=GREEN_DARK + (190,))
+                    d.rectangle([0, yb, W, yb + max(2, int(3 * fs))], fill=GOLD + (255,))
+                    d.rectangle([0, yb + bh_ - max(2, int(3 * fs)), W, yb + bh_], fill=GOLD + (255,))
+                    x = W / 2 - tw / 2
+                    for c in txt:
+                        d.text((x, yb + bh_ / 2), c, font=fb, fill=CREAM, anchor="lm")
+                        x += d.textlength(c, font=fb) + tr_
+                else:  # sharp gold tag, left aligned, green text
+                    ft_ = font("Montserrat700.ttf", 48 * fs)
+                    tw = d.textlength(lab, font=ft_)
+                    th_ = int(92 * fs)
+                    yb = int(H * (0.66 if self.tall else 0.68))
+                    d.rectangle([0, yb, mx + tw + 40 * fs, yb + th_], fill=GOLD + (245,))
+                    d.polygon([(mx + tw + 40 * fs, yb), (mx + tw + 40 * fs + th_ / 2, yb + th_ / 2), (mx + tw + 40 * fs, yb + th_)],
+                              fill=GOLD + (245,))
+                    d.text((mx, yb + th_ / 2), lab, font=ft_, fill=GREEN, anchor="lm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "chip":
             self.labels = {}
             fc = font("Montserrat700.ttf", 50 * fs)
@@ -796,6 +851,8 @@ class Renderer:
             proc.stdin.write(fr.tobytes())
         proc.stdin.close()
         proc.wait()
+        if self.hook_style in ("checklist", "beats"):  # text appears over time: cover shows the full hook
+            cover = self.full_shot(0, self.shots[0][1] - 0.4).convert("RGB")
         cover.save(out_dir / f"cover-{self.tag.split('-')[0]}.jpg", quality=93)
         return out
 

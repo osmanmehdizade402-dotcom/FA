@@ -1,0 +1,112 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4 sot  •  210 m²",
+  "1 mərtəbə  •  3 yataq  •  2+1 sanuzel",
+  "Hovuz  •  Veranda  •  Manqal  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-4sot-210m-A",
+ "label_style": "band",
+ "share": "Pilləkən çıxmağa ərinən o dostuna göndər!",
+ "hook": {
+  "style": "beats",
+  "lines": [
+   "Pilləkən yox.",
+   "Hovuz var.",
+   "Hər şey bir mərtəbədə."
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "sub": "",
+  "pill": ""
+ },
+ "shots": [
+  [
+   "video:clip.mov@0.3",
+   3.0,
+   "none",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "in",
+   "Fasad",
+   "punch"
+  ],
+  [
+   "pool_sun",
+   2.0,
+   "out",
+   "Filterli hovuz",
+   null
+  ],
+  [
+   "veranda",
+   2.0,
+   "left",
+   "Veranda",
+   "punch"
+  ],
+  [
+   "facade_garden",
+   2.0,
+   "right",
+   "Həyət",
+   null
+  ],
+  [
+   "hall1",
+   2.0,
+   "in",
+   "Giriş holu",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "left",
+   "Mətbəx",
+   null
+  ],
+  [
+   "living2",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "living1",
+   2.0,
+   "out",
+   "Qonaq otağı",
+   null
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "right",
+   "Yataq otağı",
+   null
+  ],
+  [
+   "bath2",
+   2.0,
+   "up",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
