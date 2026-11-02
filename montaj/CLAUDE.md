@@ -36,6 +36,9 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     **"Bu ev neçəyə satılır? Şərhdə qeyd et"**. Nömrə (`010-310-03-02`) yalnız paylaşım mətnində olur.
 11. **Qiymət videoda yazılmır** — istifadəçinin məlumatında olsa belə. "QİYMƏTİ SONDA" yazılmır.
     Qiymət yalnız paylaşım mətnində ola bilər (istifadəçi əks deməsə).
+11a. **İSTİSNA — ukrayna dilində videolar (Facebook qrupları / Telegram üçün):** qiymət videoda
+    (son kadrda) MÜTLƏQ yazılır, məs. "655 000 ₼", və paylaşım mətnində də olur. Qiymət məlum deyilsə,
+    istifadəçidən soruş. Nömrə formatı: "+994 10 310 03 02 +WP" (videoda və mətndə).
 12. **"Dostuna göndər" çağırışı** hər videoda (son kadrda): marağı çəkən, "hə, dərhal göndərirəm" dedirdən,
     evə uyğun, hər evdə fərqli mətn (məs. "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!").
     Video içində emoji işlətmə (şrift göstərmir) — emoji yalnız paylaşım mətnində.
