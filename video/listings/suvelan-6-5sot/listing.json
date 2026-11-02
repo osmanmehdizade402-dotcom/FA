@@ -1,0 +1,167 @@
+{
+ "slug": "suvelan-6-5sot",
+ "hook": {
+  "title": [
+   "Əşyalı",
+   "villa"
+  ],
+  "sub": "Şüvəlan  •  6.5 sot  •  5 otaq",
+  "pill": "QİYMƏTİ SONDA  ↓"
+ },
+ "price": "715 000",
+ "details": [
+  "Şüvəlan  •  6.5 sot  •  220 m²",
+  "5 otaq  •  3 sanuzel  •  Tam əşyalı",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "phone": "010-310-03-02",
+ "shots": [
+  [
+   "hook_pool",
+   3.2,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "terrace",
+   2.0,
+   "left",
+   "Terras",
+   "whip"
+  ],
+  [
+   "pool_view",
+   2.0,
+   "out",
+   "Filterli hovuz",
+   "punch"
+  ],
+  [
+   "summer_kitchen",
+   2.0,
+   "right",
+   "Yay-qış mətbəxi",
+   "whip"
+  ],
+  [
+   "summer_in1",
+   2.0,
+   "in",
+   "Yay-qış mətbəxi",
+   "punch"
+  ],
+  [
+   "summer_in2",
+   2.0,
+   "up",
+   "Yay-qış mətbəxi",
+   "whip"
+  ],
+  [
+   "garage",
+   2.0,
+   "in",
+   "Qaraj girişi",
+   "punch"
+  ],
+  [
+   "hall",
+   2.0,
+   "left",
+   "Giriş holu",
+   "flash"
+  ],
+  [
+   "living1",
+   2.0,
+   "out",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "living2",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "living3",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "corridor",
+   2.0,
+   "in",
+   "Dəhliz",
+   "punch"
+  ],
+  [
+   "bed1",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed3",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed4",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "closet",
+   2.0,
+   "up",
+   "Qarderob",
+   "whip"
+  ],
+  [
+   "bath1",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ],
+  [
+   "bath2",
+   2.0,
+   "left",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath3",
+   2.0,
+   "out",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
