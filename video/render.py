@@ -388,6 +388,80 @@ class Renderer:
                 dd.ellipse([x - r, yc - r, x + r, yc + r], fill=GOLD + (255,))
                 dd.text((x, yc + int(8 * fs)), str(n), font=fn, fill=GREEN, anchor="mm")
                 self.guess_nums[n] = L
+        elif self.hook_style == "stat":
+            # one giant number (e.g. "3.5 SOT") + what fits into it, top-left block
+            n = int(H * 0.62)
+            g[:n, :, 3] = (np.linspace(1, 0, n) ** 1.1 * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            y = int(H * (0.17 if self.tall else 0.20))
+            fk = font("Montserrat700.ttf", 46 * fs)
+            fbig = font("Playfair700.ttf", 250 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            parts = [(hook["kicker"], fk, CREAM, mx, y, 6 * fs)]
+            y += int(70 * fs)
+            parts.append((hook["big"], fbig, GOLD, mx - int(8 * fs), y, 0))
+            y += int(345 * fs)
+            for line in hook["lines"]:
+                parts.append((line, fl, WHITE, mx, y, 0))
+                y += int(100 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            d.rectangle([mx, y + int(20 * fs), mx + int(160 * fs), y + int(28 * fs)], fill=GOLD + (255,))
+            self.watermark_pos = (W - self.watermark.width - int(60 * W / 1080), int(60 * u) if self.tall else int(40 * H / 1350))
+        elif self.hook_style == "checklist":
+            # frosted green card with ticked features, ticks appear one by one
+            cw_ = W - 2 * mx
+            items = hook["lines"]
+            fh = font("Playfair700.ttf", 78 * fs)
+            fi = font("Montserrat700.ttf", 52 * fs)
+            rh = int(92 * fs)
+            chh = int(150 * fs) + rh * len(items) + int(40 * fs)
+            n = int(H * 0.25)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 150)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            y0 = int(H * (0.30 if self.tall else 0.22))
+            card = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([mx, y0, mx + cw_, y0 + chh], radius=int(36 * fs),
+                                 fill=GREEN_DARK + (215,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            dc.text((mx + int(50 * fs), y0 + int(40 * fs)), hook["kicker"], font=fh, fill=GOLD)
+            lay.alpha_composite(card)
+            self.check_rows = []
+            for j, it in enumerate(items):
+                L = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                dl = ImageDraw.Draw(L)
+                yy = y0 + int(160 * fs) + rh * j
+                bx, bs = mx + int(50 * fs), int(54 * fs)
+                dl.rounded_rectangle([bx, yy, bx + bs, yy + bs], radius=int(10 * fs), fill=GOLD + (255,))
+                dl.line([(bx + bs * 0.22, yy + bs * 0.52), (bx + bs * 0.43, yy + bs * 0.74), (bx + bs * 0.80, yy + bs * 0.28)],
+                        fill=GREEN, width=max(3, int(8 * fs)), joint="curve")
+                dl.text((bx + bs + int(30 * fs), yy + bs / 2), it, font=fi, fill=CREAM, anchor="lm")
+                self.check_rows.append(L)
+        elif self.hook_style == "cinema":
+            # letterbox bars + film-subtitle line, logo inside the top bar
+            bh = int(H * (0.14 if self.tall else 0.10))
+            dl = ImageDraw.Draw(lay)
+            dl.rectangle([0, 0, W, bh], fill=(8, 14, 13, 255))
+            dl.rectangle([0, H - bh, W, H], fill=(8, 14, 13, 255))
+            g0 = int(H * 0.30)
+            ramp = np.clip(np.linspace(0, 2.2, H - g0), 0, 1)
+            g[g0:, :, 3] = (ramp * 200)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            dl = ImageDraw.Draw(lay)
+            dl.rectangle([0, 0, W, bh], fill=(8, 14, 13, 255))
+            dl.rectangle([0, H - bh, W, H], fill=(8, 14, 13, 255))
+            fk = font("Montserrat600.ttf", 40 * fs)
+            fl = font("Playfair700.ttf", 96 * fs)
+            y = int(H * (0.50 if self.tall else 0.46))
+            parts = [(hook["kicker"], fk, GOLD, W / 2 - dl.textlength(hook["kicker"], font=fk) / 2 - 4 * len(hook["kicker"]) * fs / 2, y, 4 * fs)]
+            y += int(80 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - dl.textlength(line, font=fl) / 2, y, 0))
+                y += int(112 * fs)
+            fsub = font("Montserrat600.ttf", 40 * fs)
+            parts.append((hook["sub"], fsub, CREAM, W / 2 - dl.textlength(hook["sub"], font=fsub) / 2, y + int(16 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int((bh - self.watermark.height) / 2))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
@@ -533,6 +607,12 @@ class Renderer:
             if self.hook_style == "guess":  # 5..1 countdown over the hook shot
                 n = max(1, 5 - int(t / (dur / 5)))
                 im.alpha_composite(self.guess_nums[n])
+            if self.hook_style == "checklist":  # ticks pop in one by one
+                for j, row in enumerate(self.check_rows):
+                    a = ease_out((t - 0.35 - 0.35 * j) / 0.25)
+                    lay = self.fade(row, a, dy=20 * (1 - a))
+                    if lay:
+                        im.alpha_composite(lay)
         im.alpha_composite(self.watermark, self.watermark_pos)
         if label:
             a_in = ease_out((t - 0.14) / 0.22)
