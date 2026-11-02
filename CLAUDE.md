@@ -59,6 +59,24 @@ Bu repo Xəzər Sahil Əmlak üçün satılan evlərin TikTok / Instagram videol
    paylaşım təkrar görünməsin (cəlbedici giriş cümləsi, qruplaşdırılmış xüsusiyyətlər, şərhə çağırış).
    Şəkillər istifadəçinin özünə aiddir — onlar üçün müəllif hüququ xəbərdarlığı lazım deyil.
 
+10. **Hər evin dizaynı fərqli (QANUN):** heç bir evin videosu əvvəlkilərə bənzəməsin — giriş
+    kadrının kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili, keçidlər, hərəkət ritmi, son kadrın
+    düzülüşü hər evdə dəyişir. Loqo, brend adı və brend rəngləri (yaşıl/qızılı/krem) eyni qalır.
+11. **İlk saniyə — maraq kontenti, əvvəl məsləhət (QANUN):** "hazırla" deyiləndə render etmədən ƏVVƏL
+    istifadəçiyə ilk saniyə üçün 2–3 maraq yaradan variant (mətn + dizayn nümunəsi şəkli) göndər,
+    məsləhətləş, seçimdən SONRA tətbiq et.
+12. **"Dostuna göndər" çağırışı (QANUN):** hər videoda oxuyanın marağını çəkən, "hə, dərhal göndərirəm"
+    dedirdən paylaşım çağırışı olsun (məs. "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər").
+    Hər evdə fərqli, evə uyğun mətn; variantları da hook ilə birlikdə məsləhətləş.
+13. **Nömrə yox, şərh çağırışı (QANUN):** videoda telefon nömrəsi əvəzinə
+    "Bu ev neçəyə satılır? Şərhdə qeyd et" yazılır (giriş kadrındakı qutu və son kadr).
+    Nömrə yalnız paylaşım mətnində qalır.
+14. **Qiymət yazılmır (QANUN):** videoda (son kadr daxil) qiymət heç vaxt göstərilmir — istifadəçinin
+    göndərdiyi məlumatda olsa belə. Giriş kadrında "QİYMƏTİ SONDA" yazılmır.
+15. **Uzunluq 25–30 san (QANUN):** video maksimum 25–30 saniyə. Sığmırsa ən zəif/təkrar şəkilləri çıxar
+    (yataq otaqları və əsas otaqlar mümkün qədər qalsın), çıxarılanları istifadəçiyə yaz.
+    Bu qayda köhnə "bütün şəkillər" qaydasını əvəz edir.
+
 ## Brend şablonu (DƏYİŞMİR — hər ev üçün eyni)
 
 Təsdiqlənmiş nümunələr: `video/reference/approved-hook-4x5.jpg` (giriş kadrı) və
@@ -96,9 +114,8 @@ Bütün dizayn `video/render.py`-də sabitdir — yeni ev üçün onu dəyişmə
 - **Temp (QANUN):** yavaş — hər yazı növbəti keçidə qədər rahat oxunmalıdır. render.py-də minimum:
   giriş kadrı 3.2 san, hər yazılı kadr 2.0 san, son kadr 4.8 san, keçid 0.3 san. Bunları azaltma.
   Kadrları sürətləndirmə.
-- **Bütün şəkillər istifadə olunur (QANUN):** istifadəçinin göndərdiyi HƏR şəkil videoya girir —
-  heç bir şəkli çıxarma, video nə qədər uzun olsa belə (bənzər şəkillər də qalır). Şəkilləri
-  məntiqi ardıcıllıqla düz: fasad → həyət/hovuz → giriş/hol → mətbəx → qonaq otağı → yataq otaqları →
+- **Şəkil seçimi:** video 25–30 san-dən uzun olmasın (qayda 15) — ən zəif/təkrar şəkillər çıxır.
+  Şəkillər məntiqi ardıcıllıqla: fasad → həyət/hovuz → hol → mətbəx → qonaq otağı → yataq otaqları →
   qarderob → sanuzellər.
 - **Musiqi:** istifadəçi nömrə deyəndə `"music": "pro:NN"` (`video/music_pro_songs.py`, 1–20).
 - **Formatlar:** 9:16 (TikTok/Reels/Story) və 4:5 (Instagram post), 30fps, səssiz audio
