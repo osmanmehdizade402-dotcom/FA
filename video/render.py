@@ -38,6 +38,11 @@ END_DUR = 4.8    # end card: price, details, phone
 CTA_TEXT = "Ətraflı məlumat və baxış üçün zəng et"
 COMMENT_Q = "Bu ev neçəyə satılır?"
 COMMENT_A = "Şərhdə qeyd et"
+
+
+def T(key, default):
+    """Per-listing text override (e.g. Ukrainian/Russian versions): listing.json "text": {key: value}."""
+    return (LISTING.get("text") or {}).get(key, default)
 END_LOOP = 0.4  # final crossfade back into frame 0 for a seamless loop
 
 # ---- brand ----
@@ -237,13 +242,13 @@ class Renderer:
                             fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(2, int(3 * k)))
         f1 = font("DejaVuSans.ttf", 36 * k)
         f2 = font("DejaVuSans-Bold.ttf", 70 * k)
-        rows = [(CTA_TEXT, f1, GOLD_SOFT, y0 + bh * 0.25), (LISTING["phone"], f2, WHITE, y0 + bh * 0.64)]
+        rows = [(T("cta", CTA_TEXT), f1, GOLD_SOFT, y0 + bh * 0.25), (LISTING["phone"], f2, WHITE, y0 + bh * 0.64)]
         if LISTING.get("comment_cta"):  # user rule: comment prompt instead of the phone number
             if LISTING["hook"].get("cta_style") in ("pill", "answer"):
                 lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
                 d = ImageDraw.Draw(lay)
                 fp = font("Montserrat700.ttf", 42 * k)
-                t = (COMMENT_Q + " " if LISTING["hook"]["cta_style"] == "pill" else "") + COMMENT_A + " ↓"
+                t = (T("comment_q", COMMENT_Q) + " " if LISTING["hook"]["cta_style"] == "pill" else "") + T("comment_a", COMMENT_A) + " ↓"
                 tw = d.textlength(t, font=fp)
                 ph = int(100 * k)
                 yb = H - int(230 * self.u) - ph
@@ -252,8 +257,8 @@ class Renderer:
                 d.text((W / 2, yb + ph / 2), t, font=fp, fill=GREEN, anchor="mm")
                 self.cta, self.cta_top = lay, yb
                 return
-            rows = [(COMMENT_Q, font("Montserrat700.ttf", 52 * k), WHITE, y0 + bh * 0.36),
-                    (COMMENT_A + "  ↓", font("Montserrat600.ttf", 38 * k), GOLD, y0 + bh * 0.72)]
+            rows = [(T("comment_q", COMMENT_Q), font("Montserrat700.ttf", 52 * k), WHITE, y0 + bh * 0.36),
+                    (T("comment_a", COMMENT_A) + "  ↓", font("Montserrat600.ttf", 38 * k), GOLD, y0 + bh * 0.72)]
         for text, f, fill, cy in rows:
             bb = d.textbbox((0, 0), text, font=f)
             d.text((W / 2 - (bb[2] + bb[0]) / 2, cy - (bb[3] + bb[1]) / 2), text, font=f, fill=fill)
@@ -412,13 +417,13 @@ class Renderer:
         items.append((lay, 0.0))
         y += lg.height + 60 * fs
 
-        items.append((self.text_layer([centered("SATILIR", font("Montserrat700.ttf", 40 * fs), GOLD, y, 14 * fs)], False), 0.15))
+        items.append((self.text_layer([centered(T("sold", "SATILIR"), font("Montserrat700.ttf", 40 * fs), GOLD, y, 14 * fs)], False), 0.15))
         y += 70 * fs
         if LISTING.get("comment_cta"):
             return self.build_endcard_v2(items, centered, y, cx)
         if not LISTING.get("price"):  # no price given: invite a call instead
             fq = font("Playfair700.ttf", 92 * fs)
-            items.append((self.text_layer([centered("Qiymət üçün zəng edin", fq, GOLD, y + 40 * fs)], False), 0.3))
+            items.append((self.text_layer([centered(T("call_price", "Qiymət üçün zəng edin"), fq, GOLD, y + 40 * fs)], False), 0.3))
             y += 230 * fs
         # price: Playfair digits + Montserrat manat sign
         fp = font("Playfair700.ttf", 160 * fs)
@@ -452,7 +457,7 @@ class Renderer:
         dd.text((cx - tw / 2, y + (ph - (bb[3] - bb[1])) / 2 - bb[1]), phone, font=fph, fill=GREEN)
         items.append((lay, 0.85))
         y += ph + 40 * fs
-        items.append((self.text_layer([centered("Zəng et  •  WhatsApp  •  DM yaz", font("Montserrat600.ttf", 38 * fs), CREAM, y)], False), 1.0))
+        items.append((self.text_layer([centered(T("contact", "Zəng et  •  WhatsApp  •  DM yaz"), font("Montserrat600.ttf", 38 * fs), CREAM, y)], False), 1.0))
         self.end_items = items
 
     def build_endcard_v2(self, items, centered, y, cx):
@@ -466,10 +471,10 @@ class Renderer:
             y += 70 * fs
         y += 40 * fs
         fq = font("Playfair700.ttf", 78 * fs)
-        items.append((self.text_layer([centered(COMMENT_Q, fq, GOLD, y)], False), 0.7))
+        items.append((self.text_layer([centered(T("comment_q", COMMENT_Q), fq, GOLD, y)], False), 0.7))
         y += 110 * fs
         fp = font("Montserrat700.ttf", 46 * fs)
-        t = COMMENT_A + "  ↓"
+        t = T("comment_a", COMMENT_A) + "  ↓"
         tw = d.textlength(t, font=fp)
         ph = int(100 * fs)
         lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
