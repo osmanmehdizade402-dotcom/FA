@@ -67,7 +67,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 
 20. **Video maksimum 25–30 saniyə.** Sığmırsa ən zəif/təkrar şəkilləri çıxar (yataq otaqları və əsas otaqlar
     mümkün qədər qalsın); çıxarılanları istifadəçiyə yaz. İstifadəçi konkret şəkli çıxar desə — çıxar.
-21. **Temp yavaş:** giriş kadrı ≥3.2 san, hər yazılı kadr ≥2.0 san, son kadr 4.8 san. Kadrları sürətləndirmə.
+21. **Temp yavaş:** giriş (başlıq) kadrı **dəqiq 3 san** (QANUN, render.py `HOOK_MIN`), hər yazılı kadr ≥2.0 san, son kadr 4.8 san. Kadrları sürətləndirmə.
 22. Şəkil ardıcıllığı: fasad → həyət/hovuz → hol → mətbəx → qonaq otağı → yataq otaqları → qarderob → sanuzellər.
 
 ## F. Musiqi
