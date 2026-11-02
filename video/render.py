@@ -31,7 +31,7 @@ FPS = 30
 TR = 0.30  # transition length, seconds
 # Pacing (user rule: slow enough that every label can be read before the next cut).
 # Listing durations are minimums-adjusted here, so all listings get the same pace.
-HOOK_MIN = 3.2   # hook shot: title, sub line and pill
+HOOK_MIN = 3.0   # hook shot: exactly 3 s (user rule, 2026-11-02)
 SHOT_MIN = 2.0   # every labelled shot
 END_DUR = 4.8    # end card: price, details, phone
 # CTA line above the phone number (user rule; same for every listing until the user changes it)
@@ -127,7 +127,7 @@ class Renderer:
         self.tall = H / W > 1.5
         self.u = H / 1920  # vertical layout unit
         self.fs = 1.0 if self.tall else 0.86  # font scale
-        self.shots = [(s[0], max(s[1], HOOK_MIN if i == 0 else SHOT_MIN)) + tuple(s[2:5])
+        self.shots = [(s[0], (HOOK_MIN if i == 0 else max(s[1], SHOT_MIN))) + tuple(s[2:5])
                       for i, s in enumerate(LISTING["shots"])]
         self.focus = [s[5] if len(s) > 5 else None for s in LISTING["shots"]]
         self.photos = {s[0]: load_photo(s[0]) for s in self.shots}
@@ -400,7 +400,7 @@ class Renderer:
             parts = [(hook["kicker"], fk, CREAM, mx, y, 6 * fs)]
             y += int(70 * fs)
             parts.append((hook["big"], fbig, GOLD, mx - int(8 * fs), y, 0))
-            y += int(345 * fs)
+            y += int(380 * fs)
             for line in hook["lines"]:
                 parts.append((line, fl, WHITE, mx, y, 0))
                 y += int(100 * fs)

@@ -1,0 +1,112 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  3.5 sot  •  220 m²",
+  "5 otaq  •  3 sanuzel  •  Tam əşyalı",
+  "Hovuz  •  Söhbətgah  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-3-5sot-220m-C",
+ "label_style": "chip",
+ "share": "Yayda hamını hovuza yığacaq o dostuna göndər!",
+ "hook": {
+  "style": "cinema",
+  "kicker": "MƏRDƏKAN  •  3.5 SOT",
+  "lines": [
+   "Bu yay hovuz",
+   "sənin həyətində"
+  ],
+  "sub": "220 m²  •  5 otaq  •  tam əşyalı",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "pool2",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade1",
+   2.0,
+   "in",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "pool_sun",
+   2.0,
+   "right",
+   "Filterli hovuz",
+   "whip"
+  ],
+  [
+   "stairs",
+   2.0,
+   "up",
+   "Pilləkən holu",
+   "flash"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "left",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "living1",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "bed4",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "bed3",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "closet",
+   2.0,
+   "up",
+   "Qarderob",
+   "whip"
+  ],
+  [
+   "bath3",
+   2.0,
+   "out",
+   "Sanuzel",
+   "whip"
+  ]
+ ]
+}
