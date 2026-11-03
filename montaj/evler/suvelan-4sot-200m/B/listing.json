@@ -1,0 +1,112 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  200 m²",
+  "2 mərtəbə  •  5 otaq  •  4 sanuzel",
+  "Hovuz  •  Yay mətbəxi  •  Kupça  •  İpoteka"
+ ],
+ "music": null,
+ "slug": "suvelan-4sot-200m-B",
+ "label_style": "toppill",
+ "share": "Səhər qəhvəsini terrasda içmək istəyən dostuna göndər!",
+ "hook": {
+  "style": "cinema",
+  "kicker": "ŞÜVƏLAN  •  ELİT MƏHƏLLƏ",
+  "lines": [
+   "Səhər qəhvəsi",
+   "bu terrasda"
+  ],
+  "sub": "2 mərtəbə  •  200 m²  •  4 sot",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "balcony",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "in",
+   "Fasad",
+   "flash"
+  ],
+  [
+   "pool",
+   2.0,
+   "left",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "terrace",
+   2.0,
+   "right",
+   "Terras",
+   "flash"
+  ],
+  [
+   "summer_in",
+   2.0,
+   "in",
+   "Yay mətbəxi",
+   "whip"
+  ],
+  [
+   "stairs",
+   2.0,
+   "up",
+   "Pilləkən holu",
+   "flash"
+  ],
+  [
+   "kitchen2",
+   2.0,
+   "out",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "living",
+   2.0,
+   "left",
+   "Qonaq otağı",
+   "flash"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "bed4",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bath3",
+   2.0,
+   "up",
+   "Sanuzel",
+   "flash"
+  ]
+ ]
+}

@@ -333,6 +333,41 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("index", "toppill"):
+            # index: gold running number + caption bottom-left; toppill: cream pill centred under the logo
+            self.labels = {}
+            style = LISTING["label_style"]
+            k = 0
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                k += 1
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "index":
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.60)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 140)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    fn_ = font("Playfair700.ttf", 120 * fs)
+                    fl_ = font("Montserrat700.ttf", 50 * fs)
+                    y0 = H - int(330 * u) - int(150 * fs)
+                    num = f"{k:02d}"
+                    nw = d.textlength(num, font=fn_)
+                    lay.alpha_composite(self.text_layer([(num, fn_, GOLD, mx, y0, 0),
+                                                         (lab.upper(), fl_, CREAM, mx + nw + int(30 * fs), y0 + int(52 * fs), 4 * fs)]))
+                else:
+                    fp_ = font("Montserrat700.ttf", 46 * fs)
+                    tw = d.textlength(lab, font=fp_)
+                    ph_ = int(88 * fs)
+                    yb = self.watermark_pos[1] + self.watermark.height + int(40 * fs)
+                    d.rounded_rectangle([W / 2 - tw / 2 - 46 * fs, yb, W / 2 + tw / 2 + 46 * fs, yb + ph_], radius=ph_ // 2,
+                                        fill=CREAM + (240,))
+                    d.text((W / 2, yb + ph_ / 2), lab, font=fp_, fill=GREEN, anchor="mm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "serif":
             # large serif caption bottom-left with a short gold rule above it
             self.labels = {}
@@ -546,7 +581,7 @@ class Renderer:
             # short punchy lines stacked in the middle, revealed one by one (rows reuse check_rows timing)
             c0, c1 = int(H * 0.28), int(H * 0.72)
             prof = np.sin(np.linspace(0, np.pi, c1 - c0)) ** 0.8
-            g[c0:c1, :, 3] = (prof * 165)[:, None].astype(np.uint8)
+            g[c0:c1, :, 3] = (prof * 205)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             fl = font("Playfair700.ttf", 112 * fs)
             d = ImageDraw.Draw(lay)
@@ -692,6 +727,43 @@ class Renderer:
             fi = font("Montserrat600.ttf", 34 * fs)
             d.text((W - mx, ym + int(sz * 1.22)), hook["sub"], font=fi, fill=GOLD, anchor="ra")
             self.watermark_pos = (mx, int(H * 0.035))
+        elif self.hook_style == "polaroid":
+            # tilted instant-photo window into the moving shot, green wall around, caption on the frame
+            ang = -4
+            pw, ph = int(W * (0.78 if self.tall else 0.66)), int(H * (0.42 if self.tall else 0.34))
+            fb = int(26 * fs)
+            capb = int(150 * fs)
+            cx, cy = W // 2, int(H * (0.44 if self.tall else 0.42))
+            hole = Image.new("L", (pw, ph), 255)
+            frame = Image.new("RGBA", (pw + 2 * fb, ph + fb + capb), CREAM + (255,))
+            dF = ImageDraw.Draw(frame)
+            fcap = font("Playfair700.ttf", 64 * fs)
+            dF.text((frame.width / 2, ph + fb + capb / 2), hook["lines"][0], font=fcap, fill=GREEN, anchor="mm")
+            fm = Image.new("L", frame.size, 255)
+            ImageDraw.Draw(fm).rectangle([fb, fb, fb + pw, fb + ph], fill=0)
+            frame.putalpha(fm)
+            frame = frame.rotate(ang, expand=True, resample=Image.BICUBIC)
+            holeL = Image.new("L", (pw + 2 * fb, ph + fb + capb), 0)
+            ImageDraw.Draw(holeL).rectangle([fb, fb, fb + pw, fb + ph], fill=255)
+            holeL = holeL.rotate(ang, expand=True, resample=Image.BICUBIC)
+            ox, oy = cx - frame.width // 2, self.watermark_pos[1] + self.watermark.height + int(30 * fs)
+            wallm = Image.new("L", (W, H), 255)
+            wallm.paste(Image.eval(holeL, lambda v: 255 - v), (ox, oy), holeL)
+            wall = Image.new("RGBA", (W, H), GREEN + (255,))
+            wall.putalpha(wallm)
+            lay.alpha_composite(wall)
+            sh = Image.new("RGBA", frame.size, (0, 0, 0, 0))
+            sh.putalpha(frame.split()[3].filter(ImageFilter.GaussianBlur(14 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (ox + int(10 * fs), oy + int(16 * fs)))
+            lay.alpha_composite(frame, (ox, oy))
+            d = ImageDraw.Draw(lay)
+            fk = font("Montserrat700.ttf", 40 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            yk = oy + frame.height + int(40 * fs)
+            tr_ = 8 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            lay.alpha_composite(self.text_layer([(hook["kicker"], fk, GOLD, W / 2 - kw / 2, yk, tr_),
+                                                 (hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, yk + int(70 * fs), 0)], shadow=False))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):

@@ -51,7 +51,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 ## C. Dizayn
 
 15. **Hər evin dizaynı fərqli.** Giriş kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili (`label_style`),
-    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine` (render.py `build_hook_v2`) —
+    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid` (render.py `build_hook_v2`) —
     lazım olsa yenisini əlavə et.
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
@@ -98,5 +98,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif` və ya yoxdur), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill` və ya yoxdur), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

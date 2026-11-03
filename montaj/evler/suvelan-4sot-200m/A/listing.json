@@ -1,0 +1,114 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  200 m²",
+  "2 mərtəbə  •  5 otaq  •  4 sanuzel",
+  "Hovuz  •  Yay mətbəxi  •  Kupça  •  İpoteka"
+ ],
+ "music": null,
+ "slug": "suvelan-4sot-200m-A",
+ "label_style": "index",
+ "share": "Bu videonu 'hər yataq otağına bir sanuzel' deyən o dostuna göndər!",
+ "hook": {
+  "style": "stat",
+  "kicker": "ŞÜVƏLANDA",
+  "big": "4 + 4",
+  "lines": [
+   "4 yataq otağı,",
+   "4 sanuzel",
+   "və hovuz"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "sub": "",
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_facade",
+   2.0,
+   "right",
+   "Hovuz",
+   "punch"
+  ],
+  [
+   "terrace",
+   2.0,
+   "in",
+   "Terras",
+   null
+  ],
+  [
+   "summer_out",
+   2.0,
+   "up",
+   "Yay mətbəxi",
+   "punch"
+  ],
+  [
+   "summer_in",
+   2.0,
+   "left",
+   "Yay mətbəxi",
+   null
+  ],
+  [
+   "stairs",
+   2.0,
+   "up",
+   "Pilləkən holu",
+   "punch"
+  ],
+  [
+   "kitchen1",
+   2.0,
+   "in",
+   "Mətbəx",
+   null
+  ],
+  [
+   "living",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   null
+  ],
+  [
+   "bed2",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed3",
+   2.0,
+   "out",
+   "Yataq otağı",
+   null
+  ],
+  [
+   "bath2",
+   2.0,
+   "up",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
