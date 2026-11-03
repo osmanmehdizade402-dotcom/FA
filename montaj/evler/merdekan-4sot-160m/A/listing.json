@@ -1,0 +1,111 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4 sot  •  160 m²",
+  "4 otaq  •  2 sanuzel + çöl s/q",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-4sot-160m-A",
+ "share": "Bu videonu 'yayı bizdə keçirək' deyəcəyin dostuna göndər!",
+ "hook": {
+  "style": "arch",
+  "kicker": "MƏRDƏKAN",
+  "lines": [
+   "Tağlı pəncərələr,",
+   "hovuzlu həyət"
+  ],
+  "sub": "4 sot  •  160 m²  •  4 otaq",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade2",
+   2.0,
+   "right",
+   "Həyət",
+   "flash"
+  ],
+  [
+   "pool",
+   2.0,
+   "in",
+   "Hovuz",
+   null
+  ],
+  [
+   "garden",
+   2.0,
+   "left",
+   "Bağ",
+   "flash"
+  ],
+  [
+   "gazebo",
+   2.0,
+   "in",
+   "Söhbətgah",
+   null
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "flash"
+  ],
+  [
+   "living2",
+   2.0,
+   "left",
+   "Qonaq otağı",
+   null
+  ],
+  [
+   "living1",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "flash"
+  ],
+  [
+   "bed1",
+   2.0,
+   "out",
+   "Yataq otağı",
+   null
+  ],
+  [
+   "bed2",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   null
+  ],
+  [
+   "bath2",
+   2.0,
+   "in",
+   "Sanuzel",
+   "flash"
+  ]
+ ]
+}

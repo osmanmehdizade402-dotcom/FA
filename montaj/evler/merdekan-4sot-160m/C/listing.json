@@ -1,0 +1,115 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4 sot  •  160 m²",
+  "4 otaq  •  2 sanuzel + çöl s/q",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-4sot-160m-C",
+ "label_style": "chip",
+ "share": "Bu videonu 'evin belə olsun' dediyin adama göndər!",
+ "hook": {
+  "style": "magazine",
+  "kicker": "VILLA",
+  "lines": [
+   "Mərdəkan, 4 sot",
+   "160 m², 4 otaq",
+   "Hovuz və yay-qış mətbəxi",
+   "Pultla açılan darvaza",
+   "Paket kupça"
+  ],
+  "sub": "SATIŞDA",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living2",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   2.0,
+   "in",
+   "Fasad",
+   "punch"
+  ],
+  [
+   "facade2",
+   2.0,
+   "left",
+   "Həyət",
+   "punch"
+  ],
+  [
+   "pool",
+   2.0,
+   "out",
+   "Hovuz",
+   "punch"
+  ],
+  [
+   "garden",
+   2.0,
+   "right",
+   "Bağ",
+   "punch"
+  ],
+  [
+   "gazebo",
+   2.0,
+   "in",
+   "Söhbətgah",
+   "punch"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "up",
+   "Mətbəx",
+   "punch"
+  ],
+  [
+   "living1",
+   2.0,
+   "left",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "punch"
+  ],
+  [
+   "bath2",
+   2.0,
+   "in",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}

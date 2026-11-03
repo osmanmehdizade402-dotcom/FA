@@ -410,7 +410,7 @@ class Renderer:
         g = np.zeros((H, W, 4), np.uint8)
         if self.hook_style == "pov":
             n = int(H * 0.45)
-            g[:n, :, 3] = (np.linspace(1, 0, n) ** 1.2 * 205)[:, None].astype(np.uint8)
+            g[:n, :, 3] = (np.linspace(1, 0, n) ** 0.9 * 230)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             parts = [("POV:", font("Montserrat700.ttf", 58 * fs), GOLD, mx, int(330 * u), 0)]
             fl = font("Playfair700.ttf", 92 * fs)
@@ -590,11 +590,11 @@ class Renderer:
             # photo seen through an arched window cut into a green wall (echoes the house's arches)
             m = Image.new("L", (W, H), 255)
             dm = ImageDraw.Draw(m)
-            ax0, ax1 = int(W * 0.10), int(W * 0.90)
+            ax0, ax1 = (int(W * 0.10), int(W * 0.90)) if self.tall else (int(W * 0.20), int(W * 0.80))
             r = (ax1 - ax0) // 2
-            atop = int(H * (0.17 if self.tall else 0.15))
-            abot = int(H * (0.60 if self.tall else 0.62))
-            dm.ellipse([ax0, atop, ax1, atop + 2 * r], fill=0)
+            atop = int(H * (0.17 if self.tall else 0.12))
+            abot = int(H * (0.60 if self.tall else 0.50))
+            dm.pieslice([ax0, atop, ax1, atop + 2 * r], 180, 360, fill=0)
             dm.rectangle([ax0, atop + r, ax1, abot], fill=0)
             wall = Image.new("RGBA", (W, H), GREEN + (255,))
             wall.putalpha(m)
