@@ -1,0 +1,112 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4.5 sot  •  170 m²",
+  "Zal + 3 yataq  •  2 sanuzel  •  Tam əşyalı",
+  "Hovuz  •  Veranda  •  İsti döşəmə  •  Çıxarış"
+ ],
+ "music": null,
+ "slug": "suvelan-4-5sot-170m-C",
+ "label_style": "index",
+ "share": "Bu videonu 'yelləncək mənim, hovuz sənin' deyəcəyin dostuna göndər!",
+ "hook": {
+  "style": "split",
+  "kicker": "ŞÜVƏLAN  •  ELİT KÜÇƏ",
+  "lines": [
+   "Palma altında",
+   "yelləncək"
+  ],
+  "sub": "4.5 sot  •  170 m²  •  4 otaq  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "swing",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_facade",
+   2.0,
+   "out",
+   "Hovuz",
+   "flash"
+  ],
+  [
+   "pool_sun",
+   2.0,
+   "right",
+   "Hovuz",
+   "punch"
+  ],
+  [
+   "veranda",
+   2.0,
+   "in",
+   "Veranda",
+   "flash"
+  ],
+  [
+   "hall",
+   2.0,
+   "in",
+   "Giriş holu",
+   "punch"
+  ],
+  [
+   "living1",
+   2.0,
+   "left",
+   "Qonaq otağı",
+   "flash"
+  ],
+  [
+   "living2",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "kitchen1",
+   2.0,
+   "out",
+   "Mətbəx",
+   "flash"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "bed3",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bath2",
+   2.0,
+   "up",
+   "Sanuzel",
+   "flash"
+  ]
+ ]
+}
