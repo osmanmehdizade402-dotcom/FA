@@ -586,6 +586,92 @@ class Renderer:
                 y += int(115 * fs)
             parts.append((hook["sub"], fsub, CREAM, mx, y + int(10 * fs), 0))
             lay.alpha_composite(self.text_layer(parts, shadow=False))
+        elif self.hook_style == "arch":
+            # photo seen through an arched window cut into a green wall (echoes the house's arches)
+            m = Image.new("L", (W, H), 255)
+            dm = ImageDraw.Draw(m)
+            ax0, ax1 = int(W * 0.10), int(W * 0.90)
+            r = (ax1 - ax0) // 2
+            atop = int(H * (0.17 if self.tall else 0.15))
+            abot = int(H * (0.60 if self.tall else 0.62))
+            dm.ellipse([ax0, atop, ax1, atop + 2 * r], fill=0)
+            dm.rectangle([ax0, atop + r, ax1, abot], fill=0)
+            wall = Image.new("RGBA", (W, H), GREEN + (255,))
+            wall.putalpha(m)
+            lay.alpha_composite(wall)
+            d = ImageDraw.Draw(lay)
+            lw = max(3, int(6 * fs))
+            d.arc([ax0 - lw, atop - lw, ax1 + lw, atop + 2 * r + lw], 180, 360, fill=GOLD + (255,), width=lw)
+            d.line([(ax0 - lw // 2, atop + r), (ax0 - lw // 2, abot)], fill=GOLD + (255,), width=lw)
+            d.line([(ax1 + lw // 2, atop + r), (ax1 + lw // 2, abot)], fill=GOLD + (255,), width=lw)
+            fk = font("Montserrat700.ttf", 38 * fs)
+            fl = font("Playfair700.ttf", 96 * fs)
+            fsub = font("Montserrat600.ttf", 40 * fs)
+            y = abot + int(50 * fs)
+            tr_ = 8 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            parts = [(hook["kicker"], fk, GOLD, W / 2 - kw / 2, y, tr_)]
+            y += int(70 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, y, 0))
+                y += int(110 * fs)
+            parts.append((hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, y + int(8 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts, shadow=False))
+            self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int((atop - self.watermark.height) / 2))
+        elif self.hook_style == "duo":
+            # one line at the very top, its answer at the bottom, photo breathing in between
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) ** 1.2 * 200)[:, None].astype(np.uint8)
+            g0 = int(H * 0.45)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.6, H - g0), 0, 1) ** 0.8 * 235)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 104 * fs)
+            fsub = font("Montserrat600.ttf", 40 * fs)
+            top, bot = hook["lines"]
+            yt = int(H * (0.15 if self.tall else 0.17))
+            yb = int(H * (0.62 if self.tall else 0.60))
+            parts = [(top, fl, CREAM, W / 2 - d.textlength(top, font=fl) / 2, yt, 0),
+                     (bot, fl, GOLD, W / 2 - d.textlength(bot, font=fl) / 2, yb, 0),
+                     (hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, yb + int(135 * fs), 0)]
+            lay.alpha_composite(self.text_layer(parts))
+            self.check_rows = [Image.new("RGBA", (W, H), (0, 0, 0, 0))]
+            self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int(H * 0.04))
+        elif self.hook_style == "magazine":
+            # magazine cover: huge masthead across the top, cover lines down the left
+            n = int(H * 0.36)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 170)[:, None].astype(np.uint8)
+            g0 = int(H * 0.42)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.6, H - g0), 0, 1) ** 0.8 * 235)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            mast = hook["kicker"]
+            sz = 300 * fs
+            fm = font("Playfair700.ttf", sz)
+            while d.textlength(mast, font=fm) > W - 2 * mx and sz > 60:
+                sz -= 6
+                fm = font("Playfair700.ttf", sz)
+            ym = int(H * (0.12 if self.tall else 0.13))
+            parts = [(mast, fm, CREAM, W / 2 - d.textlength(mast, font=fm) / 2, ym, 0)]
+            fl = font("Montserrat700.ttf", 46 * fs)
+            fb = font("Playfair700.ttf", 88 * fs)
+            y = int(H * (0.55 if self.tall else 0.52))
+            for i, line in enumerate(hook["lines"]):
+                if i == 0:
+                    parts.append((line, fb, GOLD, mx, y, 0))
+                    y += int(115 * fs)
+                else:
+                    parts.append((line, fl, CREAM, mx + int(30 * fs), y, 0))
+                    y += int(68 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            y0 = int(H * (0.55 if self.tall else 0.52)) + int(130 * fs)
+            for i in range(len(hook["lines"]) - 1):
+                cy = y0 + int(68 * fs) * i + int(28 * fs)
+                d.rectangle([mx, cy - int(5 * fs), mx + int(12 * fs), cy + int(7 * fs)], fill=GOLD + (255,))
+            fi = font("Montserrat600.ttf", 34 * fs)
+            d.text((W - mx, ym + int(sz * 1.22)), hook["sub"], font=fi, fill=GOLD, anchor="ra")
+            self.watermark_pos = (mx, int(H * 0.035))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
