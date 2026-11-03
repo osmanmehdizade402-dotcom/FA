@@ -333,6 +333,26 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "serif":
+            # large serif caption bottom-left with a short gold rule above it
+            self.labels = {}
+            fsf = font("Playfair700.ttf", 84 * fs)
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                y0 = H - int(360 * u) - int(100 * fs)
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.62)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 150)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                d.rectangle([mx, y0 - int(24 * fs), mx + int(90 * fs), y0 - int(18 * fs)], fill=GOLD + (255,))
+                lay.alpha_composite(self.text_layer([(lab, fsf, CREAM, mx, y0, 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("band", "tag"):
             self.labels = {}
             style = LISTING["label_style"]

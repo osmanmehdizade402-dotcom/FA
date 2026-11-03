@@ -98,5 +98,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip` və ya yoxdur), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif` və ya yoxdur), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

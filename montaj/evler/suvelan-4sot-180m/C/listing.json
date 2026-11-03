@@ -1,0 +1,112 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  180 m²",
+  "Qonaq otağı + 3 yataq  •  3 sanuzel",
+  "İsitməli hovuz  •  İsti döşəmə  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-4sot-180m-C",
+ "label_style": "band",
+ "share": "Bu videonu 'bu evdə qış heç bitməsin' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "duo",
+  "lines": [
+   "Qışda hovuz?",
+   "Bəli, isitməlidir."
+  ],
+  "sub": "Şüvəlan  •  4 sot  •  180 m²",
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "kicker": ""
+ },
+ "shots": [
+  [
+   "pool_facade",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "video:clip1.mov@0.2",
+   2.0,
+   "none",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "garden",
+   2.0,
+   "right",
+   "Həyət",
+   "whip"
+  ],
+  [
+   "terrace",
+   2.0,
+   "in",
+   "Terras",
+   "whip"
+  ],
+  [
+   "hall",
+   2.0,
+   "up",
+   "Giriş holu",
+   "whip"
+  ],
+  [
+   "video:clip2.mov@0.3",
+   2.0,
+   "none",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "living1",
+   2.0,
+   "left",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "closet",
+   2.0,
+   "out",
+   "Qarderob",
+   "whip"
+  ],
+  [
+   "bath1",
+   2.0,
+   "left",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ]
+ ]
+}
