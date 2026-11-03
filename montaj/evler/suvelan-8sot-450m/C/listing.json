@@ -1,0 +1,112 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  8 sot  •  450 m²",
+  "2 mərtəbə  •  5 otaq  •  4 sanuzel  •  Əşyalı",
+  "Hovuz  •  Yay-qış mətbəxi  •  Manqal  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-8sot-450m-C",
+ "share": "Bu videonu 'bir gün belə evdə yaşayacağıq' dediyin adama göndər!",
+ "hook": {
+  "style": "beats",
+  "lines": [
+   "8 sot.",
+   "450 m².",
+   "Hovuz və palmalar."
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "sub": "",
+  "pill": "",
+  "kicker": ""
+ },
+ "shots": [
+  [
+   "pool_reflect",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_front",
+   2.0,
+   "out",
+   "Fasad",
+   "flash"
+  ],
+  [
+   "pool_palms",
+   2.0,
+   "in",
+   "Hovuz",
+   "punch"
+  ],
+  [
+   "balcony",
+   2.0,
+   "left",
+   "Terras",
+   "flash"
+  ],
+  [
+   "pergola",
+   2.0,
+   "in",
+   "Söhbətgah və manqal",
+   "punch"
+  ],
+  [
+   "entrance",
+   2.0,
+   "in",
+   "Giriş holu",
+   "flash"
+  ],
+  [
+   "openspace",
+   2.0,
+   "out",
+   "Mətbəx",
+   "punch"
+  ],
+  [
+   "living3",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "flash"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed3",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "bed2",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "flash"
+  ]
+ ]
+}

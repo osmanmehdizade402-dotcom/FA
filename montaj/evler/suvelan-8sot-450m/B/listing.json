@@ -1,0 +1,113 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  8 sot  •  450 m²",
+  "2 mərtəbə  •  5 otaq  •  4 sanuzel  •  Əşyalı",
+  "Hovuz  •  Yay-qış mətbəxi  •  Manqal  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-8sot-450m-B",
+ "label_style": "tag",
+ "share": "Palma altında hovuz kənarında yatmaq istəyən dostuna göndər!",
+ "hook": {
+  "style": "pov",
+  "lines": [
+   "palma, hovuz,",
+   "8 sot həyət —",
+   "və bu, Bakıdır"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "sub": "",
+  "pill": "",
+  "kicker": ""
+ },
+ "shots": [
+  [
+   "pool_palms",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_front",
+   2.0,
+   "in",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "pool_reflect",
+   2.0,
+   "right",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "garden",
+   2.0,
+   "left",
+   "Həyət",
+   "whip"
+  ],
+  [
+   "pergola",
+   2.0,
+   "in",
+   "Söhbətgah və manqal",
+   "whip"
+  ],
+  [
+   "stairs",
+   2.0,
+   "up",
+   "Pilləkən holu",
+   "whip"
+  ],
+  [
+   "kitchen",
+   2.0,
+   "out",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "living1",
+   2.0,
+   "left",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "living2",
+   2.0,
+   "in",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "bed4",
+   2.0,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed5",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bath2",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ]
+ ]
+}
