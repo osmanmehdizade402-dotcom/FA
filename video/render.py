@@ -626,7 +626,7 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "split":
             # photo on top, solid brand panel below with the text
-            p0 = int(H * (0.58 if self.tall else 0.55))
+            p0 = int(H * (0.58 if self.tall else 0.47))
             d = ImageDraw.Draw(lay)
             d.rectangle([0, p0, W, H], fill=GREEN + (255,))
             d.rectangle([0, p0, W, p0 + max(3, int(8 * fs))], fill=GOLD + (255,))

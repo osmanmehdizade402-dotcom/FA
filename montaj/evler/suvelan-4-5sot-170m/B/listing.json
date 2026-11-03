@@ -1,0 +1,115 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4.5 sot  •  170 m²",
+  "Zal + 3 yataq  •  2 sanuzel  •  Tam əşyalı",
+  "Hovuz  •  Veranda  •  İsti döşəmə  •  Çıxarış"
+ ],
+ "music": null,
+ "slug": "suvelan-4-5sot-170m-B",
+ "label_style": "serif",
+ "share": "Hər axşam hovuz kənarında çay içmək istəyən dostuna göndər!",
+ "hook": {
+  "style": "checklist",
+  "kicker": "Hamısı hazırdır:",
+  "lines": [
+   "Filterli hovuz",
+   "İsti döşəmə",
+   "Tam əşyalı",
+   "Söhbətgah, veranda",
+   "İpotekaya uyğun"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "sub": "",
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living1",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_facade",
+   2.0,
+   "in",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "veranda",
+   2.0,
+   "left",
+   "Veranda",
+   "whip"
+  ],
+  [
+   "swing",
+   2.0,
+   "out",
+   "Həyət",
+   "whip"
+  ],
+  [
+   "hall",
+   2.0,
+   "in",
+   "Giriş holu",
+   "whip"
+  ],
+  [
+   "living2",
+   2.0,
+   "right",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "kitchen1",
+   2.0,
+   "up",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "bed1",
+   2.0,
+   "in",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   2.0,
+   "left",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed3",
+   2.0,
+   "out",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bath1",
+   2.0,
+   "up",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath3",
+   2.0,
+   "in",
+   "Sanuzel",
+   "whip"
+  ]
+ ]
+}
