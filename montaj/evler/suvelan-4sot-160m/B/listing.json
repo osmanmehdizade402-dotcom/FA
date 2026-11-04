@@ -1,0 +1,138 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  160 m²",
+  "Qonaq otağı + 3 yataq  •  3 sanuzel",
+  "Hovuz  •  Yay mətbəxi  •  Tam əşyalı"
+ ],
+ "music": null,
+ "shot_sec": 1.5,
+ "save_cta": 7,
+ "slug": "suvelan-4sot-160m-B",
+ "label_style": "toppill",
+ "share": "Yay mətbəxində manqal qurmağı sevən dostuna göndər!",
+ "hook": {
+  "style": "magazine",
+  "kicker": "PREMİUM",
+  "lines": [
+   "Şüvəlan, 4 sot",
+   "160 m², 3 yataq",
+   "Hovuz və yay mətbəxi",
+   "İsti döşəmə hər otaqda",
+   "İpotekaya uyğun"
+  ],
+  "sub": "BAĞ EVİ",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_pool",
+   1.5,
+   "out",
+   "Fasad",
+   "flash"
+  ],
+  [
+   "terrace_pool",
+   1.5,
+   "in",
+   "Hovuz",
+   "punch"
+  ],
+  [
+   "facade_garden",
+   1.5,
+   "right",
+   "Həyət",
+   "flash"
+  ],
+  [
+   "summer_out",
+   1.5,
+   "left",
+   "Yay mətbəxi",
+   "punch"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "in",
+   "Yay mətbəxi",
+   "flash"
+  ],
+  [
+   "yard",
+   1.5,
+   "out",
+   "Parking",
+   "punch"
+  ],
+  [
+   "corridor2",
+   1.5,
+   "in",
+   "Giriş holu",
+   "flash"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "right",
+   "Mətbəx",
+   "punch"
+  ],
+  [
+   "corridor1",
+   1.5,
+   "in",
+   "Dəhliz",
+   "flash"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "flash"
+  ],
+  [
+   "closet",
+   1.5,
+   "up",
+   "Qarderob",
+   "punch"
+  ],
+  [
+   "bath2",
+   1.5,
+   "in",
+   "Sanuzel",
+   "flash"
+  ],
+  [
+   "bath1",
+   1.5,
+   "up",
+   "Sanuzel",
+   "punch"
+  ]
+ ]
+}
