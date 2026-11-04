@@ -32,7 +32,8 @@ TR = 0.30  # transition length, seconds
 # Pacing (user rule: slow enough that every label can be read before the next cut).
 # Listing durations are minimums-adjusted here, so all listings get the same pace.
 HOOK_MIN = 3.0   # hook shot: exactly 3 s (user rule, 2026-11-02)
-SHOT_MIN = 2.0   # every labelled shot
+SHOT_MIN = 2.0   # old minimum (only when a listing sets "shot_sec": null)
+SHOT_SEC = 1.5   # user rule (2026-11-04): every labelled shot is exactly 1.5 s
 END_DUR = 4.8    # end card: price, details, phone
 # CTA line above the phone number (user rule; same for every listing until the user changes it)
 CTA_TEXT = "Ətraflı məlumat və baxış üçün zəng et"
@@ -160,7 +161,7 @@ class Renderer:
         self.tall = H / W > 1.5
         self.u = H / 1920  # vertical layout unit
         self.fs = 1.0 if self.tall else 0.86  # font scale
-        smin = LISTING.get("shot_sec")  # test override, e.g. 1.5 (exact length of every labelled shot)
+        smin = LISTING.get("shot_sec", SHOT_SEC)  # user rule: 1.5 s per labelled shot (null -> old 2 s minimum)
         self.shots = [(s[0], (HOOK_MIN if i == 0 else (smin if smin else max(s[1], SHOT_MIN)))) + tuple(s[2:5])
                       for i, s in enumerate(LISTING["shots"])]
         self.focus = [s[5] if len(s) > 5 else None for s in LISTING["shots"]]
@@ -961,7 +962,8 @@ class Renderer:
                 im.alpha_composite(lay)
         if i == 0:  # phone box only on the hook shot (user rule)
             im.alpha_composite(self.cta)
-        if LISTING.get("save_cta") == i:  # test: mid-video "save" prompt, pops in and pulses
+        save_i = LISTING.get("save_cta", len(self.shots) // 2)  # user rule: mid-video save prompt (false -> off)
+        if save_i is not False and save_i == i:  # mid-video "save" prompt, pops in and pulses
             a = ease_out((t - 0.05) / 0.25) * (1 - ease((t - (dur - 0.15)) / 0.15))
             lay = self.fade(self.save_layer(), a * (0.85 + 0.15 * math.sin(t * 2 * math.pi * 2)), dy=-25 * (1 - a))
             if lay:

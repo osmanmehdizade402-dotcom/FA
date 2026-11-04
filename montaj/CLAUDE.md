@@ -86,7 +86,11 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 
 20. **Video maksimum 25–30 saniyə.** Sığmırsa ən zəif/təkrar şəkilləri çıxar (yataq otaqları və əsas otaqlar
     mümkün qədər qalsın); çıxarılanları istifadəçiyə yaz. İstifadəçi konkret şəkli çıxar desə — çıxar.
-21. **Temp yavaş:** giriş (başlıq) kadrı **dəqiq 3 san** (QANUN, render.py `HOOK_MIN`), hər yazılı kadr ≥2.0 san, son kadr 4.8 san. Kadrları sürətləndirmə.
+21. **Temp (QANUN, 2026-11-04):** giriş (başlıq) kadrı **dəqiq 3 san** (render.py `HOOK_MIN`), hər yazılı kadr
+    **dəqiq 1.5 san** (render.py `SHOT_SEC`), son kadr 4.8 san. 30 san-ə giriş + 14 kadr sığır (~28.8 san).
+21a. **"SAXLA, İTİRMƏ" çağırışı (QANUN, 2026-11-04):** hər videonun ortasındakı kadrda əlfəcin ikonlu krem düymə
+    (render.py `save_layer`; avtomatik orta kadr, `"save_cta": <nömrə>` ilə başqa kadr seçmək olar).
+20a. Rule 20 qeydi: 1.5 san ritmlə 30 san-ə giriş + 14 kadr sığır — çox şəkil olanda ən zəif/təkrarları çıxar.
 22. Şəkil ardıcıllığı: fasad → həyət/hovuz → hol → mətbəx → qonaq otağı → yataq otaqları → qarderob → sanuzellər.
 
 ## F. Musiqi
@@ -116,8 +120,3 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
 `share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill` və ya yoxdur), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.
-
-## Testlər (QANUN DEYİL — yalnız istifadəçi test istəyəndə)
-
-- `"shot_sec": 1.5` — hər yazılı kadr dəqiq 1.5 san (sürətli ritm testi; 30 san-ə ~15 kadr sığır).
-- `"save_cta": <kadr nömrəsi>` — videonun ortasında həmin kadrda "SAXLA, İTİRMƏ" çağırışı (əlfəcin ikonlu krem düymə).
