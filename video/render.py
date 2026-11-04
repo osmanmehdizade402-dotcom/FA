@@ -349,6 +349,45 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("osd", "lower"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "osd":  # camera OSD: [ LABEL ] with corner ticks, white mono-ish caps
+                    f_ = font("Montserrat700.ttf", 52 * fs)
+                    t = az_upper(lab)
+                    tr_ = 6 * fs
+                    tw = sum(d.textlength(c, font=f_) + tr_ for c in t) - tr_
+                    x0, y0 = mx, H - int(360 * u) - int(110 * fs)
+                    bw, bh = tw + 80 * fs, int(110 * fs)
+                    L, lw = int(28 * fs), max(3, int(5 * fs))
+                    for (x, y, sx, sy) in [(x0, y0, 1, 1), (x0 + bw, y0, -1, 1), (x0, y0 + bh, 1, -1), (x0 + bw, y0 + bh, -1, -1)]:
+                        d.line([(x, y), (x + sx * L, y)], fill=GOLD + (255,), width=lw)
+                        d.line([(x, y), (x, y + sy * L)], fill=GOLD + (255,), width=lw)
+                    parts = []
+                    x = x0 + 40 * fs
+                    lay.alpha_composite(self.text_layer([(t, f_, WHITE, x, y0 + bh / 2 - 30 * fs, tr_)]))
+                else:  # news lower third: gold square + green bar with cream label, thin cream line under
+                    f_ = font("Montserrat700.ttf", 50 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    bh = int(96 * fs)
+                    y0 = H - int(330 * u) - bh
+                    sq = bh
+                    d.rectangle([0, y0, sq, y0 + bh], fill=GOLD + (255,))
+                    d.rectangle([sq, y0, sq + tw + 80 * fs, y0 + bh], fill=GREEN_DARK + (235,))
+                    d.rectangle([0, y0 + bh, sq + tw + 80 * fs, y0 + bh + max(3, int(6 * fs))], fill=CREAM + (255,))
+                    d.text((sq + 40 * fs, y0 + bh / 2), lab, font=f_, fill=CREAM, anchor="lm")
+                    cx_, cy_ = sq / 2, y0 + bh / 2
+                    r_ = bh * 0.18
+                    d.polygon([(cx_ - r_, cy_ - r_ * 1.2), (cx_ - r_, cy_ + r_ * 1.2), (cx_ + r_ * 1.3, cy_)], fill=GREEN)
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("index", "toppill"):
             # index: gold running number + caption bottom-left; toppill: cream pill centred under the logo
             self.labels = {}
@@ -1123,7 +1162,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -1133,6 +1172,13 @@ class Renderer:
                     canvas.paste(prev, (-off, 0))
                     canvas.paste(cur, (self.W - off, 0))
                     fr = self.hblur(canvas, math.sin(math.pi * k))
+                elif tr == "slide":
+                    off = int(ease(k) * self.H)
+                    fr = Image.new("RGB", (self.W, self.H))
+                    fr.paste(prev, (0, -off))
+                    fr.paste(cur, (0, self.H - off))
+                elif tr == "fade":
+                    fr = Image.blend(prev, cur, ease(k))
                 else:
                     fr = flash(prev, cur, k)
             else:

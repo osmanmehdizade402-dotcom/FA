@@ -1,0 +1,123 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  180 m²  •  1 mərtəbə",
+  "Qonaq otağı + 3 yataq  •  2 sanuzel",
+  "Hovuz  •  Manqal  •  Söhbətgah  •  Çıxarış"
+ ],
+ "music": null,
+ "slug": "suvelan-4sot-180m-b-A",
+ "label_style": "osd",
+ "share": "Bu videonu 'gəl, birlikdə baxmağa gedək' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "viewfinder",
+  "lines": [
+   "Şüvəlanda hovuzlu ev",
+   "ipotekaya hazırdır"
+  ],
+  "sub": "4 sot  •  180 m²  •  3 yataq  •  çıxarış",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "terrace1",
+   1.5,
+   "in",
+   "Həyət",
+   "slide"
+  ],
+  [
+   "terrace1",
+   1.5,
+   "in",
+   "Filterli hovuz",
+   "slide",
+   [
+    0.26,
+    0.53,
+    2.1
+   ]
+  ],
+  [
+   "terrace2",
+   1.5,
+   "left",
+   "Terras",
+   "slide"
+  ],
+  [
+   "veranda",
+   1.5,
+   "out",
+   "Manqal və söhbətgah",
+   "slide"
+  ],
+  [
+   "corridor",
+   1.5,
+   "right",
+   "Dəhliz",
+   "slide"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "in",
+   "Mətbəx",
+   "slide"
+  ],
+  [
+   "living",
+   1.5,
+   "up",
+   "Qonaq otağı",
+   "slide"
+  ],
+  [
+   "bed1",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "slide"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "slide"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "slide"
+  ],
+  [
+   "bath1",
+   1.5,
+   "right",
+   "Sanuzel",
+   "slide"
+  ],
+  [
+   "bath2",
+   1.5,
+   "up",
+   "Sanuzel",
+   "slide"
+  ]
+ ]
+}
