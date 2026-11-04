@@ -22,6 +22,6 @@ PREMİUM bağ evi — Şüvəlan, 4 sot, hovuz və şüşə yay mətbəxi ✨
 💬 Qiymət üçün şərhə "EV" yazın — DM-ə göndərirəm!
 📞 Ətraflı məlumat və baxış: 010-310-03-02 (zəng / WhatsApp)
 
-👉 Yay mətbəxində manqal qurmağı sevən dostuna göndər!
+👉 İpoteka ilə ev axtaran dostuna göndər — bu ev hazırdır!
 
 #şüvəlan #bağevi #villa #hovuzluev #əşyalıev #evsatılır #satılırev #bakıəmlak #ipotekaev #kupçalıev #istidöşəmə #yaymətbəxi #xəzərsahiləmlak #abşeron
