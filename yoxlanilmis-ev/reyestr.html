@@ -1,0 +1,120 @@
+<title>Yoxlanılmış Ev Reyestri</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: tək sütun "rəsmi reyestr" — yuxarıda axtarış, altında nəticə kartı, sonra özünüz yoxlayın bölməsi */
+:root{
+  --green:#163E3A; --deep:#0F2E2A; --gold:#C2A365; --gold-ink:#8A6F35;
+  --bg:#F1EFE8; --paper:#FBFAF6; --ink:#14302C; --muted:#56635F; --line:#DCD5C5;
+  --ok:#2F7A4F; --ok-bg:#E2EFE6; --bad:#A23B2A; --bad-bg:#F6E1DC; --warn:#946414; --warn-bg:#F5EAD3;
+  --display:'Playfair Display', Georgia, serif; --body:'Montserrat', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C201D; --paper:#132C28; --ink:#ECE8DD; --muted:#A9B8B4; --line:#2A4A45; --gold-ink:#D7BC84;
+  --ok:#7CC79A; --ok-bg:#1C3A2C; --bad:#F0A493; --bad-bg:#3D211C; --warn:#E3B868; --warn-bg:#3A3020; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C201D; --paper:#132C28; --ink:#ECE8DD; --muted:#A9B8B4; --line:#2A4A45; --gold-ink:#D7BC84;
+  --ok:#7CC79A; --ok-bg:#1C3A2C; --bad:#F0A493; --bad-bg:#3D211C; --warn:#E3B868; --warn-bg:#3A3020; color-scheme:dark}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.top{background:var(--green);color:#F1EFE8}
+.in{max-width:760px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.top .in{padding-block:26px 30px;display:flex;flex-direction:column;gap:12px}
+.top img{height:52px;width:auto;align-self:flex-start}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+h1{font-family:var(--display);font-size:clamp(28px,5vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.top p{margin:0;color:#CBD8D4;max-width:60ch}
+form{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+input{flex:1 1 220px;min-width:0;font:600 17px var(--body);letter-spacing:.04em;text-transform:uppercase;padding:12px 14px;border-radius:12px;border:2px solid var(--gold);background:#FBFAF6;color:#14302C}
+button{font:700 15px var(--body);background:var(--gold);color:var(--deep);border:none;border-radius:12px;padding:12px 22px;cursor:pointer}
+input:focus-visible,button:focus-visible{outline:3px solid #F1EFE8;outline-offset:2px}
+main.in{padding-block:24px 56px;display:flex;flex-direction:column;gap:26px}
+.result{border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);background:var(--paper)}
+.result.ok{border:2px solid var(--ok)}
+.result.bad{border:2px solid var(--bad);background:var(--bad-bg)}
+.status{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px}
+.dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:16px;flex:none}
+.ok .dot{background:var(--ok);color:#fff}.bad .dot{background:var(--bad);color:#fff}
+.ok .status{color:var(--ok)}.bad .status{color:var(--bad)}
+dl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);margin:0}
+dl div{display:contents}
+dt,dd{padding:8px 0;border-top:1px solid var(--line);margin:0}
+dt{color:var(--muted);font-size:13px}
+dd{font-weight:600;font-variant-numeric:tabular-nums}
+.demo{font-size:12.5px;font-weight:600;color:var(--warn);background:var(--warn-bg);border-radius:8px;padding:7px 10px}
+h2{font-family:var(--display);font-size:24px;margin:0 0 6px}
+.lead{margin:0 0 12px;color:var(--muted)}
+.ways{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.ways li{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.ways b{font-size:15px}
+.ways span{font-size:13.5px;color:var(--muted)}
+.ways a{color:var(--gold-ink);font-weight:700;word-break:break-word}
+.legal{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+.legal p{margin:0}
+.num{font-weight:700;user-select:all;font-variant-numeric:tabular-nums}
+</style>
+
+<header class="top"><div class="in">
+  <img src="data:image/png;base64,{{logo}}" alt="Xəzər Sahil Əmlak">
+  <span class="eyebrow">Xəzər Sahil Əmlak • Açıq reyestr</span>
+  <h1>Yoxlanılmış Ev Reyestri</h1>
+  <p>Videoda, elanda və ya yoxlama vərəqində “Yoxlanılmış Ev” nişanı görmüsünüz? Vərəqin nömrəsini yazın. Reyestrdə yoxdursa, nişan saxtadır.</p>
+  <form id="f" autocomplete="off">
+    <label for="q" hidden>Yoxlama vərəqinin nömrəsi</label>
+    <input id="q" name="q" placeholder="XSE-0001" aria-label="Yoxlama vərəqinin nömrəsi">
+    <button type="submit">Yoxla</button>
+  </form>
+</div></header>
+
+<main class="in">
+  <section class="result" id="res" aria-live="polite">
+    <p class="lead" style="margin:0">Nömrə yoxlama vərəqinin yuxarı sağ küncündədir. Vərəqdəki QR kodu oxutsanız, bu səhifə həmin nömrə ilə açılır.</p>
+  </section>
+
+  <section aria-labelledby="h-self">
+    <h2 id="h-self">Bizə inanmayın, özünüz yoxlayın</h2>
+    <p class="lead">Bu reyestr bizim öz qeydimizdir. Aşağıdakı rəsmi dövlət xidmətləri ilə hər şeyi müstəqil yoxlaya bilərsiniz.</p>
+    <ul class="ways">
+      <li><b>Evin sənədi: elektron çıxarış</b><span>Satıcıdan evin daşınmaz əmlak reyestrindən elektron çıxarışını istəyin. Çıxarışı Əmlak Məsələləri Dövlət Xidmətinin portalından, e-gov.az və ya ASAN xidmət vasitəsilə almaq olar.</span><a href="https://emdk.gov.az" target="_blank" rel="noopener">emdk.gov.az</a></li>
+      <li><b>Agentlik qeydiyyatdadırmı</b><span>Vergi xidmətinin portalında VÖEN ilə vergi ödəyicisini axtarın. Xəzər Sahil Əmlakın VÖEN-i: <span class="num">{{voen}}</span></span><a href="https://new.e-taxes.gov.az" target="_blank" rel="noopener">new.e-taxes.gov.az</a></li>
+      <li><b>Brendin sahibi kimdir</b><span>“Ev Pasportu” və “Yoxlanılmış Ev” adlarının qeydiyyatı Əqli Mülkiyyət Agentliyində: <span class="num">{{tm}}</span></span><a href="https://copat.gov.az" target="_blank" rel="noopener">copat.gov.az</a></li>
+      <li><b>Saxta nişan gördünüz?</b><span>Bizə yazın, araşdıraq: <span class="num">010-310-03-02</span> (zəng / WhatsApp)</span></li>
+    </ul>
+  </section>
+
+  <footer class="legal">
+    <p><b>Vacib:</b> “Yoxlanılmış Ev” Xəzər Sahil Əmlakın öz yoxlama standartıdır. Dövlət sertifikatı deyil və heç bir dövlət qurumu tərəfindən verilmir. Sənəd yoxlamasını partnyor notarius və ya hüquqşünas, texniki yoxlamanı partnyor usta aparır.</p>
+    <p>© 2026 Xəzər Sahil Əmlak. “Ev Pasportu”™, “Yoxlanılmış Ev”™ adları, nişanı, yoxlama vərəqi və bu səhifənin məzmunu Xəzər Sahil Əmlaka məxsusdur. İcazəsiz istifadəsi qadağandır.</p>
+  </footer>
+</main>
+
+<script>
+// Reyestr: hər yoxlanılmış ev bir sətirdir. Yeni ev yoxlananda bura əlavə edilib səhifə yenidən dərc olunur.
+var REGISTRY = [
+  {id: "DEMO-0000", demo: true, house: "Hovuzlu villa, Mərdəkan", size: "4 sot • 160 m²", date: "—",
+   doc: "Partnyor notarius (nümunə)", tech: "Partnyor usta (nümunə)", price: "Bazar diapazonunda (nümunə)", status: "Satışda"}
+];
+var res = document.getElementById("res"), q = document.getElementById("q");
+function norm(s) { return (s || "").trim().toUpperCase().replace(/\s+/g, ""); }
+function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+function show(id) {
+  id = norm(id);
+  if (!id) return;
+  q.value = id;
+  var r = REGISTRY.find(function (x) { return x.id === id; });
+  if (!r) {
+    res.className = "result bad";
+    res.innerHTML = '<div class="status"><span class="dot" aria-hidden="true">✕</span>' + esc(id) + ' reyestrdə yoxdur</div>' +
+      '<p style="margin:0">Bu nömrə ilə yoxlanılmış ev yoxdur. Nişan saxta ola bilər və ya nömrə səhv yazılıb. Bizə yazın: <b>010-310-03-02</b>.</p>';
+    return;
+  }
+  res.className = "result ok";
+  res.innerHTML = '<div class="status"><span class="dot" aria-hidden="true">✓</span>' + esc(r.id) + ' — Yoxlanılmış Ev</div>' +
+    (r.demo ? '<p class="demo">Bu nümunə qeyddir. Real yoxlanılmış evlər buraya əlavə olunacaq.</p>' : "") +
+    "<dl>" + [["Ev", r.house], ["Ölçü", r.size], ["Yoxlama tarixi", r.date], ["1. Sənəd", r.doc], ["2. Texniki", r.tech], ["3. Qiymət", r.price], ["Status", r.status]]
+      .map(function (p) { return "<div><dt>" + p[0] + "</dt><dd>" + esc(p[1]) + "</dd></div>"; }).join("") + "</dl>";
+}
+document.getElementById("f").addEventListener("submit", function (e) { e.preventDefault(); show(q.value); location.hash = norm(q.value); });
+window.addEventListener("hashchange", function () { show(decodeURIComponent(location.hash.slice(1))); });
+if (location.hash.length > 1) show(decodeURIComponent(location.hash.slice(1)));
+</script>

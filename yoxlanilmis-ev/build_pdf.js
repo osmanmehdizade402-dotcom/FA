@@ -5,6 +5,13 @@
 const fs = require('fs');
 const path = require('path');
 const { chromium } = require('playwright');
+const { execFileSync } = require('child_process');
+
+// Açıq reyestr: vərəqdəki QR bu ünvana + #nömrə aparır
+const REGISTRY_URL = 'https://claude.ai/artifact/VgJUo5HjLQLypnSzie2RD5';
+const qr = (text) => execFileSync('python3', ['-c',
+  'import sys,io,base64,qrcode;b=io.BytesIO();qrcode.make(sys.argv[1],border=1).save(b);print("data:image/png;base64,"+base64.b64encode(b.getvalue()).decode())',
+  text]).toString().trim();
 
 const HERE = __dirname;
 const OUT = path.join(HERE, 'out');
@@ -15,9 +22,9 @@ const BLANK = { number: '________', date: '____.____.______', title: '', place: 
   const jobs = [['partnyor-teqdimati.html', null, 'partnyor-teqdimati.pdf']];
   if (process.argv[2]) {
     const data = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
-    jobs.push(['yoxlama-veraqi.html', { ...BLANK, ...data }, `yoxlama-veraqi-${data.slug || 'ev'}.pdf`]);
+    jobs.push(['yoxlama-veraqi.html', { ...BLANK, ...data, qr: qr(`${REGISTRY_URL}#${data.number}`) }, `yoxlama-veraqi-${data.slug || 'ev'}.pdf`]);
   } else {
-    jobs.push(['yoxlama-veraqi.html', BLANK, 'yoxlama-veraqi-bos.pdf']);
+    jobs.push(['yoxlama-veraqi.html', { ...BLANK, qr: qr(REGISTRY_URL) }, 'yoxlama-veraqi-bos.pdf']);
   }
   const browser = await chromium.launch();
   const page = await browser.newPage();

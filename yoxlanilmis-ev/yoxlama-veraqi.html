@@ -35,10 +35,12 @@ td.note{width:52mm;color:var(--muted)}
 .sign{display:grid;grid-template-columns:2fr 1.4fr 1fr;gap:6mm;margin-top:1mm}
 .sign div{border-top:1px solid var(--deep);padding-top:1mm;font-size:7.5pt;color:var(--muted)}
 .hint{font-size:7.5pt;color:var(--muted);margin:0}
-.result{border:2px solid var(--gold);border-radius:3mm;padding:4mm 5mm;display:grid;grid-template-columns:auto 1fr;gap:4mm;align-items:center;background:#FBF8F0}
+.result{border:2px solid var(--gold);border-radius:3mm;padding:4mm 5mm;display:grid;grid-template-columns:auto 1fr auto;gap:4mm;align-items:center;background:#FBF8F0}
 .seal{width:27mm;height:27mm;border-radius:50%;background:var(--green);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:5.8pt;font-weight:700;letter-spacing:.04em;border:1.5mm solid var(--gold)}
 .seal b{font-family:"Playfair",Georgia,serif;font-size:13pt;color:var(--gold);letter-spacing:0}
 .result p{margin:0 0 1.5mm}
+.qr{text-align:center;font-size:6.8pt;font-weight:700;color:var(--green);display:flex;flex-direction:column;gap:1mm;align-items:center}
+.qr img{width:24mm;height:24mm}
 .promise{background:var(--cream);border-radius:3mm;padding:3.5mm 5mm;font-size:8.5pt}
 .promise b{color:var(--green)}
 footer{margin-top:auto;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:1px solid var(--line);padding-top:2mm}
@@ -114,6 +116,7 @@ footer{margin-top:auto;display:flex;justify-content:space-between;font-size:7.5p
     <tr><td>Təklif olunan qiymət diapazon daxilindədir</td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
     <tr><td>Təklif olunan qiymət diapazondan yuxarıdır (səbəbi qeyddə)</td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
   </table>
+  <p class="hint">Bu vərəqin həqiqiliyini QR kodu oxudaraq Xəzər Sahil Əmlakın açıq reyestrində yoxlayın: reyestrdə olmayan nömrə saxtadır. “Yoxlanılmış Ev” agentliyin öz standartıdır, dövlət sertifikatı deyil.</p>
   <p class="hint">Bu, bazar müqayisəsinə əsaslanan rəydir, rəsmi qiymətləndirmə (ekspertiza) deyil.</p>
 
   <div class="result">
@@ -123,6 +126,7 @@ footer{margin-top:auto;display:flex;justify-content:space-between;font-size:7.5p
       <p>1. Sənəd <span class="box"></span> &nbsp;&nbsp; 2. Texniki <span class="box"></span> &nbsp;&nbsp; 3. Qiymət <span class="box"></span></p>
       <p>Nişan verildi: &nbsp; Bəli <span class="box"></span> &nbsp; Xeyr <span class="box"></span> &nbsp;&nbsp; Agent: ______________________ &nbsp; İmza: __________</p>
     </div>
+    <div class="qr"><img src="{{qr}}" alt="Reyestr QR kodu">Reyestrdə yoxla<br>№ {{number}}</div>
   </div>
 
   <div class="promise">
@@ -135,7 +139,7 @@ footer{margin-top:auto;display:flex;justify-content:space-between;font-size:7.5p
     <tr><td style="height:9mm">&nbsp;</td></tr><tr><td style="height:9mm">&nbsp;</td></tr><tr><td style="height:9mm">&nbsp;</td></tr><tr><td style="height:9mm">&nbsp;</td></tr>
   </table>
 
-  <footer><span>Xəzər Sahil Əmlak  •  010-310-03-02</span><span>Vərəq 2 / 2</span></footer>
+  <footer><span>© 2026 Xəzər Sahil Əmlak. “Yoxlanılmış Ev”™ və bu vərəqin forması agentliyə məxsusdur.</span><span>Vərəq 2 / 2</span></footer>
 </section>
 </body>
 </html>
