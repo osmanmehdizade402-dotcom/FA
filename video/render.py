@@ -780,6 +780,97 @@ class Renderer:
             kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
             lay.alpha_composite(self.text_layer([(hook["kicker"], fk, GOLD, W / 2 - kw / 2, yk, tr_),
                                                  (hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, yk + int(70 * fs), 0)], shadow=False))
+        elif self.hook_style == "viewfinder":
+            # camera viewfinder: gold corner brackets, REC dot + timer, centre crosshair, caption bottom
+            d = ImageDraw.Draw(lay)
+            g0 = int(H * 0.55)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.4, H - g0), 0, 1) * 200)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            m, L, lw = int(56 * fs), int(120 * fs), max(3, int(7 * fs))
+            top, bot = int(H * (0.14 if self.tall else 0.17)), int(H * (0.56 if self.tall else 0.50))
+            for (x, y, sx, sy) in [(m, top, 1, 1), (W - m, top, -1, 1), (m, bot, 1, -1), (W - m, bot, -1, -1)]:
+                d.line([(x, y), (x + sx * L, y)], fill=CREAM + (255,), width=lw)
+                d.line([(x, y), (x, y + sy * L)], fill=CREAM + (255,), width=lw)
+            cx, cy = W // 2, (top + bot) // 2
+            d.line([(cx - 34 * fs, cy), (cx + 34 * fs, cy)], fill=CREAM + (200,), width=max(2, int(3 * fs)))
+            d.line([(cx, cy - 34 * fs), (cx, cy + 34 * fs)], fill=CREAM + (200,), width=max(2, int(3 * fs)))
+            self.rec_pos = (m + int(30 * fs), top + int(40 * fs))
+            fr = font("Montserrat700.ttf", 40 * fs)
+            d.text((self.rec_pos[0] + int(44 * fs), self.rec_pos[1]), "CANLI BAXIŞ", font=fr, fill=WHITE, anchor="lm")
+            fl = font("Playfair700.ttf", 98 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            y = bot + int(36 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(112 * fs)
+            parts.append((hook["sub"], fsub, CREAM, mx, y + int(6 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            self.watermark_pos = (W - self.watermark.width - m - int(20 * fs), top + int(16 * fs))
+        elif self.hook_style == "news":
+            # breaking-news lower third: gold "SON DƏQİQƏ" tab, green bar with headline, cream ticker strip
+            d = ImageDraw.Draw(lay)
+            g0 = int(H * 0.50)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.3, H - g0), 0, 1) * 170)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            y0 = int(H * (0.56 if self.tall else 0.50))
+            ft = font("Montserrat700.ttf", 40 * fs)
+            tab = hook["kicker"]
+            tw = d.textlength(tab, font=ft)
+            th = int(72 * fs)
+            d.rectangle([0, y0, mx + tw + 40 * fs, y0 + th], fill=GOLD + (255,))
+            d.text((mx, y0 + th / 2), tab, font=ft, fill=GREEN, anchor="lm")
+            fh = font("Playfair700.ttf", 80 * fs)
+            bh = int(110 * fs) * len(hook["lines"]) + int(40 * fs)
+            d.rectangle([0, y0 + th, W, y0 + th + bh], fill=GREEN_DARK + (235,))
+            yy = y0 + th + int(22 * fs)
+            for i, line in enumerate(hook["lines"]):
+                d.text((mx, yy), line, font=fh, fill=CREAM if i == 0 else GOLD)
+                yy += int(110 * fs)
+            ys = y0 + th + bh
+            sh_ = int(64 * fs)
+            d.rectangle([0, ys, W, ys + sh_], fill=CREAM + (245,))
+            fsb = font("Montserrat700.ttf", 34 * fs)
+            d.text((mx, ys + sh_ / 2), hook["sub"], font=fsb, fill=GREEN, anchor="lm")
+        elif self.hook_style == "ticket":
+            # cream admission ticket with perforated stub: "Yeni ünvan" -> place, big serif destination
+            d = ImageDraw.Draw(lay)
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 120)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            tw_, th_ = int(W * 0.86), int(420 * fs)
+            tk = Image.new("RGBA", (tw_, th_), (0, 0, 0, 0))
+            dt = ImageDraw.Draw(tk)
+            r = int(34 * fs)
+            dt.rounded_rectangle([0, 0, tw_, th_], radius=int(26 * fs), fill=CREAM + (250,))
+            stub = int(tw_ * 0.72)
+            for cy_ in (0, th_):  # notches
+                dt.ellipse([stub - r, cy_ - r, stub + r, cy_ + r], fill=(0, 0, 0, 0))
+            for yy in range(int(r * 1.4), th_ - int(r * 1.2), int(26 * fs)):
+                dt.line([(stub, yy), (stub, yy + int(12 * fs))], fill=GREEN + (160,), width=max(2, int(3 * fs)))
+            pad = int(44 * fs)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            dt.text((pad, pad), hook["kicker"], font=fk, fill=GOLD)
+            fb = font("Playfair700.ttf", 104 * fs)
+            dt.text((pad, pad + int(48 * fs)), hook["lines"][0], font=fb, fill=GREEN)
+            fl2 = font("Montserrat600.ttf", 36 * fs)
+            yy = pad + int(190 * fs)
+            for line in hook["lines"][1:]:
+                dt.text((pad, yy), line, font=fl2, fill=GREEN)
+                yy += int(52 * fs)
+            fs2 = font("Montserrat700.ttf", 28 * fs)
+            sx = stub + (tw_ - stub) / 2
+            dt.text((sx, th_ * 0.30), "GİRİŞ", font=fs2, fill=GOLD, anchor="mm")
+            dt.text((sx, th_ * 0.52), hook["sub"], font=font("Playfair700.ttf", 72 * fs), fill=GREEN, anchor="mm")
+            dt.text((sx, th_ * 0.72), "AÇIQDIR", font=fs2, fill=GOLD, anchor="mm")
+            tk = tk.rotate(3, expand=True, resample=Image.BICUBIC)
+            ox, oy = W // 2 - tk.width // 2, int(H * (0.50 if self.tall else 0.42))
+            shd = Image.new("RGBA", tk.size, (0, 0, 0, 0))
+            shd.putalpha(tk.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.55)))
+            lay.alpha_composite(shd, (ox + int(8 * fs), oy + int(18 * fs)))
+            lay.alpha_composite(tk, (ox, oy))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
@@ -946,6 +1037,11 @@ class Renderer:
             if self.hook_style == "guess":  # 5..1 countdown over the hook shot
                 n = max(1, 5 - int(t / (dur / 5)))
                 im.alpha_composite(self.guess_nums[n])
+            if self.hook_style == "viewfinder" and int(t * 2) % 2 == 0:  # blinking REC dot
+                dd = ImageDraw.Draw(im)
+                x, y = self.rec_pos
+                rr = int(16 * self.fs)
+                dd.ellipse([x - rr, y - rr, x + rr, y + rr], fill=(226, 54, 54, 255))
             if self.hook_style in ("checklist", "beats"):  # rows pop in one by one
                 for j, row in enumerate(self.check_rows):
                     a = ease_out((t - 0.35 - 0.35 * j) / 0.25)
@@ -963,7 +1059,7 @@ class Renderer:
         if i == 0:  # phone box only on the hook shot (user rule)
             im.alpha_composite(self.cta)
         save_i = LISTING.get("save_cta", len(self.shots) // 2)  # user rule: mid-video save prompt (false -> off)
-        if save_i is not False and save_i == i:  # mid-video "save" prompt, pops in and pulses
+        if save_i is not False and i > 0 and save_i == i:  # mid-video "save" prompt, pops in and pulses
             a = ease_out((t - 0.05) / 0.25) * (1 - ease((t - (dur - 0.15)) / 0.15))
             lay = self.fade(self.save_layer(), a * (0.85 + 0.15 * math.sin(t * 2 * math.pi * 2)), dy=-25 * (1 - a))
             if lay:
