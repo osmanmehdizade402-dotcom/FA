@@ -936,6 +936,103 @@ class Renderer:
             shd.putalpha(tk.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.55)))
             lay.alpha_composite(shd, (ox + int(8 * fs), oy + int(18 * fs)))
             lay.alpha_composite(tk, (ox, oy))
+        elif self.hook_style == "pin":
+            # map-style location pin + dotted route "100 m" to a road marker, title under it
+            g0 = int(H * 0.48)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.4, H - g0), 0, 1) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            py = int(H * (0.56 if self.tall else 0.50))
+            px = mx + int(60 * fs)
+            R = int(46 * fs)
+            d.ellipse([px - R, py - 2 * R, px + R, py], fill=GOLD + (255,))
+            d.polygon([(px - R * 0.72, py - R * 0.5), (px + R * 0.72, py - R * 0.5), (px, py + R * 0.9)], fill=GOLD + (255,))
+            d.ellipse([px - R * 0.4, py - R * 1.4, px + R * 0.4, py - R * 0.6], fill=GREEN + (255,))
+            rx = W - mx - int(60 * fs)
+            for x in range(int(px + R * 1.6), int(rx - R), int(34 * fs)):
+                d.ellipse([x, py - 7 * fs, x + 14 * fs, py + 7 * fs], fill=CREAM + (255,))
+            d.rounded_rectangle([rx - R * 0.9, py - R * 0.9, rx + R * 0.9, py + R * 0.9], radius=int(10 * fs), fill=CREAM + (255,))
+            d.rectangle([rx - R * 0.12, py - R * 0.6, rx + R * 0.12, py + R * 0.6], fill=GREEN + (255,))
+            fk = font("Montserrat700.ttf", 44 * fs)
+            d.text(((px + rx) / 2, py - int(62 * fs)), hook["kicker"], font=fk, fill=CREAM, anchor="mm")
+            fl = font("Playfair700.ttf", 96 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            y = py + int(80 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(110 * fs)
+            parts.append((hook["sub"], fsub, CREAM, mx, y + int(6 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "chat":
+            # DM chat: question bubble (cream, left) -> answer bubble (green, right), pop in one by one
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 120)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            self.check_rows = []
+            y = int(H * (0.36 if self.tall else 0.28))
+            f_ = font("Montserrat700.ttf", 50 * fs)
+            for j, line in enumerate(hook["lines"]):
+                L = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                dl = ImageDraw.Draw(L)
+                me = j % 2 == 1
+                words, rows_, cur = line.split(), [], ""
+                for w_ in words:
+                    if dl.textlength((cur + " " + w_).strip(), font=f_) > W * 0.62:
+                        rows_.append(cur); cur = w_
+                    else:
+                        cur = (cur + " " + w_).strip()
+                rows_.append(cur)
+                tw = max(dl.textlength(r, font=f_) for r in rows_)
+                bh = int(66 * fs) * len(rows_) + int(44 * fs)
+                bw = tw + int(70 * fs)
+                x0 = W - mx - bw if me else mx
+                fill = GREEN_DARK + (240,) if me else CREAM + (245,)
+                dl.rounded_rectangle([x0, y, x0 + bw, y + bh], radius=int(36 * fs), fill=fill)
+                tail = [(x0 + bw - 30 * fs, y + bh - 4), (x0 + bw + 18 * fs, y + bh + 14 * fs), (x0 + bw - 70 * fs, y + bh - 4)] if me else \
+                       [(x0 + 30 * fs, y + bh - 4), (x0 - 18 * fs, y + bh + 14 * fs), (x0 + 70 * fs, y + bh - 4)]
+                dl.polygon(tail, fill=fill)
+                for k, r in enumerate(rows_):
+                    dl.text((x0 + 35 * fs, y + int(22 * fs) + k * int(66 * fs)), r, font=f_, fill=CREAM if me else GREEN)
+                self.check_rows.append(L)
+                y += bh + int(46 * fs)
+            fk = font("Montserrat600.ttf", 32 * fs)
+            dk = ImageDraw.Draw(lay)
+            ky = int(H * (0.36 if self.tall else 0.28)) - int(60 * fs)
+            kw = dk.textlength(hook["kicker"], font=fk)
+            dk.rounded_rectangle([W / 2 - kw / 2 - 24 * fs, ky - 26 * fs, W / 2 + kw / 2 + 24 * fs, ky + 26 * fs], radius=int(26 * fs), fill=(0, 0, 0, 120))
+            dk.text((W / 2, ky), hook["kicker"], font=fk, fill=CREAM, anchor="mm")
+        elif self.hook_style == "triptych":
+            # three vertical photo strips (hook photo + extra photos) with gold gutters, title band
+            keys = [self.shots[0][0]] + hook.get("extra", [])
+            sw = W // 3
+            for j, k in enumerate(keys[:3]):
+                im = load_photo(k)
+                iw, ih = im.size
+                ar = sw / H
+                cw, ch = (ih * ar, ih) if iw / ih > ar else (iw, iw / ar)
+                x0 = (iw - cw) / 2
+                strip = im.resize((sw, H), Image.BICUBIC, box=(x0, (ih - ch) / 2, x0 + cw, (ih + ch) / 2)).convert("RGBA")
+                lay.alpha_composite(strip, (j * sw, 0))
+            d = ImageDraw.Draw(lay)
+            gw = max(4, int(8 * fs))
+            for j in (1, 2):
+                d.rectangle([j * sw - gw // 2, 0, j * sw + gw // 2, H], fill=GOLD + (255,))
+            by = int(H * (0.50 if self.tall else 0.45))
+            bh = int(300 * fs)
+            d.rectangle([0, by, W, by + bh], fill=GREEN_DARK + (230,))
+            d.rectangle([0, by, W, by + max(3, int(5 * fs))], fill=GOLD + (255,))
+            d.rectangle([0, by + bh - max(3, int(5 * fs)), W, by + bh], fill=GOLD + (255,))
+            fk = font("Montserrat700.ttf", 38 * fs)
+            fl = font("Playfair700.ttf", 92 * fs)
+            tr_ = 8 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            parts = [(hook["kicker"], fk, GOLD, W / 2 - kw / 2, by + int(40 * fs), tr_)]
+            yy = by + int(100 * fs)
+            for line in hook["lines"]:
+                parts.append((line, fl, CREAM, W / 2 - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(100 * fs)
+            lay.alpha_composite(self.text_layer(parts, shadow=False))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
@@ -1107,7 +1204,7 @@ class Renderer:
                 x, y = self.rec_pos
                 rr = int(16 * self.fs)
                 dd.ellipse([x - rr, y - rr, x + rr, y + rr], fill=(226, 54, 54, 255))
-            if self.hook_style in ("checklist", "beats"):  # rows pop in one by one
+            if self.hook_style in ("checklist", "beats", "chat"):  # rows pop in one by one
                 for j, row in enumerate(self.check_rows):
                     a = ease_out((t - 0.35 - 0.35 * j) / 0.25)
                     lay = self.fade(row, a, dy=20 * (1 - a))
@@ -1258,7 +1355,7 @@ class Renderer:
             proc.stdin.write(fr.tobytes())
         proc.stdin.close()
         proc.wait()
-        if self.hook_style in ("checklist", "beats"):  # text appears over time: cover shows the full hook
+        if self.hook_style in ("checklist", "beats", "chat"):  # text appears over time: cover shows the full hook
             cover = self.full_shot(0, self.shots[0][1] - 0.4).convert("RGB")
         cover.save(out_dir / f"cover-{self.tag.split('-')[0]}.jpg", quality=93)
         return out
