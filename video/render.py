@@ -349,6 +349,32 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "stub":
+            # small cream ticket stub (matches the ticket hook), right-aligned, perforated left edge
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Playfair700.ttf", 58 * fs)
+                tw = d.textlength(lab, font=f_)
+                bh = int(104 * fs)
+                bw = tw + 110 * fs
+                x1 = W - mx
+                x0 = x1 - bw
+                y0 = H - int(340 * u) - bh
+                d.rounded_rectangle([x0, y0, x1, y0 + bh], radius=int(16 * fs), fill=CREAM + (248,))
+                r_ = int(14 * fs)
+                d.ellipse([x0 + 40 * fs - r_, y0 - r_, x0 + 40 * fs + r_, y0 + r_], fill=(0, 0, 0, 0))
+                d.ellipse([x0 + 40 * fs - r_, y0 + bh - r_, x0 + 40 * fs + r_, y0 + bh + r_], fill=(0, 0, 0, 0))
+                for yy in range(int(y0 + r_ * 1.5), int(y0 + bh - r_ * 1.2), int(16 * fs)):
+                    d.line([(x0 + 40 * fs, yy), (x0 + 40 * fs, yy + 7 * fs)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                d.text((x0 + 70 * fs, y0 + bh / 2), lab, font=f_, fill=GREEN, anchor="lm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("osd", "lower"):
             self.labels = {}
             style = LISTING["label_style"]

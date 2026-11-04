@@ -1,0 +1,125 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  180 m²  •  1 mərtəbə",
+  "Qonaq otağı + 3 yataq  •  2 sanuzel",
+  "Hovuz  •  Manqal  •  Söhbətgah  •  Çıxarış"
+ ],
+ "music": null,
+ "slug": "suvelan-4sot-180m-b-C",
+ "label_style": "stub",
+ "share": "Pilləkənsiz, hovuzlu ev arzulayan dostuna göndər!",
+ "hook": {
+  "style": "ticket",
+  "kicker": "YENİ ÜNVANIN",
+  "lines": [
+   "Şüvəlan",
+   "4 sot  •  180 m²  •  1 mərtəbə",
+   "hovuz  •  manqal  •  söhbətgah"
+  ],
+  "sub": "4 sot",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "terrace2",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   1.5,
+   "in",
+   "Fasad",
+   "punch"
+  ],
+  [
+   "terrace1",
+   1.5,
+   "right",
+   "Həyət",
+   "fade"
+  ],
+  [
+   "terrace1",
+   1.5,
+   "in",
+   "Filterli hovuz",
+   "punch",
+   [
+    0.26,
+    0.53,
+    2.1
+   ]
+  ],
+  [
+   "veranda",
+   1.5,
+   "left",
+   "Manqal və söhbətgah",
+   "fade"
+  ],
+  [
+   "corridor",
+   1.5,
+   "in",
+   "Dəhliz",
+   "punch"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "right",
+   "Mətbəx",
+   "fade"
+  ],
+  [
+   "living",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "punch"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "fade"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "punch"
+  ],
+  [
+   "bed3",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "fade"
+  ],
+  [
+   "bath1",
+   1.5,
+   "up",
+   "Sanuzel",
+   "punch"
+  ],
+  [
+   "bath2",
+   1.5,
+   "in",
+   "Sanuzel",
+   "fade"
+  ]
+ ]
+}
