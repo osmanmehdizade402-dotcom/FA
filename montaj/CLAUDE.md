@@ -56,6 +56,19 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 15. **Hər evin dizaynı fərqli.** Giriş kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili (`label_style`),
     keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid` (render.py `build_hook_v2`) —
     lazım olsa yenisini əlavə et.
+15a. **`polaroid` giriş üslubu QADAĞANDIR (QANUN, 2026-11-04)** — variant kimi təklif etmə; yerinə yeni, fərqli formatda bir şey düzəlt.
+15b. **Təkrar yoxdur (QANUN):** hər yeni evdə giriş üslubu, kadr yazısı stili və keçid birləşməsi ƏVVƏLKİ evlərdə
+    işlənməyən olsun. Təklif etməzdən əvvəl aşağıdakı "İşlənmiş" siyahısına bax, yeni ev bitəndə siyahıya əlavə et.
+    Hazır üslublar tükənibsə — render.py-də yeni üslub yarat.
+    **İşlənmiş (hook / label / keçid):**
+    - Mərdəkan 3.5 sot 220 m²: stat / goldbar / flash+punch; cinema / chip / whip
+    - Mərdəkan 4 sot 210 m²: beats(video) / band / punch; ribbon / tag / whip
+    - Mərdəkan 4 sot 160 m²: arch / goldbar / flash; magazine / chip / punch
+    - Şüvəlan 4 sot 180 m²: pov(video) / serif / flash; duo / band / whip
+    - Şüvəlan 4 sot 200 m²: stat / index / punch; cinema / toppill / flash+whip
+    - Şüvəlan 8 sot 450 m²: pov / tag / whip; beats / goldbar / flash+punch
+    - Şüvəlan 4.5 sot 170 m²: checklist / serif / whip; split / index / flash+punch
+    - Şüvəlan 4 sot 160 m²: ribbon / band / whip; magazine / toppill / flash+punch
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.

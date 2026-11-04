@@ -63,6 +63,11 @@ LISTING = None  # set in main
 PHOTOS = None
 
 
+def az_upper(t):
+    """Azerbaijani-aware uppercase: i -> İ (Python's upper() gives dotless I)."""
+    return t.replace("i", "İ").upper()
+
+
 def font(name, size):
     return ImageFont.truetype(str(FONTS / name), int(size))
 
@@ -366,7 +371,7 @@ class Renderer:
                     num = f"{k:02d}"
                     nw = d.textlength(num, font=fn_)
                     lay.alpha_composite(self.text_layer([(num, fn_, GOLD, mx, y0, 0),
-                                                         (lab.upper(), fl_, CREAM, mx + nw + int(30 * fs), y0 + int(52 * fs), 4 * fs)]))
+                                                         (az_upper(lab), fl_, CREAM, mx + nw + int(30 * fs), y0 + int(52 * fs), 4 * fs)]))
                 else:
                     fp_ = font("Montserrat700.ttf", 46 * fs)
                     tw = d.textlength(lab, font=fp_)
@@ -409,7 +414,7 @@ class Renderer:
                 d = ImageDraw.Draw(lay)
                 if style == "band":  # full-width translucent band, tracked capitals between gold rules
                     fb = font("Montserrat700.ttf", 46 * fs)
-                    txt = lab.upper()
+                    txt = az_upper(lab)
                     tr_ = 9 * fs
                     tw = sum(d.textlength(c, font=fb) + tr_ for c in txt) - tr_
                     bh_ = int(120 * fs)

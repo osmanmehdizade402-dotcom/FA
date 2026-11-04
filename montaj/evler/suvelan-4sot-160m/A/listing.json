@@ -1,0 +1,135 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  160 m²",
+  "Qonaq otağı + 3 yataq  •  3 sanuzel",
+  "Hovuz  •  Yay mətbəxi  •  Tam əşyalı"
+ ],
+ "music": null,
+ "shot_sec": 1.5,
+ "save_cta": 7,
+ "slug": "suvelan-4sot-160m-A",
+ "label_style": "band",
+ "share": "Bu videonu 'çamadanı yığ, köçürük' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "ribbon",
+  "kicker": "TAM ƏŞYALI",
+  "lines": [
+   "Çamadanla gəl,",
+   "bu axşam yaşa"
+  ],
+  "sub": "Şüvəlan  •  4 sot  •  160 m²  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_pool",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_garden",
+   1.5,
+   "in",
+   "Fasad",
+   "whip"
+  ],
+  [
+   "terrace_pool",
+   1.5,
+   "right",
+   "Hovuz",
+   "whip"
+  ],
+  [
+   "yard",
+   1.5,
+   "left",
+   "Həyət",
+   "whip"
+  ],
+  [
+   "summer_out",
+   1.5,
+   "in",
+   "Yay mətbəxi",
+   "whip"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "out",
+   "Yay mətbəxi",
+   "whip"
+  ],
+  [
+   "summer_garden",
+   1.5,
+   "right",
+   "Manqal və parking",
+   "whip"
+  ],
+  [
+   "corridor1",
+   1.5,
+   "in",
+   "Giriş holu",
+   "whip"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "left",
+   "Mətbəx",
+   "whip"
+  ],
+  [
+   "living",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "whip"
+  ],
+  [
+   "bed1",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "bed2",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "whip"
+  ],
+  [
+   "closet",
+   1.5,
+   "up",
+   "Qarderob",
+   "whip"
+  ],
+  [
+   "bath1",
+   1.5,
+   "in",
+   "Sanuzel",
+   "whip"
+  ],
+  [
+   "bath2",
+   1.5,
+   "up",
+   "Sanuzel",
+   "whip"
+  ]
+ ]
+}
