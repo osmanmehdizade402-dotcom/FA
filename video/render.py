@@ -36,8 +36,14 @@ SHOT_MIN = 2.0   # every labelled shot
 END_DUR = 4.8    # end card: price, details, phone
 # CTA line above the phone number (user rule; same for every listing until the user changes it)
 CTA_TEXT = "Ətraflı məlumat və baxış üçün zəng et"
-COMMENT_Q = "Bu ev neçəyə satılır?"
+COMMENT_Q = "Bu ev neçəyə satılır?"   # old prompt (kept for listings that override comment_q)
 COMMENT_A = "Şərhdə qeyd et"
+# user rule (2026-11-04): comment keyword CTA in hook and end card
+EV_Q = "Qiymət üçün şərhə yazın:"
+EV_WORD = "“EV”"
+EV_DM = "DM-ə göndərirəm"
+EV_PILL = "Qiymət üçün şərhə “EV” yazın  ↓"
+SAVE_TXT = "SAXLA, İTİRMƏ"  # test: mid-video save prompt (listing "save_cta": shot index)
 
 
 def T(key, default):
@@ -149,7 +155,8 @@ class Renderer:
         self.tall = H / W > 1.5
         self.u = H / 1920  # vertical layout unit
         self.fs = 1.0 if self.tall else 0.86  # font scale
-        self.shots = [(s[0], (HOOK_MIN if i == 0 else max(s[1], SHOT_MIN))) + tuple(s[2:5])
+        smin = LISTING.get("shot_sec")  # test override, e.g. 1.5 (exact length of every labelled shot)
+        self.shots = [(s[0], (HOOK_MIN if i == 0 else (smin if smin else max(s[1], SHOT_MIN)))) + tuple(s[2:5])
                       for i, s in enumerate(LISTING["shots"])]
         self.focus = [s[5] if len(s) > 5 else None for s in LISTING["shots"]]
         self.photos = {s[0]: load_photo(s[0], s[1]) for s in self.shots}
@@ -268,7 +275,10 @@ class Renderer:
                 lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
                 d = ImageDraw.Draw(lay)
                 fp = font("Montserrat700.ttf", 42 * k)
-                t = (T("comment_q", COMMENT_Q) + " " if LISTING["hook"]["cta_style"] == "pill" else "") + T("comment_a", COMMENT_A) + " ↓"
+                if "comment_q" in (LISTING.get("text") or {}):
+                    t = (T("comment_q", COMMENT_Q) + " " if LISTING["hook"]["cta_style"] == "pill" else "") + T("comment_a", COMMENT_A) + " ↓"
+                else:
+                    t = EV_PILL
                 tw = d.textlength(t, font=fp)
                 ph = int(100 * k)
                 yb = H - int(230 * self.u) - ph
@@ -841,6 +851,23 @@ class Renderer:
             items.append((self.text_layer([centered(line, fd, CREAM, y, 0)], False), 0.3 + 0.1 * i))
             y += 70 * fs
         y += 40 * fs
+        if "comment_q" not in (LISTING.get("text") or {}):  # user rule: "EV" keyword CTA
+            fq = font("Playfair700.ttf", 70 * fs)
+            items.append((self.text_layer([centered(EV_Q, fq, GOLD, y)], False), 0.7))
+            y += 100 * fs
+            fw = font("Montserrat700.ttf", 88 * fs)
+            tw = d.textlength(EV_WORD, font=fw)
+            ph = int(140 * fs)
+            lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            dd = ImageDraw.Draw(lay)
+            dd.rounded_rectangle([cx - tw / 2 - 70 * fs, y, cx + tw / 2 + 70 * fs, y + ph], radius=int(28 * fs), fill=GOLD + (255,))
+            dd.text((cx, y + ph / 2), EV_WORD, font=fw, fill=GREEN, anchor="mm")
+            items.append((lay, 0.85))
+            y += ph + 26 * fs
+            items.append((self.text_layer([centered(EV_DM, font("Montserrat600.ttf", 42 * fs), CREAM, y)], False), 0.95))
+            y += 100 * fs
+            self._endcard_share(items, centered, y, d)
+            return
         fq = font("Playfair700.ttf", 78 * fs)
         items.append((self.text_layer([centered(T("comment_q", COMMENT_Q), fq, GOLD, y)], False), 0.7))
         y += 110 * fs
@@ -854,6 +881,10 @@ class Renderer:
         dd.text((cx, y + ph / 2), t, font=fp, fill=GREEN, anchor="mm")
         items.append((lay, 0.85))
         y += ph + 60 * fs
+        self._endcard_share(items, centered, y, d)
+
+    def _endcard_share(self, items, centered, y, d):
+        W, fs = self.W, self.fs
         share = LISTING.get("share")
         if share:
             fs1 = font("Montserrat700.ttf", 46 * fs)
@@ -925,7 +956,30 @@ class Renderer:
                 im.alpha_composite(lay)
         if i == 0:  # phone box only on the hook shot (user rule)
             im.alpha_composite(self.cta)
+        if LISTING.get("save_cta") == i:  # test: mid-video "save" prompt, pops in and pulses
+            a = ease_out((t - 0.05) / 0.25) * (1 - ease((t - (dur - 0.15)) / 0.15))
+            lay = self.fade(self.save_layer(), a * (0.85 + 0.15 * math.sin(t * 2 * math.pi * 2)), dy=-25 * (1 - a))
+            if lay:
+                im.alpha_composite(lay)
         return im
+
+    def save_layer(self):
+        if getattr(self, "_save", None) is None:
+            W, H, fs = self.W, self.H, self.fs
+            lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            d = ImageDraw.Draw(lay)
+            f = font("Montserrat700.ttf", 50 * fs)
+            tw = d.textlength(SAVE_TXT, font=f)
+            ph = int(104 * fs)
+            iw = int(40 * fs)
+            bw = tw + iw + 40 * fs + 100 * fs
+            x0, y0 = W / 2 - bw / 2, int(H * (0.40 if self.tall else 0.38))
+            d.rounded_rectangle([x0, y0, x0 + bw, y0 + ph], radius=ph // 2, fill=CREAM + (245,), outline=GOLD + (255,), width=max(2, int(4 * fs)))
+            bx, by, bh = x0 + 50 * fs, y0 + ph * 0.24, ph * 0.52  # bookmark icon
+            d.polygon([(bx, by), (bx + iw, by), (bx + iw, by + bh), (bx + iw / 2, by + bh * 0.72), (bx, by + bh)], fill=GREEN)
+            d.text((bx + iw + 30 * fs, y0 + ph / 2), SAVE_TXT, font=f, fill=GREEN, anchor="lm")
+            self._save = lay
+        return self._save
 
     def full_shot(self, i, t):
         return self.decorate(self.shot_frame(i, t), i, t)

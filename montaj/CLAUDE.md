@@ -32,8 +32,11 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 
 ## B. Videonun məzmunu
 
-10. **Nömrə yox, şərh çağırışı.** Videoda telefon nömrəsi YOXDUR. Giriş kadrında və son kadrda:
-    **"Bu ev neçəyə satılır? Şərhdə qeyd et"**. Nömrə (`010-310-03-02`) yalnız paylaşım mətnində olur.
+10. **Nömrə yox, "EV" şərh çağırışı (QANUN, 2026-11-04).** Videoda telefon nömrəsi YOXDUR.
+    Giriş kadrında qızılı düymə: **"Qiymət üçün şərhə “EV” yazın ↓"**; son kadrda:
+    **"Qiymət üçün şərhə yazın:"** + qızılı **“EV”** düyməsi + **"DM-ə göndərirəm"** (render.py `EV_*`).
+    Paylaşım mətnində də: "💬 Qiymət üçün şərhə "EV" yazın — DM-ə göndərirəm!".
+    Nömrə (`010-310-03-02`) yalnız paylaşım mətnində olur. (Köhnə "Bu ev neçəyə satılır? Şərhdə qeyd et" əvəz olundu.)
 11. **Qiymət videoda yazılmır** — istifadəçinin məlumatında olsa belə. "QİYMƏTİ SONDA" yazılmır.
     Qiymət yalnız paylaşım mətnində ola bilər (istifadəçi əks deməsə).
 11a. **İSTİSNA — ukrayna dilində videolar (Facebook qrupları / Telegram üçün):** qiymət videoda
@@ -45,8 +48,8 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 13. **Hər şəklin üstündə nə olduğu yazılır:** Hovuz, Həyət, Fasad, Mətbəx, Qonaq otağı, Yataq otağı, Sanuzel,
     Qarderob, Dəhliz, Giriş holu, Yay-qış mətbəxi və s. (giriş kadrından başqa).
     **Zal** şəklində yemək masası olsa belə yazı **"Qonaq otağı"** — heç vaxt "Yemək zonası".
-14. **Son kadr:** yaşıl fon, loqo, "SATILIR", evin məlumatları 3 sətirdə, "Bu ev neçəyə satılır?",
-    qızılı "Şərhdə qeyd et ↓" düyməsi, "dostuna göndər" mətni; sonda girişə yumşaq keçid (loop).
+14. **Son kadr:** yaşıl fon, loqo, "SATILIR", evin məlumatları 3 sətirdə, "Qiymət üçün şərhə yazın:",
+    qızılı “EV” düyməsi, "DM-ə göndərirəm", "dostuna göndər" mətni; sonda girişə yumşaq keçid (loop).
 
 ## C. Dizayn
 
@@ -100,3 +103,8 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
 `share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill` və ya yoxdur), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.
+
+## Testlər (QANUN DEYİL — yalnız istifadəçi test istəyəndə)
+
+- `"shot_sec": 1.5` — hər yazılı kadr dəqiq 1.5 san (sürətli ritm testi; 30 san-ə ~15 kadr sığır).
+- `"save_cta": <kadr nömrəsi>` — videonun ortasında həmin kadrda "SAXLA, İTİRMƏ" çağırışı (əlfəcin ikonlu krem düymə).
