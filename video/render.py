@@ -1391,7 +1391,10 @@ class Renderer:
                         w, h = self.W / z, self.H / z
                         x0, y0 = (self.W - w) / 2, (self.H - h) / 2
                         return im.resize((self.W, self.H), Image.BILINEAR, box=(x0, y0, x0 + w, y0 + h))
-                    fr = Image.blend(zc(prev, 1 + 0.25 * e), zc(cur, 1.2 - 0.2 * e), e)
+                    rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
+                    rc = self.shot_frame(i, t).convert("RGB")
+                    fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "wipe":  # left-to-right reveal with a gold edge
                     xw = int(ease(k) * self.W)
                     fr = prev.copy()
