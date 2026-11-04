@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<title>Yoxlama vərəqi — {{title}}</title>
+<style>
+@font-face{font-family:"Playfair";src:url("../video/fonts/Playfair700.ttf");font-weight:700}
+@font-face{font-family:"Montserrat";src:url("../video/fonts/Montserrat600.ttf");font-weight:400 600}
+@font-face{font-family:"Montserrat";src:url("../video/fonts/Montserrat700.ttf");font-weight:700}
+@page{size:A4;margin:0}
+:root{--green:#163E3A;--deep:#0F2E2A;--gold:#C2A365;--gold-ink:#8A6F35;--cream:#F1EFE8;--line:#D9D3C4;--muted:#55605E}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Montserrat",Arial,sans-serif;font-size:9.5pt;color:var(--deep)}
+.page{width:210mm;height:297mm;padding:14mm 14mm 12mm;display:flex;flex-direction:column;gap:4.2mm;page-break-after:always;position:relative}
+.page:last-child{page-break-after:auto}
+header{display:flex;justify-content:space-between;align-items:center;background:var(--green);color:var(--cream);margin:-14mm -14mm 0;padding:8mm 14mm}
+header img{height:15mm}
+header .doc{text-align:right}
+header .doc b{display:block;font-family:"Playfair",Georgia,serif;font-size:19pt;color:var(--gold)}
+header .doc span{font-size:8.5pt;letter-spacing:.06em}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:3mm;overflow:hidden}
+.meta div{padding:2.2mm 3mm;border-right:1px solid var(--line)}
+.meta div:last-child{border-right:none}
+.meta small{display:block;font-size:7pt;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.meta strong{font-size:10pt}
+h2{font-family:"Playfair",Georgia,serif;font-size:13.5pt;margin:0;display:flex;align-items:baseline;gap:3mm}
+h2 .n{color:var(--gold-ink)}
+h2 .who{margin-left:auto;font-family:"Montserrat",Arial,sans-serif;font-size:8pt;font-weight:600;color:var(--muted)}
+table{width:100%;border-collapse:collapse}
+th{font-size:7.2pt;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);text-align:left;padding:1.4mm 2mm;border-bottom:1.5px solid var(--green)}
+td{padding:1.9mm 2mm;border-bottom:1px solid var(--line);vertical-align:middle}
+td.c,th.c{text-align:center;width:15mm}
+.box{display:inline-block;width:3.6mm;height:3.6mm;border:1.2px solid var(--green);border-radius:.6mm}
+td.note{width:52mm;color:var(--muted)}
+.sign{display:grid;grid-template-columns:2fr 1.4fr 1fr;gap:6mm;margin-top:1mm}
+.sign div{border-top:1px solid var(--deep);padding-top:1mm;font-size:7.5pt;color:var(--muted)}
+.hint{font-size:7.5pt;color:var(--muted);margin:0}
+.result{border:2px solid var(--gold);border-radius:3mm;padding:4mm 5mm;display:grid;grid-template-columns:auto 1fr;gap:4mm;align-items:center;background:#FBF8F0}
+.seal{width:27mm;height:27mm;border-radius:50%;background:var(--green);color:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:5.8pt;font-weight:700;letter-spacing:.04em;border:1.5mm solid var(--gold)}
+.seal b{font-family:"Playfair",Georgia,serif;font-size:13pt;color:var(--gold);letter-spacing:0}
+.result p{margin:0 0 1.5mm}
+.promise{background:var(--cream);border-radius:3mm;padding:3.5mm 5mm;font-size:8.5pt}
+.promise b{color:var(--green)}
+footer{margin-top:auto;display:flex;justify-content:space-between;font-size:7.5pt;color:var(--muted);border-top:1px solid var(--line);padding-top:2mm}
+.legend{display:flex;gap:5mm;font-size:7.5pt;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<section class="page">
+  <header>
+    <img src="../logo/xezer-sahil-emlak-horizontal-transparent.png" alt="Xəzər Sahil Əmlak">
+    <div class="doc"><b>Yoxlama vərəqi</b><span>№ {{number}}  •  Tarix: {{date}}</span></div>
+  </header>
+
+  <div class="meta">
+    <div><small>Ev</small><strong>{{title}}</strong></div>
+    <div><small>Yer</small><strong>{{place}}</strong></div>
+    <div><small>Torpaq / sahə</small><strong>{{size}}</strong></div>
+    <div><small>Otaq / sanuzel</small><strong>{{rooms}}</strong></div>
+  </div>
+  <div class="legend"><span>✓ Uyğundur</span><span>✗ Problem var (qeydə yazın)</span><span>— Aid deyil / yoxlanılmadı</span></div>
+
+  <h2><span class="n">1</span> Sənəd yoxlaması <span class="who">Notarius və ya hüquqşünas</span></h2>
+  <table>
+    <tr><th>Yoxlanılan</th><th class="c">✓</th><th class="c">✗</th><th class="c">—</th><th>Qeyd</th></tr>
+    <tr><td>Sənəd növü (kupça / çıxarış) və etibarlılığı</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Satıcı sənəddəki mülkiyyətçi ilə eynidir</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Bütün sahiblərin razılığı (həyat yoldaşı, varislər)</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>İpoteka / girov yoxdur</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Həbs / qadağa yoxdur</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Borclar yoxdur (işıq, qaz, su, vergi)</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Torpaq və tikili sahəsi sənədə uyğundur</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+  </table>
+  <div class="sign"><div>Ad, soyad / notariat ofisi</div><div>İmza, möhür</div><div>Tarix</div></div>
+
+  <h2><span class="n">2</span> Texniki yoxlama <span class="who">Usta partnyor</span></h2>
+  <table>
+    <tr><th>Yoxlanılan</th><th class="c">✓</th><th class="c">✗</th><th class="c">—</th><th>Qeyd</th></tr>
+    <tr><td>Dam və su axıdıcıları</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Rütubət, kif, çatlar (divar, tavan, zirzəmi)</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Elektrik (paylayıcı, rozetkalar, torpaqlama)</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Su təchizatı və təzyiq</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Qaz xətti və kombi</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Kanalizasiya</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Hovuz avadanlığı (filtr, nasos), varsa</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Real ölçü: tikili ________ m²  •  həyət ________ m²</td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+  </table>
+  <p class="hint">Vizual yoxlamadır: divar və döşəmə içindəki gizli qüsurlar bu yoxlamaya daxil deyil.</p>
+  <div class="sign"><div>Usta, ad, soyad</div><div>İmza</div><div>Tarix</div></div>
+
+  <footer><span>Xəzər Sahil Əmlak  •  010-310-03-02</span><span>Vərəq 1 / 2</span></footer>
+</section>
+
+<section class="page">
+  <header>
+    <img src="../logo/xezer-sahil-emlak-horizontal-transparent.png" alt="Xəzər Sahil Əmlak">
+    <div class="doc"><b>Yoxlama vərəqi</b><span>№ {{number}}  •  {{title}}</span></div>
+  </header>
+
+  <h2><span class="n">3</span> Qiymət yoxlaması <span class="who">Xəzər Sahil Əmlak</span></h2>
+  <p class="hint">Yaxınlıqda son 6 ayda satılmış və ya satışda olan oxşar evlər</p>
+  <table>
+    <tr><th>Ünvan / ərazi</th><th>Sot</th><th>m²</th><th>Qiymət, ₼</th><th>Tarix</th><th>Mənbə</th></tr>
+    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <table>
+    <tr><th>Nəticə</th><th class="c">✓</th><th>Qeyd</th></tr>
+    <tr><td>Oxşar evlərin diapazonu: ____________ – ____________ ₼</td><td class="c"></td><td class="note"></td></tr>
+    <tr><td>Təklif olunan qiymət diapazon daxilindədir</td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+    <tr><td>Təklif olunan qiymət diapazondan yuxarıdır (səbəbi qeyddə)</td><td class="c"><span class="box"></span></td><td class="note"></td></tr>
+  </table>
+  <p class="hint">Bu, bazar müqayisəsinə əsaslanan rəydir, rəsmi qiymətləndirmə (ekspertiza) deyil.</p>
+
+  <div class="result">
+    <div class="seal">XƏZƏR SAHİL<b>✓</b>YOXLANILMIŞ EV</div>
+    <div>
+      <p><b>Nişan yalnız 3 yoxlamanın hamısı imzalandıqda verilir.</b></p>
+      <p>1. Sənəd <span class="box"></span> &nbsp;&nbsp; 2. Texniki <span class="box"></span> &nbsp;&nbsp; 3. Qiymət <span class="box"></span></p>
+      <p>Nişan verildi: &nbsp; Bəli <span class="box"></span> &nbsp; Xeyr <span class="box"></span> &nbsp;&nbsp; Agent: ______________________ &nbsp; İmza: __________</p>
+    </div>
+  </div>
+
+  <div class="promise">
+    <p style="margin:0 0 1.5mm"><b>Alıcıya vədimiz.</b> Bu vərəq alıcıya pulsuz verilir. Sənədlə bağlı problem çıxsa, komissiyamızı qaytarırıq.</p>
+    <p style="margin:0;color:var(--muted)">Qaytarılma şərtləri (hansı hallar, müraciət müddəti, ödəniş qaydası) alqı-satqı xidmət müqaviləsində yazılır. [Mətn hüquqşünas partnyorla təsdiqlənəcək.]</p>
+  </div>
+
+  <h2><span class="n">+</span> Alıcı üçün qeydlər</h2>
+  <table>
+    <tr><td style="height:9mm">&nbsp;</td></tr><tr><td style="height:9mm">&nbsp;</td></tr><tr><td style="height:9mm">&nbsp;</td></tr><tr><td style="height:9mm">&nbsp;</td></tr>
+  </table>
+
+  <footer><span>Xəzər Sahil Əmlak  •  010-310-03-02</span><span>Vərəq 2 / 2</span></footer>
+</section>
+</body>
+</html>

@@ -44,6 +44,7 @@ EV_Q = "Qiymət üçün şərhə yazın:"
 EV_WORD = "“EV”"
 EV_DM = "DM-ə göndərirəm"
 EV_PILL = "Qiymət üçün şərhə “EV” yazın  ↓"
+VERIFIED_TXT = "Xəzər Sahil — Yoxlanılmış Ev"  # badge for houses that passed the 3 checks ("verified": true)
 SAVE_TXT = "SAXLA, İTİRMƏ"  # test: mid-video save prompt (listing "save_cta": shot index)
 
 
@@ -315,7 +316,7 @@ class Renderer:
                 if "comment_q" in (LISTING.get("text") or {}):
                     t = (T("comment_q", COMMENT_Q) + " " if LISTING["hook"]["cta_style"] == "pill" else "") + T("comment_a", COMMENT_A) + " ↓"
                 else:
-                    t = EV_PILL
+                    t = T("ev_pill", EV_PILL)
                 tw = d.textlength(t, font=fp)
                 ph = int(100 * k)
                 yb = H - int(230 * self.u) - ph
@@ -346,6 +347,7 @@ class Renderer:
         logo = Image.open(LOGO).convert("RGBA")
         self.build_watermark(logo)
         self.build_cta()
+        self.verified = self.verified_badge() if LISTING.get("verified") else None
 
         # hook
         hook = LISTING["hook"]
@@ -1142,6 +1144,11 @@ class Renderer:
 
         items.append((self.text_layer([centered(T("sold", "SATILIR"), font("Montserrat700.ttf", 40 * fs), GOLD, y, 14 * fs)], False), 0.15))
         y += 70 * fs
+        if self.verified is not None:
+            lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            lay.alpha_composite(self.verified, (int(cx - self.verified.width / 2), int(y - 10 * fs)))
+            items.append((lay, 0.2))
+            y += self.verified.height + 20 * fs
         if LISTING.get("comment_cta"):
             return self.build_endcard_v2(items, centered, y, cx)
         if not LISTING.get("price"):  # no price given: invite a call instead
@@ -1195,18 +1202,18 @@ class Renderer:
         y += 40 * fs
         if "comment_q" not in (LISTING.get("text") or {}):  # user rule: "EV" keyword CTA
             fq = font("Playfair700.ttf", 70 * fs)
-            items.append((self.text_layer([centered(EV_Q, fq, GOLD, y)], False), 0.7))
+            items.append((self.text_layer([centered(T("ev_q", EV_Q), fq, GOLD, y)], False), 0.7))
             y += 100 * fs
             fw = font("Montserrat700.ttf", 88 * fs)
-            tw = d.textlength(EV_WORD, font=fw)
+            tw = d.textlength(T("ev_word", EV_WORD), font=fw)
             ph = int(140 * fs)
             lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
             dd = ImageDraw.Draw(lay)
             dd.rounded_rectangle([cx - tw / 2 - 70 * fs, y, cx + tw / 2 + 70 * fs, y + ph], radius=int(28 * fs), fill=GOLD + (255,))
-            dd.text((cx, y + ph / 2), EV_WORD, font=fw, fill=GREEN, anchor="mm")
+            dd.text((cx, y + ph / 2), T("ev_word", EV_WORD), font=fw, fill=GREEN, anchor="mm")
             items.append((lay, 0.85))
             y += ph + 26 * fs
-            items.append((self.text_layer([centered(EV_DM, font("Montserrat600.ttf", 42 * fs), CREAM, y)], False), 0.95))
+            items.append((self.text_layer([centered(T("ev_dm", EV_DM), font("Montserrat600.ttf", 42 * fs), CREAM, y)], False), 0.95))
             y += 100 * fs
             self._endcard_share(items, centered, y, d)
             return
@@ -1294,6 +1301,9 @@ class Renderer:
                     if lay:
                         im.alpha_composite(lay)
         im.alpha_composite(self.watermark, self.watermark_pos)
+        if i == 0 and self.verified is not None:  # "Yoxlanılmış Ev" badge under the logo on the hook
+            x, y = self.watermark_pos
+            im.alpha_composite(self.verified, (x, y + self.watermark.height + int(18 * self.fs)))
         if label:
             a_in = ease_out((t - 0.14) / 0.22)
             a_out = 1 - ease((t - (dur - 0.12)) / 0.12)
@@ -1310,6 +1320,26 @@ class Renderer:
             if lay:
                 im.alpha_composite(lay)
         return im
+
+    def verified_badge(self):
+        """Green pill with gold border and a gold check circle: "Xəzər Sahil — Yoxlanılmış Ev"."""
+        fs = self.fs
+        f = font("Montserrat700.ttf", 34 * fs)
+        txt = T("verified", VERIFIED_TXT)
+        tmp = ImageDraw.Draw(Image.new("RGBA", (10, 10)))
+        ph = int(76 * fs)
+        r = ph * 0.32
+        pw = int(ph * 0.30 + 2 * r + 22 * fs + tmp.textlength(txt, font=f) + 36 * fs)
+        lay = Image.new("RGBA", (pw, ph), (0, 0, 0, 0))
+        d = ImageDraw.Draw(lay)
+        d.rounded_rectangle([0, 0, pw - 1, ph - 1], radius=ph // 2, fill=GREEN_DARK + (235,),
+                            outline=GOLD + (255,), width=max(2, int(3 * fs)))
+        cx, cy = ph * 0.30 + r, ph / 2
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=GOLD + (255,))
+        d.line([(cx - r * 0.45, cy + r * 0.02), (cx - r * 0.10, cy + r * 0.38), (cx + r * 0.50, cy - r * 0.36)],
+               fill=GREEN_DARK + (255,), width=max(3, int(6 * fs)), joint="curve")
+        d.text((cx + r + 22 * fs, cy), txt, font=f, fill=WHITE, anchor="lm")
+        return lay
 
     def save_layer(self):
         if getattr(self, "_save", None) is None:

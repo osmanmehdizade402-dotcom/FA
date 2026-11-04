@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<title>Yoxlanılmış Ev — partnyor proqramı</title>
+<style>
+@font-face{font-family:"Playfair";src:url("../video/fonts/Playfair700.ttf");font-weight:700}
+@font-face{font-family:"Montserrat";src:url("../video/fonts/Montserrat600.ttf");font-weight:400 600}
+@font-face{font-family:"Montserrat";src:url("../video/fonts/Montserrat700.ttf");font-weight:700}
+@page{size:A4;margin:0}
+:root{--green:#163E3A;--deep:#0F2E2A;--gold:#C2A365;--gold-ink:#8A6F35;--cream:#F1EFE8;--line:#D9D3C4;--muted:#55605E}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Montserrat",Arial,sans-serif;font-size:9.6pt;line-height:1.45;color:var(--deep)}
+.page{width:210mm;height:297mm;display:flex;flex-direction:column}
+.hero{background:var(--green);color:var(--cream);padding:12mm 15mm 10mm;display:grid;grid-template-columns:1fr auto;gap:8mm;align-items:center}
+.hero img{height:13mm;margin-bottom:6mm}
+.hero h1{font-family:"Playfair",Georgia,serif;font-size:27pt;line-height:1.08;margin:0 0 3mm}
+.hero h1 span{color:var(--gold)}
+.hero p{margin:0;max-width:120mm;color:#CFDBD8;font-size:10.5pt}
+.seal{width:36mm;height:36mm;border-radius:50%;border:2mm solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:7.5pt;font-weight:700;letter-spacing:.08em;background:var(--deep)}
+.seal b{font-family:"Playfair",Georgia,serif;font-size:22pt;color:var(--gold);letter-spacing:0;line-height:1}
+.body{padding:8mm 15mm 0;display:flex;flex-direction:column;gap:6mm;flex:1}
+.eyebrow{font-size:7.5pt;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);margin:0 0 2mm}
+h2{font-family:"Playfair",Georgia,serif;font-size:14pt;margin:0 0 2mm}
+.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5mm}
+.card{border:1px solid var(--line);border-radius:3mm;padding:4mm;display:flex;flex-direction:column;gap:1.5mm}
+.card.you{border:2px solid var(--gold);background:#FBF8F0}
+.card h3{margin:0;font-size:10.5pt}
+.card .who{font-size:7.5pt;font-weight:700;color:var(--gold-ink);text-transform:uppercase;letter-spacing:.08em}
+.card ul{margin:0;padding-left:4mm;font-size:8.6pt;color:#2E3B39}
+.split{display:grid;grid-template-columns:1.1fr 1fr;gap:7mm}
+ol.steps{margin:0;padding:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:2mm}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:7mm 1fr;gap:2mm;font-size:9pt}
+ol.steps li::before{content:counter(s);width:6mm;height:6mm;border-radius:50%;background:var(--green);color:var(--gold);font-weight:700;font-size:8pt;display:flex;align-items:center;justify-content:center}
+.gets{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:2.2mm}
+.gets li{padding-left:5mm;position:relative;font-size:9pt}
+.gets li::before{content:"";position:absolute;left:0;top:1.6mm;width:2.4mm;height:2.4mm;background:var(--gold);border-radius:.5mm}
+.terms{background:var(--cream);border-radius:3mm;padding:4mm 5mm;display:grid;grid-template-columns:repeat(3,1fr);gap:4mm}
+.terms div small{display:block;font-size:7.3pt;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.terms div strong{font-size:11pt}
+.foot{background:var(--deep);color:var(--cream);padding:6mm 15mm;display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+.foot b{font-family:"Playfair",Georgia,serif;font-size:13pt;color:var(--gold)}
+.foot span{font-size:12pt;font-weight:700;letter-spacing:.03em}
+</style>
+</head>
+<body>
+<div class="page">
+  <section class="hero">
+    <div>
+      <img src="../logo/xezer-sahil-emlak-horizontal-transparent.png" alt="Xəzər Sahil Əmlak">
+      <h1>Yoxlanılmış Ev<br><span>partnyor proqramı</span></h1>
+      <p>Satışa qoyduğumuz hər ev 3 yoxlamadan keçir. Yoxlamanı sizinlə birgə edirik, adınız da hər videoda və hər yoxlama vərəqində görünür.</p>
+    </div>
+    <div class="seal">XƏZƏR SAHİL<b>✓</b>YOXLANILMIŞ<br>EV</div>
+  </section>
+
+  <div class="body">
+    <div>
+      <p class="eyebrow">Sistem</p>
+      <h2>Üç yoxlama, bir nişan</h2>
+      <div class="cols">
+        <div class="card you"><span class="who">Notarius / hüquqşünas</span><h3>1. Sənəd yoxlaması</h3>
+          <ul><li>Kupça / çıxarış</li><li>Mülkiyyətçi və bütün sahiblərin razılığı</li><li>İpoteka, girov, həbs</li><li>Kommunal və vergi borcu</li></ul></div>
+        <div class="card you"><span class="who">Usta</span><h3>2. Texniki yoxlama</h3>
+          <ul><li>Dam, rütubət, çatlar</li><li>Elektrik, su, qaz</li><li>Kanalizasiya, hovuz avadanlığı</li><li>Real m² ölçüsü</li></ul></div>
+        <div class="card"><span class="who">Xəzər Sahil Əmlak</span><h3>3. Qiymət yoxlaması</h3>
+          <ul><li>Yaxınlıqdakı oxşar evlərlə müqayisə</li><li>"Bazar diapazonundadır" rəyi</li><li>Hamısı bir yoxlama vərəqində (PDF)</li></ul></div>
+      </div>
+    </div>
+
+    <div class="split">
+      <div>
+        <p class="eyebrow">Necə işləyir</p>
+        <h2>Bir evin yolu</h2>
+        <ol class="steps">
+          <li>Satıcı evi bizə verir, yoxlamaya razılıq imzalayır.</li>
+          <li>Sizə sifariş gəlir: ünvan, sənədlərin surəti, uyğun vaxt.</li>
+          <li>Yoxlayırsınız, vərəqin öz bölmənizi doldurub imzalayırsınız.</li>
+          <li>Ödəniş razılaşdırılmış sabit qiymətlə, yoxlamadan sonra.</li>
+          <li>Ev "Yoxlanılmış Ev" nişanı ilə videoya və açıq qapı gününə çıxır.</li>
+        </ol>
+      </div>
+      <div>
+        <p class="eyebrow">Siz nə qazanırsınız</p>
+        <h2>Partnyorun faydası</h2>
+        <ul class="gets">
+          <li><b>Müntəzəm iş axını:</b> hər yeni ev sizə bir sifarişdir.</li>
+          <li><b>Pulsuz reklam:</b> "Yoxlayan: [adınız]" yoxlama vərəqində və video paylaşım mətnində.</li>
+          <li><b>Yeni müştərilər:</b> alıcılar alqı-satqı üçün sənədləşməyə çox vaxt elə sizə gəlir.</li>
+          <li><b>Açıq qapı şənbələri:</b> həftəlik baxış günlərində tanıtım imkanı.</li>
+          <li><b>Faydalı məzmun:</b> "Ev alanda bu sənədi yoxlayın" videolarında ekspert kimi çıxış.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="terms">
+      <div><small>Yoxlama başına sabit ödəniş</small><strong>[ ____ ₼ ]</strong></div>
+      <div><small>Gözlənilən həcm</small><strong>[ ____ ev / ay ]</strong></div>
+      <div><small>Yoxlama müddəti</small><strong>[ ____ iş günü ]</strong></div>
+    </div>
+  </div>
+
+  <div class="foot"><b>Gəlin birlikdə bazara etibar gətirək.</b><span>Xəzər Sahil Əmlak  •  010-310-03-02</span></div>
+</div>
+</body>
+</html>

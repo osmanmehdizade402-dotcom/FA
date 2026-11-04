@@ -1,0 +1,308 @@
+<title>Ev Pasportu Sistemi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: masa üstü — solda sistem və qərarlar, sağda yapışqan telefon "pəncərəsi"; telefonda tək sütun */
+:root{
+  --green:#163E3A; --deep:#0F2E2A; --gold:#C2A365; --gold-ink:#8A6F35;
+  --bg:#F1EFE8; --paper:#FBFAF6; --ink:#14302C; --muted:#56635F; --line:#DCD5C5;
+  --ok:#2F7A4F; --ok-bg:#E2EFE6; --warn:#946414; --warn-bg:#F5EAD3;
+  --display:'Playfair Display', Georgia, serif; --body:'Montserrat', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0C201D; --paper:#132C28; --ink:#ECE8DD; --muted:#A9B8B4; --line:#2A4A45; --gold-ink:#D7BC84;
+  --ok:#7CC79A; --ok-bg:#1C3A2C; --warn:#E3B868; --warn-bg:#3A3020; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C201D; --paper:#132C28; --ink:#ECE8DD; --muted:#A9B8B4; --line:#2A4A45; --gold-ink:#D7BC84;
+  --ok:#7CC79A; --ok-bg:#1C3A2C; --warn:#E3B868; --warn-bg:#3A3020; color-scheme:dark}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.top{background:var(--green);color:#F1EFE8}
+.top .in{max-width:1180px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 30px;display:flex;flex-direction:column;gap:12px}
+.top img{height:54px;width:auto;align-self:flex-start}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--gold)}
+h1{font-family:var(--display);font-size:clamp(30px,5vw,48px);line-height:1.08;margin:0;text-wrap:balance}
+h1 span{color:var(--gold)}
+.top p{margin:0;max-width:62ch;color:#CBD8D4}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 60px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:36px;align-items:start}
+@media (max-width:960px){.wrap{grid-template-columns:minmax(0,1fr)}.phone-col{order:-1}}
+main{display:flex;flex-direction:column;gap:34px;min-width:0}
+h2{font-family:var(--display);font-size:26px;margin:0 0 4px;text-wrap:balance}
+.lead{margin:0 0 14px;color:var(--muted);max-width:65ch}
+.flow{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;counter-reset:f}
+@media (max-width:640px){.flow{grid-template-columns:minmax(0,1fr)}}
+.flow li{counter-increment:f;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.flow li::before{content:counter(f);font-family:var(--display);font-size:22px;color:var(--gold-ink);line-height:1}
+.flow b{font-size:15px}
+.flow span{font-size:13px;color:var(--muted)}
+.flow li.hl{background:var(--green);border-color:var(--green);color:#F1EFE8}
+.flow li.hl span{color:#C2D2CE}.flow li.hl::before{color:var(--gold)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--green)}
+td{padding:11px 12px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;white-space:nowrap}
+.fmt{display:inline-block;font-size:11px;font-weight:700;border-radius:999px;padding:2px 9px;background:var(--warn-bg);color:var(--warn);white-space:nowrap}
+.fmt.v{background:var(--ok-bg);color:var(--ok)}
+.q{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.q legend{font-weight:700;padding:0;font-size:15px}
+.q fieldset{border:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13.5px;cursor:pointer;background:var(--bg)}
+.opts input{accent-color:var(--green);margin:0}
+.opts label:has(input:checked){border-color:var(--gold);background:var(--warn-bg);font-weight:600}
+.opts label.rec::after{content:"tövsiyə";font-size:10px;font-weight:700;color:var(--ok);background:var(--ok-bg);border-radius:999px;padding:1px 6px}
+.qs{display:flex;flex-direction:column;gap:10px}
+.copybar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:6px}
+button,.btn{font:inherit;font-weight:700;font-size:14px;background:var(--gold);color:var(--deep);border:none;border-radius:999px;padding:10px 18px;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:focus-visible,input:focus-visible,label:focus-within{outline:2px solid var(--gold);outline-offset:2px}
+#answers{width:100%;min-height:120px;font:13px/1.5 var(--body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:10px}
+.note{font-size:12.5px;color:var(--muted)}
+/* phone */
+.phone-col{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px);display:flex;flex-direction:column;gap:12px;min-width:0}
+@media (max-width:960px){.phone-col{position:static}}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:4px}
+.tabs button{background:transparent;color:var(--muted);padding:8px 4px;font-size:12px;border-radius:999px}
+.tabs button[aria-selected="true"]{background:var(--green);color:#F1EFE8}
+.phone{width:100%;max-width:380px;margin:0 auto;border-radius:38px;background:#0A1715;padding:10px;box-shadow:0 20px 50px rgba(10,23,21,.28)}
+.screen{border-radius:30px;overflow:hidden;background:#F1EFE8;color:#14302C;height:680px;overflow-y:auto;position:relative;scrollbar-width:thin}
+.bar{position:sticky;top:0;z-index:2;background:#163E3A;color:#F1EFE8;display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+.bar img{height:24px;width:auto}
+.bar span{font-size:11px;font-weight:700;letter-spacing:.12em;color:#C2A365}
+.sc{padding:14px;display:flex;flex-direction:column;gap:12px}
+.hero{position:relative;border-radius:14px;overflow:hidden}
+.hero img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.badge{position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:6px;background:rgba(15,46,42,.9);border:1.5px solid #C2A365;color:#fff;border-radius:999px;padding:4px 10px 4px 5px;font-size:11px;font-weight:700}
+.badge i{width:18px;height:18px;border-radius:50%;background:#C2A365;color:#0F2E2A;display:grid;place-items:center;font-style:normal;font-size:11px}
+.card{background:#FBFAF6;border:1px solid #DCD5C5;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.card h3{margin:0;font-family:var(--display);font-size:18px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;padding:6px 0;border-top:1px solid #E5DFD2}
+.row:first-of-type{border-top:none}
+.chip{font-size:11px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.chip.ok{background:#E2EFE6;color:#2F7A4F}.chip.w{background:#F5EAD3;color:#946414}
+.demo{font-size:11px;font-weight:600;color:#946414;background:#F5EAD3;border-radius:8px;padding:6px 9px}
+.check{display:flex;align-items:center;gap:10px;font-size:13px;padding:7px 0;border-top:1px solid #E5DFD2;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:#163E3A}
+.prog{height:8px;border-radius:999px;background:#E5DFD2;overflow:hidden}
+.prog div{height:100%;background:#C2A365;transition:width .3s}
+.house{display:grid;grid-template-columns:76px 1fr;gap:10px;align-items:center}
+.house img{width:76px;height:76px;border-radius:10px;object-fit:cover}
+.house b{display:block;font-size:13.5px}.house small{color:#56635F;font-size:12px}
+.slot{font-variant-numeric:tabular-nums;font-weight:700;color:#8A6F35;font-size:12px}
+.calc label{display:grid;grid-template-columns:1fr 100px;align-items:center;gap:8px;font-size:12.5px;padding:5px 0;border-top:1px solid #E5DFD2}
+.calc input{font:inherit;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;border:1px solid #DCD5C5;border-radius:8px;padding:5px 8px;background:#fff;color:#14302C;width:100%}
+.big{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.big div{background:#163E3A;color:#F1EFE8;border-radius:12px;padding:10px}
+.big small{display:block;font-size:11px;color:#C2D2CE}
+.big strong{font-family:var(--display);font-size:22px;color:#C2A365;font-variant-numeric:tabular-nums}
+.sbtn{background:#C2A365;color:#0F2E2A;border-radius:999px;padding:10px;text-align:center;font-weight:700;font-size:14px;border:none;width:100%}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top"><div class="in">
+  <img src="data:image/png;base64,{{logo}}" alt="Xəzər Sahil Əmlak">
+  <span class="eyebrow">Xəzər Sahil Əmlak • Konsept, müzakirə üçün</span>
+  <h1>Ev Pasportu <span>sistemi</span></h1>
+  <p>Yoxlanılmış ev, açıq qapı şənbəsi, investor hesabı və həftəlik məzmun bir sistemdə birləşir. Sağdakı pəncərədə tətbiqin necə görünəcəyinə baxın, aşağıda qərarları seçin və cavabları söhbətə göndərin.</p>
+</div></header>
+
+<div class="wrap">
+<main>
+  <section aria-labelledby="h-flow">
+    <h2 id="h-flow">Sistem necə işləyir</h2>
+    <p class="lead">Bir evin yolu: qəbuldan satışa qədər hər addım bir-birini qidalandırır.</p>
+    <ol class="flow">
+      <li><b>Ev qəbulu</b><span>Satıcı evi verir, yoxlamaya razılıq imzalayır.</span></li>
+      <li><b>3 yoxlama</b><span>Sənəd (notarius), texniki (usta), qiymət (biz).</span></li>
+      <li class="hl"><b>“Yoxlanılmış Ev” nişanı</b><span>Videoda nişan, alıcıya pulsuz PDF yoxlama vərəqi.</span></li>
+      <li><b>Pasport + video</b><span>Hər evin QR-lı pasport səhifəsi, TikTok/Reels videosu.</span></li>
+      <li><b>Açıq qapı şənbəsi</b><span>Bir gündə 3–4 evə birgə baxış, bir marşrut.</span></li>
+      <li><b>Satış və ya investor</b><span>Ailəyə ev, investora gəlir hesabı ilə yay evi.</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="h-week">
+    <h2 id="h-week">Həftəlik məzmun planı</h2>
+    <p class="lead">Hər gün bir format. Şənbə ətrafında qurulub: həftə ərzində maraq yığılır, şənbə baxış olur, bazar günü nəticə paylaşılır.</p>
+    <div class="tablewrap"><table>
+      <tr><th>Gün</th><th>Format</th><th>Nə paylaşırıq</th><th>Çağırış</th></tr>
+      <tr><td>Bazar ertəsi</td><td><span class="fmt v">Yoxlanılmış ev</span></td><td>Həftənin 1-ci evi: nişanlı video, şənbə marşrutuna daxildir.</td><td>Şərhə “EV”</td></tr>
+      <tr><td>Çərşənbə axşamı</td><td><span class="fmt">Faydalı</span></td><td>“Ev alanda bu sənədi mütləq yoxlayın”: 30 saniyədə kupça, girov, həbs. Partnyor notarius danışır.</td><td>“SAXLA”</td></tr>
+      <tr><td>Çərşənbə</td><td><span class="fmt v">Yoxlanılmış ev</span></td><td>Həftənin 2-ci evi + “bu evi yoxladıq, tapdıqlarımız” (usta çəkilişi).</td><td>Şərhə “EV”</td></tr>
+      <tr><td>Cümə axşamı</td><td><span class="fmt">İnvestor</span></td><td>“Bu bağ evini alıb yayda kirayə versəniz…”: kalkulyatorla real rəqəmlər.</td><td>Şərhə “GƏLİR”</td></tr>
+      <tr><td>Cümə</td><td><span class="fmt">Açıq qapı</span></td><td>Şənbə elanı: 3 villa, 1 gün (hazır video). Story-də geri sayım.</td><td>Şərhə “ŞƏNBƏ”</td></tr>
+      <tr><td>Şənbə</td><td><span class="fmt">Canlı</span></td><td>Açıq qapı günü: story-lər, qısa canlı yayım, qonaqların sualları.</td><td>DM-də marşrut</td></tr>
+      <tr><td>Bazar</td><td><span class="fmt">Nəticə</span></td><td>“Şənbə nə oldu”: neçə ailə gəldi, ən çox sual verilən mövzu, gələn həftənin evləri.</td><td>Növbəti şənbəyə yazıl</td></tr>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="h-dec">
+    <h2 id="h-dec">Qərar verməli olduğumuz suallar</h2>
+    <p class="lead">Hər sualda bir variant seçin. “Tövsiyə” mənim fikrimdir, qərar sizindir. Sonda cavabları kopyalayıb söhbətə yapışdırın.</p>
+    <div class="qs" id="qs"></div>
+    <div class="copybar">
+      <button type="button" id="copy">Cavabları kopyala</button>
+      <button type="button" class="ghost" id="reset">Sıfırla</button>
+      <span class="note" id="copied" aria-live="polite"></span>
+    </div>
+    <textarea id="answers" readonly aria-label="Seçilmiş cavablar"></textarea>
+  </section>
+</main>
+
+<aside class="phone-col" aria-label="Tətbiqin pəncərəsi">
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-s="pasport">Pasport</button>
+    <button role="tab" aria-selected="false" data-s="yoxlama">Yoxlama</button>
+    <button role="tab" aria-selected="false" data-s="senbe">Şənbə</button>
+    <button role="tab" aria-selected="false" data-s="investor">İnvestor</button>
+  </div>
+  <div class="phone"><div class="screen" id="screen">
+    <div class="bar"><img src="data:image/png;base64,{{logo}}" alt=""><span id="bartitle">EV PASPORTU</span></div>
+
+    <div class="sc" data-screen="pasport">
+      <div class="hero"><img src="data:image/jpeg;base64,{{p_hero}}" alt="Mərdəkanda tağlı pəncərəli villa"><span class="badge"><i>✓</i>Xəzər Sahil — Yoxlanılmış Ev</span></div>
+      <p class="demo">Nümunə ekran. Bu ev hələ real yoxlamadan keçməyib.</p>
+      <div class="card"><h3>Hovuzlu villa, Mərdəkan</h3><span style="font-size:13px;color:#56635F">4 sot • 160 m² • 4 otaq • 2 sanuzel</span></div>
+      <div class="card"><h3>3 yoxlama</h3>
+        <div class="row">Sənəd: kupça, girov, həbs, borc<span class="chip ok">✓ Notarius</span></div>
+        <div class="row">Texniki: dam, rütubət, kommunikasiya<span class="chip ok">✓ Usta</span></div>
+        <div class="row">Qiymət: bazar diapazonunda<span class="chip ok">✓ Xəzər Sahil</span></div>
+      </div>
+      <button class="sbtn" type="button">Yoxlama vərəqini yüklə (PDF)</button>
+      <div class="card"><div class="row">Sənəd problemi çıxsa<span class="chip w">komissiya geri</span></div></div>
+    </div>
+
+    <div class="sc" data-screen="yoxlama" hidden>
+      <div class="card"><h3>Partnyor kabineti</h3><span style="font-size:13px;color:#56635F">Notarius və usta öz bölməsini telefondan doldurur.</span>
+        <div class="prog" aria-hidden="true"><div id="pbar" style="width:0%"></div></div><span style="font-size:12px" id="ptext">0 / 7 yoxlandı</span></div>
+      <div class="card" id="checks">
+        <b style="font-size:13px">Sənəd yoxlaması</b>
+        <label class="check"><input type="checkbox" id="c1"> Kupça / çıxarış etibarlıdır</label>
+        <label class="check"><input type="checkbox" id="c2"> Bütün sahiblərin razılığı var</label>
+        <label class="check"><input type="checkbox" id="c3"> Girov, ipoteka, həbs yoxdur</label>
+        <label class="check"><input type="checkbox" id="c4"> Kommunal borc yoxdur</label>
+        <b style="font-size:13px;margin-top:6px">Texniki yoxlama</b>
+        <label class="check"><input type="checkbox" id="c5"> Dam və rütubət</label>
+        <label class="check"><input type="checkbox" id="c6"> Elektrik, su, qaz</label>
+        <label class="check"><input type="checkbox" id="c7"> Real ölçü: 160 m²</label>
+      </div>
+      <button class="sbtn" type="button" id="issue" disabled style="opacity:.5">Nişanı ver</button>
+    </div>
+
+    <div class="sc" data-screen="senbe" hidden>
+      <div class="card"><h3>Açıq qapı şənbəsi</h3><span style="font-size:13px;color:#56635F">3 villa, 1 marşrut. Saatlar nümunədir.</span></div>
+      <div class="card">
+        <div class="house"><img src="data:image/jpeg;base64,{{e1}}" alt="1-ci villa, hovuz"><div><span class="slot">11:00</span><b>1-ci villa • Mərdəkan</b><small>3.5 sot • 220 m² • hovuz</small></div></div>
+        <div class="house"><img src="data:image/jpeg;base64,{{e2}}" alt="2-ci villa, hovuz və palmalar"><div><span class="slot">12:30</span><b>2-ci villa • Şüvəlan</b><small>8 sot • 450 m² • hovuz</small></div></div>
+        <div class="house"><img src="data:image/jpeg;base64,{{e3}}" alt="3-cü villa, tağlı fasad"><div><span class="slot">14:00</span><b>3-cü villa • Mərdəkan</b><small>4 sot • 160 m² • hovuz</small></div></div>
+      </div>
+      <button class="sbtn" type="button" id="book">Yer ayır</button>
+      <p class="demo" id="booked" hidden>Nümunə: real tətbiqdə ad və nömrə soruşulur, marşrut WhatsApp-a gəlir.</p>
+    </div>
+
+    <div class="sc" data-screen="investor" hidden>
+      <div class="card"><h3>Bu ev nə qazandırar?</h3><span style="font-size:13px;color:#56635F">Rəqəmlər nümunədir: öz bazar məlumatınızı yazın.</span></div>
+      <div class="card calc">
+        <label for="i_price">Evin qiyməti, ₼<input id="i_price" type="number" inputmode="numeric" value="234000"></label>
+        <label for="i_night">Yayda gecəlik kirayə, ₼<input id="i_night" type="number" inputmode="numeric" value="250"></label>
+        <label for="i_nights">Yayda dolu gecə sayı<input id="i_nights" type="number" inputmode="numeric" value="70"></label>
+        <label for="i_month">Mövsümdən kənar aylıq, ₼<input id="i_month" type="number" inputmode="numeric" value="0"></label>
+        <label for="i_offm">Mövsümdən kənar ay sayı<input id="i_offm" type="number" inputmode="numeric" value="0"></label>
+        <label for="i_cost">İllik xərc (kommunal, hovuz, təmizlik), ₼<input id="i_cost" type="number" inputmode="numeric" value="4000"></label>
+        <label for="i_fee">İdarəçilik / platforma payı, %<input id="i_fee" type="number" inputmode="numeric" value="15"></label>
+      </div>
+      <div class="big">
+        <div><small>İllik xalis gəlir</small><strong id="o_net">—</strong></div>
+        <div><small>İllik gəlirlilik</small><strong id="o_yield">—</strong></div>
+        <div><small>Ümumi kirayə</small><strong id="o_gross">—</strong></div>
+        <div><small>Özünü ödəmə</small><strong id="o_pay">—</strong></div>
+      </div>
+      <p class="demo">Hesablama təxminidir, zəmanət deyil. Evin dəyər artımı daxil deyil.</p>
+    </div>
+  </div></div>
+</aside>
+</div>
+
+<script>
+var Q = [
+  ["Tətbiq hansı formada başlasın?", ["Veb səhifə + QR (sürətli, ucuz)", "Mobil tətbiq (iOS + Android)", "WhatsApp / Telegram bot"], 0],
+  ["Kim istifadə edir?", ["Əvvəl yalnız Xəzər Sahil", "Birdən partnyor agentliklər də"], 0],
+  ["Yoxlama xərcini kim ödəyir?", ["Agentlik (komissiyadan)", "Satıcı", "Alıcı", "Satıcı və agentlik yarı-yarı"], 0],
+  ["Komissiya qaytarma vədi necə olsun?", ["Tam komissiya, 6 ay ərzində sənəd problemi", "Yarım komissiya", "Hələ vəd verməyək"], 0],
+  ["Açıq qapı şənbəsi hansı saatda?", ["11:00–15:00", "12:00–17:00", "İki növbə: səhər və axşam"], 0],
+  ["Açıq qapıya gəliş necə olsun?", ["Hər kəs öz maşını ilə, marşrut bizdən", "Bizim mikroavtobusla ortaq yığılma yeri"], 0],
+  ["İnvestor bölməsi nə qədər olsun?", ["Yalnız gəlir kalkulyatoru", "Kalkulyator + kirayəni biz idarə edirik"], 1],
+  ["Nişan harada görünsün?", ["Video + PDF", "Video + PDF + evin qapısında QR lövhə"], 1],
+  ["Sistemin adı nə olsun?", ["Ev Pasportu", "Yoxlanılmış Ev", "İkisi də: tətbiq Ev Pasportu, nişan Yoxlanılmış Ev"], 2]
+];
+var KEY = "evpasport-qerarlar";
+var saved = {};
+try { saved = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) {}
+var qs = document.getElementById("qs");
+Q.forEach(function (q, i) {
+  var html = '<fieldset class="q"><legend>' + (i + 1) + ". " + q[0] + '</legend><div class="opts">';
+  q[1].forEach(function (o, j) {
+    html += '<label' + (j === q[2] ? ' class="rec"' : "") + '><input type="radio" name="q' + i + '" id="q' + i + "_" + j + '" value="' + j + '"' + (saved[i] === j ? " checked" : "") + "> " + o + "</label>";
+  });
+  qs.insertAdjacentHTML("beforeend", html + "</div></fieldset>");
+});
+function answers() {
+  var out = ["Ev Pasportu sistemi — qərarlarım:"];
+  Q.forEach(function (q, i) {
+    var c = document.querySelector('input[name="q' + i + '"]:checked');
+    out.push((i + 1) + ". " + q[0] + " → " + (c ? q[1][+c.value] : "(seçilməyib)"));
+  });
+  return out.join("\n");
+}
+function sync() {
+  var s = {};
+  Q.forEach(function (q, i) { var c = document.querySelector('input[name="q' + i + '"]:checked'); if (c) s[i] = +c.value; });
+  try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) {}
+  document.getElementById("answers").value = answers();
+}
+qs.addEventListener("change", sync); sync();
+document.getElementById("copy").addEventListener("click", function () {
+  var t = document.getElementById("answers"), msg = document.getElementById("copied");
+  navigator.clipboard.writeText(t.value).then(function () { msg.textContent = "Kopyalandı. Söhbətə yapışdırın."; },
+    function () { t.focus(); t.select(); msg.textContent = "Mətn seçildi, kopyalayın."; });
+});
+document.getElementById("reset").addEventListener("click", function () {
+  document.querySelectorAll('#qs input').forEach(function (r) { r.checked = false; }); sync();
+});
+// phone tabs
+var titles = {pasport: "EV PASPORTU", yoxlama: "YOXLAMA", senbe: "AÇIQ QAPI", investor: "İNVESTOR"};
+document.querySelectorAll(".tabs button").forEach(function (b) {
+  b.addEventListener("click", function () {
+    document.querySelectorAll(".tabs button").forEach(function (x) { x.setAttribute("aria-selected", x === b); });
+    document.querySelectorAll("[data-screen]").forEach(function (s) { s.hidden = s.dataset.screen !== b.dataset.s; });
+    document.getElementById("bartitle").textContent = titles[b.dataset.s];
+    document.getElementById("screen").scrollTop = 0;
+  });
+});
+// checklist
+var boxes = document.querySelectorAll("#checks input");
+function prog() {
+  var n = 0; boxes.forEach(function (b) { if (b.checked) n++; });
+  document.getElementById("pbar").style.width = (n / boxes.length * 100) + "%";
+  document.getElementById("ptext").textContent = n + " / " + boxes.length + " yoxlandı";
+  var btn = document.getElementById("issue"); btn.disabled = n < boxes.length; btn.style.opacity = n < boxes.length ? .5 : 1;
+  btn.textContent = n < boxes.length ? "Nişanı ver" : "Nişanı ver ✓";
+}
+boxes.forEach(function (b) { b.addEventListener("change", prog); });
+document.getElementById("issue").addEventListener("click", function () { this.textContent = "Nişan verildi: video və PDF yeniləndi"; });
+document.getElementById("book").addEventListener("click", function () { document.getElementById("booked").hidden = false; });
+// investor calculator
+function fmt(n) { return Math.round(n).toLocaleString("az-AZ").replace(/,/g, " "); }
+function calc() {
+  var v = function (id) { return +document.getElementById(id).value || 0; };
+  var gross = v("i_night") * v("i_nights") + v("i_month") * v("i_offm");
+  var net = gross * (1 - v("i_fee") / 100) - v("i_cost");
+  var price = v("i_price");
+  document.getElementById("o_gross").textContent = fmt(gross) + " ₼";
+  document.getElementById("o_net").textContent = fmt(net) + " ₼";
+  document.getElementById("o_yield").textContent = price ? (net / price * 100).toFixed(1) + "%" : "—";
+  document.getElementById("o_pay").textContent = net > 0 ? (price / net).toFixed(1) + " il" : "—";
+}
+document.querySelectorAll(".calc input").forEach(function (i) { i.addEventListener("input", calc); }); calc();
+</script>

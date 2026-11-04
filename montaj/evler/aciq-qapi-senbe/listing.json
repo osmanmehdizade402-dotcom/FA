@@ -1,0 +1,128 @@
+{
+ "slug": "aciq-qapi-senbe",
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şənbə  •  3 villa  •  1 marşrut",
+  "Mərdəkan  •  Şüvəlan",
+  "Saat və ünvanlar DM-də"
+ ],
+ "label_style": "chip",
+ "share": "Bu videonu şənbə səninlə ev baxmağa gələcək adama göndər!",
+ "text": {
+  "sold": "AÇIQ QAPI GÜNÜ",
+  "ev_pill": "Yer üçün şərhə “ŞƏNBƏ” yazın  ↓",
+  "ev_q": "Yer ayırmaq üçün yazın:",
+  "ev_word": "“ŞƏNBƏ”",
+  "ev_dm": "Marşrutu DM-ə göndərirəm"
+ },
+ "hook": {
+  "style": "triptych",
+  "kicker": "BU ŞƏNBƏ  •  AÇIQ QAPI",
+  "lines": [
+   "3 villa, 1 gün"
+  ],
+  "extra": [
+   "e2_pool_palms",
+   "e3_facade"
+  ],
+  "title": [],
+  "sub": "",
+  "pill": "",
+  "cta_style": "pill"
+ },
+ "shots": [
+  [
+   "e1_pool",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "e1_facade1",
+   1.5,
+   "in",
+   "1-ci villa  •  Fasad",
+   "slide"
+  ],
+  [
+   "e1_kitchen",
+   1.5,
+   "left",
+   "1-ci villa  •  Mətbəx",
+   "slide"
+  ],
+  [
+   "e1_living1",
+   1.5,
+   "in",
+   "1-ci villa  •  Qonaq otağı",
+   "slide"
+  ],
+  [
+   "e1_bed1",
+   1.5,
+   "right",
+   "1-ci villa  •  Yataq otağı",
+   "fade"
+  ],
+  [
+   "e2_facade_front",
+   1.5,
+   "in",
+   "2-ci villa  •  Fasad",
+   "slide"
+  ],
+  [
+   "e2_pergola",
+   1.5,
+   "out",
+   "2-ci villa  •  Besedka",
+   "slide"
+  ],
+  [
+   "e2_living1",
+   1.5,
+   "left",
+   "2-ci villa  •  Qonaq otağı",
+   "slide"
+  ],
+  [
+   "e2_bed4",
+   1.5,
+   "in",
+   "2-ci villa  •  Yataq otağı",
+   "fade"
+  ],
+  [
+   "e3_pool",
+   1.5,
+   "right",
+   "3-cü villa  •  Hovuz",
+   "slide"
+  ],
+  [
+   "e3_gazebo",
+   1.5,
+   "in",
+   "3-cü villa  •  Besedka",
+   "slide"
+  ],
+  [
+   "e3_living2",
+   1.5,
+   "out",
+   "3-cü villa  •  Qonaq otağı",
+   "slide"
+  ],
+  [
+   "e3_bed1",
+   1.5,
+   "in",
+   "3-cü villa  •  Yataq otağı",
+   "fade"
+  ]
+ ]
+}

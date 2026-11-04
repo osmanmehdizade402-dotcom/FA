@@ -51,6 +51,12 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 14. **Son kadr:** yaşıl fon, loqo, "SATILIR", evin məlumatları 3 sətirdə, "Qiymət üçün şərhə yazın:",
     qızılı “EV” düyməsi, "DM-ə göndərirəm", "dostuna göndər" mətni; sonda girişə yumşaq keçid (loop).
 
+14a. **“Yoxlanılmış Ev” nişanı (2026-11-04):** `listing.json`-da `"verified": true` olan evlərdə girişdə
+    loqonun altında və son kadrda "SATILIR"-ın altında "Xəzər Sahil — Yoxlanılmış Ev" nişanı çıxır.
+    Yalnız 3 yoxlama (sənəd, texniki, qiymət) imzalanmış evlərə qoy — yoxlama vərəqi: `yoxlanilmis-ev/`.
+14b. **Mətn dəyişdirmə:** son kadr və şərh çağırışı `"text"` ilə dəyişir: `sold`, `ev_pill`, `ev_q`, `ev_word`,
+    `ev_dm`, `verified` (nümunə: `evler/aciq-qapi-senbe/listing.json` — "ŞƏNBƏ" açar sözü).
+
 ## C. Dizayn
 
 15. **Hər evin dizaynı fərqli.** Giriş kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili (`label_style`),
@@ -71,6 +77,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     - Şüvəlan 4 sot 160 m²: ribbon / band / whip; magazine / toppill / flash+punch
     - Şüvəlan 4 sot 180 m² (b): viewfinder / osd / slide; news / lower / fade; ticket / stub / punch+fade
     - Mərdəkan 5 sot 220 m²: pin(video) / pinlab / zoom; triptych / vertical / wipe
+    - Açıq qapı şənbəsi (3 villa): triptych / chip / slide+fade
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
