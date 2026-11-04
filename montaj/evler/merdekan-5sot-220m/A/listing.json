@@ -1,0 +1,126 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  5 sot  •  220 m²  •  Tam əşyalı",
+  "5 otaq  •  3+1 sanuzel  •  2 qarderob",
+  "Hovuz  •  Yay-qış mətbəxi  •  Manqal  •  Parking"
+ ],
+ "music": null,
+ "slug": "merdekan-5sot-220m-A",
+ "label_style": "pinlab",
+ "share": "Bu videonu 'bax, ev belə olar' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "pin",
+  "kicker": "əsas yola 100 m",
+  "lines": [
+   "Mərdəkanda palmalı,",
+   "hovuzlu villa"
+  ],
+  "sub": "5 sot  •  220 m²  •  tam əşyalı",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "video:IMG_7322.mov@0.3",
+   3.0,
+   "none",
+   null,
+   null
+  ],
+  [
+   "garden",
+   1.5,
+   "in",
+   "Həyət",
+   "zoom"
+  ],
+  [
+   "video:IMG_7321.mov@1.4",
+   1.5,
+   "none",
+   "Terras",
+   "zoom"
+  ],
+  [
+   "pool_corner",
+   1.5,
+   "out",
+   "Hovuz",
+   "zoom"
+  ],
+  [
+   "pool_long",
+   1.5,
+   "left",
+   "İstirahət zonası",
+   "zoom"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "in",
+   "Yay-qış mətbəxi",
+   "zoom"
+  ],
+  [
+   "pergola_view",
+   1.5,
+   "right",
+   "Parking",
+   "zoom"
+  ],
+  [
+   "video:IMG_7318.mov@0.2",
+   1.5,
+   "none",
+   "Giriş holu",
+   "zoom"
+  ],
+  [
+   "video:IMG_7318.mov@2.6",
+   1.5,
+   "none",
+   "Mətbəx",
+   "zoom"
+  ],
+  [
+   "video:IMG_7319.mov@0.4",
+   1.5,
+   "none",
+   "Qonaq otağı",
+   "zoom"
+  ],
+  [
+   "video:IMG_7319.mov@3.6",
+   1.5,
+   "none",
+   "Qonaq otağı",
+   "zoom"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "zoom"
+  ],
+  [
+   "video:IMG_7317.mov@0.3",
+   1.5,
+   "none",
+   "Yataq otağı",
+   "zoom"
+  ],
+  [
+   "bath1",
+   1.5,
+   "up",
+   "Sanuzel",
+   "zoom"
+  ]
+ ]
+}

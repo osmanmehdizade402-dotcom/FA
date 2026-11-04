@@ -70,6 +70,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     - Şüvəlan 4.5 sot 170 m²: checklist / serif / whip; split / index / flash+punch
     - Şüvəlan 4 sot 160 m²: ribbon / band / whip; magazine / toppill / flash+punch
     - Şüvəlan 4 sot 180 m² (b): viewfinder / osd / slide; news / lower / fade; ticket / stub / punch+fade
+    - Mərdəkan 5 sot 220 m²: pin(video) / pinlab / zoom; triptych / vertical / wipe
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
@@ -119,5 +120,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

@@ -95,7 +95,7 @@ def brighten(im):
     return ImageEnhance.Contrast(im).enhance(1.05)
 
 
-def grade(im):
+def grade(im, vignette=True):
     """Colour look (user rule, ref: autumn-lake reel): rich saturated warm colours, glowing
     highlights, cool teal-blue shadows, gentle S-curve and soft vignette. Keeps brightness."""
     a = np.asarray(im).astype(np.float32) / 255
@@ -122,6 +122,8 @@ def grade(im):
     a = np.clip(a, 0, 1)
     a = a + 0.35 * (a - a * a) * (2 * a - 1)  # S-curve: deeper shadows, brighter highlights
     a = np.clip(0.5 + (a - 0.5) * 1.05, 0, 1)
+    if not vignette:
+        return Image.fromarray((np.clip(a, 0, 1) * 255).astype(np.uint8))
     # soft vignette
     H, W = lum.shape
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
@@ -141,8 +143,37 @@ def load_clip(key, dur):
            "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     raw = subprocess.run(cmd, capture_output=True, check=True).stdout
     n = len(raw) // (w * h * 3)
-    return [grade(brighten(Image.frombuffer("RGB", (w, h), raw[i * w * h * 3:(i + 1) * w * h * 3])))
-            for i in range(n)]
+    frames = np.frombuffer(raw[:n * w * h * 3], np.uint8).reshape(n, h, w, 3)
+    look = clip_look(Image.fromarray(frames[n // 2]))  # same look as photos, as a 64^3 LUT + vignette
+    return [look(f) for f in frames]
+
+
+def clip_look(ref):
+    """Fast per-clip version of brighten+grade: per-pixel colour ops baked into a LUT from a
+    reference frame (exposure gain and contrast mean taken from it), spatial vignette applied after."""
+    lum = np.asarray(ref.convert("L").resize((300, 400))).astype(float) / 255
+    gain = min(max(0.86 / max(np.percentile(lum, 95), 1e-3), 1.0), 1.25)
+    def tone(arr8):
+        x = arr8.astype(float) / 255 * gain
+        x = np.where(x > 0.9, 0.9 + (1 - np.exp(-(x - 0.9) / 0.1)) * 0.1, x)
+        x = (x * 255).clip(0, 255)
+        L = x @ np.array([0.299, 0.587, 0.114])
+        x = (L[..., None] + (x - L[..., None]) * 1.12).clip(0, 255)
+        return x
+    rmean = (tone(np.asarray(ref.resize((270, 480)))) @ np.array([0.299, 0.587, 0.114])).mean()
+    q = np.arange(64) * 4 + 2
+    cube = np.stack(np.meshgrid(q, q, q, indexing="ij"), -1).reshape(512, 512, 3).astype(np.uint8)
+    t = tone(cube)
+    t = (rmean + (t - rmean) * 1.05).clip(0, 255).astype(np.uint8)
+    lut = np.asarray(grade(Image.fromarray(t), vignette=False)).reshape(64, 64, 64, 3)
+    H, W = ref.height, ref.width
+    yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+    r = np.sqrt(((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) / np.sqrt(2)
+    vig = (1 - 0.22 * np.clip((r - 0.45) / 0.55, 0, 1) ** 1.6)[..., None]
+    def look(f):
+        g = lut[f[..., 0] >> 2, f[..., 1] >> 2, f[..., 2] >> 2]
+        return Image.fromarray((g * vig).astype(np.uint8))
+    return look
 
 
 def load_photo(key, dur=0):
@@ -349,6 +380,58 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("pinlab", "vertical"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                if style == "pinlab":  # gold map pin + caption + thin gold underline, bottom-left
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.66)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 130)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    d = ImageDraw.Draw(lay)
+                    f_ = font("Montserrat700.ttf", 56 * fs)
+                    y0 = H - int(340 * u) - int(80 * fs)
+                    R = int(24 * fs)
+                    px, py = mx + R, y0 + int(34 * fs)
+                    d.ellipse([px - R, py - 2 * R, px + R, py], fill=GOLD + (255,))
+                    d.polygon([(px - R * 0.72, py - R * 0.5), (px + R * 0.72, py - R * 0.5), (px, py + R * 0.95)], fill=GOLD + (255,))
+                    d.ellipse([px - R * 0.4, py - R * 1.4, px + R * 0.4, py - R * 0.6], fill=GREEN + (255,))
+                    tx = mx + 2 * R + int(26 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    lay.alpha_composite(self.text_layer([(lab, f_, CREAM, tx, y0 - int(22 * fs), 0)]))
+                    d = ImageDraw.Draw(lay)
+                    d.rectangle([tx, y0 + int(62 * fs), tx + tw, y0 + int(62 * fs) + max(2, int(4 * fs))], fill=GOLD + (255,))
+                else:  # vertical tracked caps along the left edge with a gold rule
+                    f_ = font("Montserrat700.ttf", 54 * fs)
+                    t = az_upper(lab)
+                    tr_ = 10 * fs
+                    tmp = ImageDraw.Draw(Image.new("RGBA", (10, 10)))
+                    tw = int(sum(tmp.textlength(c, font=f_) + tr_ for c in t) - tr_) + 20
+                    th = int(80 * fs)
+                    strip = Image.new("RGBA", (tw, th), (0, 0, 0, 0))
+                    ds = ImageDraw.Draw(strip)
+                    x = 10
+                    for c in t:
+                        ds.text((x, th / 2), c, font=f_, fill=CREAM, anchor="lm")
+                        x += ds.textlength(c, font=f_) + tr_
+                    sh = Image.new("RGBA", strip.size, (0, 0, 0, 0))
+                    sh.putalpha(strip.split()[3].filter(ImageFilter.GaussianBlur(8 * fs)).point(lambda v: int(v * 0.8)))
+                    sh.alpha_composite(strip)
+                    rot = sh.rotate(90, expand=True, resample=Image.BICUBIC)
+                    yb = H - int(380 * u)
+                    xl = int(40 * W / 1080)
+                    lay.alpha_composite(rot, (xl, yb - rot.height))
+                    d = ImageDraw.Draw(lay)
+                    lx = xl + rot.width + int(12 * fs)
+                    d.rectangle([lx, yb - rot.height, lx + max(3, int(5 * fs)), yb], fill=GOLD + (255,))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "stub":
             # small cream ticket stub (matches the ticket hook), right-aligned, perforated left edge
             self.labels = {}
@@ -1285,7 +1368,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -1302,6 +1385,21 @@ class Renderer:
                     fr.paste(cur, (0, self.H - off))
                 elif tr == "fade":
                     fr = Image.blend(prev, cur, ease(k))
+                elif tr == "zoom":  # zoom-through: prev pushes in, cur settles from 1.2x
+                    e = ease(k)
+                    def zc(im, z):
+                        w, h = self.W / z, self.H / z
+                        x0, y0 = (self.W - w) / 2, (self.H - h) / 2
+                        return im.resize((self.W, self.H), Image.BILINEAR, box=(x0, y0, x0 + w, y0 + h))
+                    fr = Image.blend(zc(prev, 1 + 0.25 * e), zc(cur, 1.2 - 0.2 * e), e)
+                elif tr == "wipe":  # left-to-right reveal with a gold edge
+                    xw = int(ease(k) * self.W)
+                    fr = prev.copy()
+                    if xw > 0:
+                        fr.paste(cur.crop((0, 0, xw, self.H)), (0, 0))
+                    dd = ImageDraw.Draw(fr)
+                    bw = max(6, int(12 * self.W / 1080))
+                    dd.rectangle([xw - bw // 2, 0, xw + bw // 2, self.H], fill=GOLD)
                 else:
                     fr = flash(prev, cur, k)
             else:

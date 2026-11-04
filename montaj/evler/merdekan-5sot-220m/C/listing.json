@@ -1,0 +1,123 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  5 sot  •  220 m²  •  Tam əşyalı",
+  "5 otaq  •  3+1 sanuzel  •  2 qarderob",
+  "Hovuz  •  Yay-qış mətbəxi  •  Manqal  •  Parking"
+ ],
+ "music": null,
+ "slug": "merdekan-5sot-220m-C",
+ "label_style": "vertical",
+ "share": "Hovuz kənarında qəhvə içməyi xəyal edən dostuna göndər!",
+ "hook": {
+  "style": "triptych",
+  "kicker": "HOVUZ  •  YATAQ  •  YAY MƏTBƏXİ",
+  "lines": [
+   "Hamısı bir",
+   "həyətdə"
+  ],
+  "extra": [
+   "bed1",
+   "summer_in"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "pool_long",
+   3.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   1.5,
+   "in",
+   "Fasad",
+   "wipe"
+  ],
+  [
+   "video:IMG_7322.mov@2.2",
+   1.5,
+   "none",
+   "Giriş",
+   "wipe"
+  ],
+  [
+   "pool_facade",
+   1.5,
+   "out",
+   "Hovuz",
+   "wipe"
+  ],
+  [
+   "video:IMG_7321.mov@0.1",
+   1.5,
+   "none",
+   "Terras",
+   "wipe"
+  ],
+  [
+   "garden",
+   1.5,
+   "left",
+   "Həyət",
+   "wipe"
+  ],
+  [
+   "pergola_view",
+   1.5,
+   "in",
+   "Parking",
+   "wipe"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "right",
+   "Yay-qış mətbəxi",
+   "wipe"
+  ],
+  [
+   "video:IMG_7318.mov@1.2",
+   1.5,
+   "none",
+   "Mətbəx",
+   "wipe"
+  ],
+  [
+   "video:IMG_7319.mov@1.8",
+   1.5,
+   "none",
+   "Qonaq otağı",
+   "wipe"
+  ],
+  [
+   "video:IMG_7317.mov@0.1",
+   1.5,
+   "none",
+   "Yataq otağı",
+   "wipe"
+  ],
+  [
+   "bed1",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "wipe"
+  ],
+  [
+   "bath1",
+   1.5,
+   "up",
+   "Sanuzel",
+   "wipe"
+  ]
+ ]
+}
