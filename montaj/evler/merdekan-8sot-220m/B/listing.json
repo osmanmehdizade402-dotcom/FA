@@ -1,0 +1,142 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  8 sot  •  220 m²",
+  "Yola 50 m  •  4 sanuzel  •  Qarderob",
+  "Böyük hovuz  •  Yay-qış mətbəxi  •  Parking"
+ ],
+ "music": null,
+ "slug": "merdekan-8sot-220m-B",
+ "label_style": "corner",
+ "share": "Bu videonu 'yayda hamı bizdə' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "diagonal",
+  "second": "living1",
+  "top": "Hovuz",
+  "bottom": "Qonaq otağı",
+  "lines": [
+   "Çöldə kurort,",
+   "içəridə saray"
+  ],
+  "sub": "Mərdəkan  •  8 sot  •  220 m²",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "pool_house",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_view",
+   1.5,
+   "in",
+   "Hovuz",
+   "doors"
+  ],
+  [
+   "garden_summer",
+   1.5,
+   "left",
+   "Həyət",
+   "doors"
+  ],
+  [
+   "summer_out",
+   1.5,
+   "out",
+   "Yay-qış mətbəxi",
+   "doors"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "right",
+   "Yay-qış mətbəxi",
+   "doors"
+  ],
+  [
+   "terrace",
+   1.5,
+   "in",
+   "Terras",
+   "doors"
+  ],
+  [
+   "corridor",
+   1.5,
+   "up",
+   "Dəhliz",
+   "doors"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "doors"
+  ],
+  [
+   "living2",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "doors"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "doors"
+  ],
+  [
+   "bed2",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "doors"
+  ],
+  [
+   "bed5",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "doors"
+  ],
+  [
+   "bed4",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "doors"
+  ],
+  [
+   "closet",
+   1.5,
+   "out",
+   "Qarderob",
+   "doors"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "doors"
+  ],
+  [
+   "bath2",
+   1.5,
+   "in",
+   "Sanuzel",
+   "doors"
+  ]
+ ]
+}

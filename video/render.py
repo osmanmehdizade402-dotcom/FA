@@ -382,6 +382,48 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("corner", "outline"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "corner":  # cream card in the bottom-right corner with a gold L-bracket
+                    f_ = font("Playfair700.ttf", 56 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    bw, bh = tw + 70 * fs, int(100 * fs)
+                    x1, y1 = W - mx, H - int(330 * u)
+                    d.rectangle([x1 - bw, y1 - bh, x1, y1], fill=CREAM + (245,))
+                    lw = max(3, int(6 * fs))
+                    d.line([(x1 + 14 * fs, y1 - bh - 14 * fs), (x1 + 14 * fs, y1 + 14 * fs), (x1 - bw * 0.45, y1 + 14 * fs)], fill=GOLD + (255,), width=lw)
+                    d.text((x1 - bw / 2, y1 - bh / 2), lab, font=f_, fill=GREEN, anchor="mm")
+                else:  # big hollow caps across the lower third, gold outline
+                    t = az_upper(lab)
+                    sz = 120 * fs
+                    f_ = font("Montserrat700.ttf", sz)
+                    while d.textlength(t, font=f_) > W - 2 * mx and sz > 40:
+                        sz -= 6
+                        f_ = font("Montserrat700.ttf", sz)
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.62)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 120)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    d = ImageDraw.Draw(lay)
+                    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                    ImageDraw.Draw(sh).text((W / 2, H - int(360 * u)), t, font=f_, fill=(0, 0, 0, 255), anchor="mm",
+                                            stroke_width=max(4, int(10 * fs)), stroke_fill=(0, 0, 0, 255))
+                    sh = sh.filter(ImageFilter.GaussianBlur(14 * fs))
+                    sh.putalpha(sh.split()[3].point(lambda v: int(v * 0.75)))
+                    lay.alpha_composite(sh)
+                    d = ImageDraw.Draw(lay)
+                    d.text((W / 2, H - int(360 * u)), t, font=f_, fill=GREEN_DARK + (110,), anchor="mm",
+                           stroke_width=max(3, int(6 * fs)), stroke_fill=GOLD + (255,))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("rule", "leader"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -1689,7 +1731,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -1716,6 +1758,25 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "doors":  # next shot opens like two doors from the centre
+                    e = ease(k)
+                    half = int(e * self.W / 2)
+                    fr = prev.copy()
+                    if half > 0:
+                        fr.paste(cur.crop((self.W // 2 - half, 0, self.W // 2 + half, self.H)), (self.W // 2 - half, 0))
+                        dd = ImageDraw.Draw(fr)
+                        bw = max(4, int(8 * self.W / 1080))
+                        for xx_ in (self.W // 2 - half, self.W // 2 + half):
+                            dd.rectangle([xx_ - bw // 2, 0, xx_ + bw // 2, self.H], fill=GOLD)
+                elif tr == "diag":  # diagonal reveal from bottom-left with a gold edge
+                    e = ease(k)
+                    t_ = e * (self.W + self.H)
+                    m = Image.new("L", (self.W, self.H), 0)
+                    dm = ImageDraw.Draw(m)
+                    dm.polygon([(0, self.H), (0, self.H - t_), (t_, self.H)], fill=255)
+                    fr = Image.composite(cur, prev, m)
+                    if 0.01 < e < 0.99:
+                        ImageDraw.Draw(fr).line([(0, self.H - t_), (t_, self.H)], fill=GOLD, width=max(5, int(10 * self.W / 1080)))
                 elif tr == "iris":  # circle opens from the centre with a thin gold ring
                     e = ease(k)
                     R = e * math.hypot(self.W, self.H) / 2
