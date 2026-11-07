@@ -1451,6 +1451,93 @@ class Renderer:
                 if j:
                     d.line([(mx + cw_ * j, yb - 40 * fs), (mx + cw_ * j, yb + 80 * fs)], fill=CREAM + (120,), width=max(1, int(2 * fs)))
             self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int(H * 0.03))
+        elif self.hook_style == "plaque":
+            # museum label: small cream plaque bottom-right like an artwork caption
+            g0 = int(H * 0.55)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.3, H - g0), 0, 1) * 150)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            pw = int(W * 0.66)
+            ph = int(400 * fs)
+            px0, py0 = W - mx - pw, int(H * (0.53 if self.tall else 0.40))
+            pl = Image.new("RGBA", (pw, ph), CREAM + (248,))
+            dp = ImageDraw.Draw(pl)
+            pad = int(40 * fs)
+            dp.text((pad, pad), hook["kicker"], font=font("Montserrat700.ttf", 26 * fs), fill=GOLD)
+            y = pad + int(46 * fs)
+            for i, line in enumerate(hook["lines"]):
+                dp.text((pad, y), line, font=font("Playfair700.ttf", 64 * fs), fill=GREEN)
+                y += int(76 * fs)
+            dp.line([(pad, y + 10 * fs), (pad + 70 * fs, y + 10 * fs)], fill=GOLD, width=max(2, int(3 * fs)))
+            y += int(34 * fs)
+            for line in hook["sub"].split("|"):
+                dp.text((pad, y), line.strip(), font=font("Montserrat600.ttf", 28 * fs), fill=GREEN + (210,))
+                y += int(40 * fs)
+            shd = Image.new("RGBA", pl.size, (0, 0, 0, 0))
+            shd.putalpha(Image.new("L", pl.size, 150).filter(ImageFilter.GaussianBlur(4)))
+            sh2 = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            sh2.alpha_composite(shd, (px0 + 10, py0 + 14))
+            lay.alpha_composite(sh2.filter(ImageFilter.GaussianBlur(16 * fs)))
+            lay.alpha_composite(pl, (px0, py0))
+        elif self.hook_style == "stack":
+            # giant stacked words filling the width, alternating cream/gold, thin rules between
+            g0 = int(H * 0.30)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.6, H - g0), 0, 1) * 200)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            y = int(H * (0.40 if self.tall else 0.30))
+            parts = []
+            rules = []
+            for i, word in enumerate(hook["lines"]):
+                sz = 260 * fs
+                f_ = font("Montserrat700.ttf", sz)
+                while d.textlength(word, font=f_) > W - 2 * mx and sz > 40:
+                    sz -= 6
+                    f_ = font("Montserrat700.ttf", sz)
+                bb = d.textbbox((0, 0), word, font=f_)
+                parts.append((word, f_, CREAM if i % 2 == 0 else GOLD, mx - bb[0], y - bb[1], 0))
+                y += bb[3] - bb[1] + int(24 * fs)
+                rules.append(y - int(12 * fs))
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            for ry in rules[:-1]:
+                d.line([(mx, ry), (W - mx, ry)], fill=CREAM + (150,), width=max(1, int(2 * fs)))
+            d.text((mx, y + int(10 * fs)), hook["sub"], font=font("Montserrat600.ttf", 40 * fs), fill=CREAM)
+        elif self.hook_style == "lens":
+            # round magnifier showing a second photo's detail, gold ring + handle, caption beside it
+            ex = load_photo(hook["second"])
+            R = int(W * 0.30)
+            fx, fy, z = hook.get("focus", [0.5, 0.5, 1.0])
+            iw, ih = ex.size
+            side = min(iw, ih) / z
+            box = (fx * iw - side / 2, fy * ih - side / 2, fx * iw + side / 2, fy * ih + side / 2)
+            disc = ex.resize((2 * R, 2 * R), Image.BICUBIC, box=box).convert("RGBA")
+            m = Image.new("L", (2 * R, 2 * R), 0)
+            ImageDraw.Draw(m).ellipse([0, 0, 2 * R - 1, 2 * R - 1], fill=255)
+            disc.putalpha(m)
+            cx, cy = int(W * 0.60), int(H * (0.42 if self.tall else 0.40))
+            sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            ImageDraw.Draw(sh).ellipse([cx - R + 10, cy - R + 18, cx + R + 10, cy + R + 18], fill=(0, 0, 0, 140))
+            lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(18 * fs)))
+            lay.alpha_composite(disc, (cx - R, cy - R))
+            d = ImageDraw.Draw(lay)
+            rw = max(8, int(16 * fs))
+            d.ellipse([cx - R, cy - R, cx + R, cy + R], outline=GOLD + (255,), width=rw)
+            a_ = math.radians(135)
+            x1, y1 = cx + R * math.cos(a_), cy + R * math.sin(a_)
+            d.line([(x1, y1), (x1 - 150 * fs, y1 + 150 * fs)], fill=GOLD + (255,), width=int(rw * 1.8))
+            g0 = int(H * 0.62)
+            gg = np.zeros((H, W, 4), np.uint8)
+            gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.3, H - g0), 0, 1) * 200)[:, None].astype(np.uint8)
+            base = Image.fromarray(gg, "RGBA")
+            base.alpha_composite(lay)
+            lay = base
+            fl = font("Playfair700.ttf", 92 * fs)
+            y = int(H * (0.66 if self.tall else 0.66))
+            parts = [(hook["kicker"], font("Montserrat700.ttf", 34 * fs), GOLD, mx, y - int(54 * fs), 8 * fs)]
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(104 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
