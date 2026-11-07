@@ -1287,6 +1287,128 @@ class Renderer:
                 y += int(110 * fs)
             parts.append((hook["sub"], fsub, CREAM, mx, y + int(6 * fs), 0))
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "postcard":
+            # cream postcard with photo window, stamp and postmark
+            d = ImageDraw.Draw(lay)
+            n = int(H * 0.25)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cw_, ch_ = W - 2 * mx, int(H * (0.30 if self.tall else 0.34))
+            cy0 = int(H * (0.43 if self.tall else 0.33))
+            card = Image.new("RGBA", (cw_, ch_), CREAM + (250,))
+            dc = ImageDraw.Draw(card)
+            pad = int(30 * fs)
+            dc.rectangle([pad // 2, pad // 2, cw_ - pad // 2, ch_ - pad // 2], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            sx0 = int(cw_ * 0.60)
+            dc.line([(sx0, pad * 2), (sx0, ch_ - pad * 2)], fill=GREEN + (120,), width=max(1, int(2 * fs)))
+            fk = font("Montserrat700.ttf", 28 * fs)
+            dc.text((pad * 2, pad * 2), hook["kicker"], font=fk, fill=GOLD)
+            fl = font("Playfair700.ttf", 74 * fs)
+            y = pad * 2 + int(52 * fs)
+            for i, line in enumerate(hook["lines"]):
+                dc.text((pad * 2, y), line, font=fl, fill=GREEN if i == 0 else GOLD)
+                y += int(86 * fs)
+            fsub = font("Montserrat600.ttf", 30 * fs)
+            for k, line in enumerate(hook["sub"].split("•")):
+                yy = ch_ - pad * 2 - int(46 * fs) * (len(hook["sub"].split("•")) - k)
+                dc.text((sx0 + pad, yy + int(14 * fs)), line.strip(), font=fsub, fill=GREEN)
+                dc.line([(sx0 + pad, yy + int(46 * fs)), (cw_ - pad * 2, yy + int(46 * fs))], fill=GREEN + (90,), width=1)
+            stw, sth = int(130 * fs), int(150 * fs)
+            stx, sty = cw_ - pad * 2 - stw, pad * 2
+            for k in range(0, stw, int(14 * fs)):
+                dc.ellipse([stx + k, sty - 5 * fs, stx + k + 10 * fs, sty + 5 * fs], fill=CREAM)
+            dc.rectangle([stx, sty, stx + stw, sty + sth], fill=GREEN + (255,))
+            dc.rectangle([stx + 8 * fs, sty + 8 * fs, stx + stw - 8 * fs, sty + sth - 8 * fs], outline=GOLD + (255,), width=max(2, int(2 * fs)))
+            dc.text((stx + stw / 2, sty + sth / 2), hook["stamp"], font=font("Playfair700.ttf", 34 * fs), fill=GOLD, anchor="mm")
+            pm = Image.new("RGBA", (int(230 * fs), int(230 * fs)), (0, 0, 0, 0))
+            dp = ImageDraw.Draw(pm)
+            c = pm.width / 2
+            dp.ellipse([8, 8, pm.width - 8, pm.height - 8], outline=GREEN + (150,), width=max(2, int(3 * fs)))
+            dp.text((c, c), hook["postmark"], font=font("Montserrat700.ttf", 26 * fs), fill=GREEN + (170,), anchor="mm")
+            for k in range(4):
+                yy = c - 40 * fs + k * 26 * fs
+                dp.line([(pm.width - 4, yy), (pm.width + 140 * fs, yy)], fill=GREEN + (120,), width=2)
+            pm = pm.rotate(-14, resample=Image.BICUBIC)
+            card.alpha_composite(pm, (sx0 + int(20 * fs), sty + int(20 * fs)))
+            card = card.rotate(-2.5, expand=True, resample=Image.BICUBIC)
+            shd = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            shd.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            ox = W // 2 - card.width // 2
+            lay.alpha_composite(shd, (ox + 8, cy0 + 16))
+            lay.alpha_composite(card, (ox, cy0))
+        elif self.hook_style == "diagonal":
+            # second photo cut in on a diagonal with a gold seam; title on the seam
+            ex = load_photo(hook["second"])
+            iw, ih = ex.size
+            ar = W / H
+            cw, ch = (ih * ar, ih) if iw / ih > ar else (iw, iw / ar)
+            ex = ex.resize((W, H), Image.BICUBIC, box=((iw - cw) / 2, (ih - ch) / 2, (iw + cw) / 2, (ih + ch) / 2)).convert("RGBA")
+            ya, yb = int(H * (0.50 if self.tall else 0.46)), int(H * (0.66 if self.tall else 0.70))
+            m = Image.new("L", (W, H), 0)
+            ImageDraw.Draw(m).polygon([(0, yb), (W, ya), (W, H), (0, H)], fill=255)
+            sh_ = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            sh_.alpha_composite(ex, (0, int(H * 0.30)))  # show the photo's middle in the lower half
+            ex = sh_
+            ex.putalpha(Image.fromarray(np.minimum(np.asarray(m), np.asarray(ex.split()[3]))))
+            lay.alpha_composite(ex)
+            d = ImageDraw.Draw(lay)
+            d.line([(0, yb), (W, ya)], fill=GOLD + (255,), width=max(6, int(12 * fs)))
+            fl = font("Playfair700.ttf", 92 * fs)
+            fk = font("Montserrat700.ttf", 36 * fs)
+            # labels on each half
+            for txt, x, y, anc in ((hook["top"], mx, ya - int(150 * fs), "la"), (hook["bottom"], W - mx, yb + int(60 * fs), "ra")):
+                tw = d.textlength(txt, font=fk)
+                bx0 = x if anc == "la" else x - tw - 40 * fs
+                d.rounded_rectangle([bx0, y, bx0 + tw + 40 * fs, y + 64 * fs], radius=int(32 * fs), fill=GREEN_DARK + (230,))
+                d.text((bx0 + 20 * fs, y + 32 * fs), txt, font=fk, fill=CREAM, anchor="lm")
+            n = int(H * 0.40)
+            gg = np.zeros((H, W, 4), np.uint8)
+            gg[:n, :, 3] = (np.linspace(1, 0, n) ** 1.1 * 190)[:, None].astype(np.uint8)
+            top = Image.fromarray(gg, "RGBA")
+            top.alpha_composite(lay)
+            lay = top
+            parts = []
+            y = int(H * (0.16 if self.tall else 0.18))
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(106 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 40 * fs), CREAM, mx, y + int(6 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            self.watermark_pos = (W - self.watermark.width - int(60 * W / 1080), int(H * 0.035))
+        elif self.hook_style == "spotlight":
+            # dark stage, soft spotlight ellipse on the subject, centred serif title, gold numbers row
+            yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
+            cx, cy = hook.get("spot", [0.5, 0.55])
+            rx, ry = W * 0.55, H * 0.30
+            r = np.sqrt(((xx - cx * W) / rx) ** 2 + ((yy - cy * H) / ry) ** 2)
+            a = (np.clip((r - 0.7) / 0.6, 0, 1) * 215).astype(np.uint8)
+            g[..., 3] = a
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 100 * fs)
+            fk = font("Montserrat700.ttf", 34 * fs)
+            y = int(H * (0.13 if self.tall else 0.15))
+            tr_ = 10 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            parts = [(hook["kicker"], fk, GOLD, W / 2 - kw / 2, y, tr_)]
+            y += int(64 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, y, 0))
+                y += int(112 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            nums = hook["nums"]
+            yb = int(H * (0.72 if self.tall else 0.70))
+            cw_ = (W - 2 * mx) / len(nums)
+            fn = font("Playfair700.ttf", 78 * fs)
+            fu = font("Montserrat600.ttf", 28 * fs)
+            for j, (num, unit) in enumerate(nums):
+                cx_ = mx + cw_ * j + cw_ / 2
+                d.text((cx_, yb), num, font=fn, fill=GOLD, anchor="mm")
+                d.text((cx_, yb + 62 * fs), unit, font=fu, fill=CREAM, anchor="mm")
+                if j:
+                    d.line([(mx + cw_ * j, yb - 40 * fs), (mx + cw_ * j, yb + 80 * fs)], fill=CREAM + (120,), width=max(1, int(2 * fs)))
+            self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int(H * 0.03))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
