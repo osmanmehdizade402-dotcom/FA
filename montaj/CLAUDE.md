@@ -78,6 +78,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     - Şüvəlan 4 sot 180 m² (b): viewfinder / osd / slide; news / lower / fade; ticket / stub / punch+fade
     - Mərdəkan 5 sot 220 m²: pin(video) / pinlab / zoom; triptych / vertical / wipe
     - Açıq qapı şənbəsi (3 villa): triptych / chip / slide+fade
+    - Mərdəkan 5.5 sot 220 m²: seal / rule / iris; callout / leader / blinds
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
@@ -95,11 +96,11 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 
 20. **Video maksimum 25–30 saniyə.** Sığmırsa ən zəif/təkrar şəkilləri çıxar (yataq otaqları və əsas otaqlar
     mümkün qədər qalsın); çıxarılanları istifadəçiyə yaz. İstifadəçi konkret şəkli çıxar desə — çıxar.
-21. **Temp (QANUN, 2026-11-04):** giriş (başlıq) kadrı **dəqiq 3 san** (render.py `HOOK_MIN`), hər yazılı kadr
-    **dəqiq 1.5 san** (render.py `SHOT_SEC`), son kadr 4.8 san. 30 san-ə giriş + 14 kadr sığır (~28.8 san).
+21. **Temp (QANUN, 2026-11-07):** giriş (başlıq) kadrı **dəqiq 2 san** (render.py `HOOK_MIN`; əvvəl 3 san idi), hər yazılı kadr
+    **dəqiq 1.5 san** (render.py `SHOT_SEC`), son kadr 4.8 san. 30 san-ə giriş + 15 kadr sığır (~29.3 san).
 21a. **"SAXLA, İTİRMƏ" çağırışı (QANUN, 2026-11-04):** hər videonun ortasındakı kadrda əlfəcin ikonlu krem düymə
     (render.py `save_layer`; avtomatik orta kadr, `"save_cta": <nömrə>` ilə başqa kadr seçmək olar).
-20a. Rule 20 qeydi: 1.5 san ritmlə 30 san-ə giriş + 14 kadr sığır — çox şəkil olanda ən zəif/təkrarları çıxar.
+20a. Rule 20 qeydi: 1.5 san ritmlə 30 san-ə giriş + 15 kadr sığır — çox şəkil olanda ən zəif/təkrarları çıxar.
 22. Şəkil ardıcıllığı: fasad → həyət/hovuz → hol → mətbəx → qonaq otağı → yataq otaqları → qarderob → sanuzellər.
 
 ## F. Musiqi
@@ -127,5 +128,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

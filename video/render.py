@@ -31,7 +31,7 @@ FPS = 30
 TR = 0.30  # transition length, seconds
 # Pacing (user rule: slow enough that every label can be read before the next cut).
 # Listing durations are minimums-adjusted here, so all listings get the same pace.
-HOOK_MIN = 3.0   # hook shot: exactly 3 s (user rule, 2026-11-02)
+HOOK_MIN = 2.0   # hook shot: exactly 2 s (user rule, 2026-11-07)
 SHOT_MIN = 2.0   # old minimum (only when a listing sets "shot_sec": null)
 SHOT_SEC = 1.5   # user rule (2026-11-04): every labelled shot is exactly 1.5 s
 END_DUR = 4.8    # end card: price, details, phone
@@ -382,6 +382,52 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("rule", "leader"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.64)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 140)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                if style == "rule":
+                    f_ = font("Montserrat700.ttf", 46 * fs)
+                    t = az_upper(lab)
+                    tr_ = 8 * fs
+                    tw = sum(d.textlength(c, font=f_) + tr_ for c in t) - tr_
+                    y = H - int(340 * u) - int(40 * fs)
+                    lay.alpha_composite(self.text_layer([(t, f_, CREAM, W / 2 - tw / 2, y - 28 * fs, tr_)]))
+                    d = ImageDraw.Draw(lay)
+                    gap, ln = 34 * fs, 120 * fs
+                    lw = max(2, int(3 * fs))
+                    d.line([(W / 2 - tw / 2 - gap - ln, y), (W / 2 - tw / 2 - gap, y)], fill=GOLD + (255,), width=lw)
+                    d.line([(W / 2 + tw / 2 + gap, y), (W / 2 + tw / 2 + gap + ln, y)], fill=GOLD + (255,), width=lw)
+                    for xd in (W / 2 - tw / 2 - gap, W / 2 + tw / 2 + gap):
+                        r_ = 7 * fs
+                        d.polygon([(xd, y - r_), (xd + r_, y), (xd, y + r_), (xd - r_, y)], fill=GOLD + (255,))
+                else:
+                    f_ = font("Montserrat700.ttf", 48 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    bh = int(84 * fs)
+                    by = H - int(360 * u) - bh
+                    bx = mx
+                    d.rounded_rectangle([bx, by, bx + tw + 52 * fs, by + bh], radius=int(14 * fs), fill=GREEN_DARK + (235,))
+                    d.rectangle([bx, by + bh - max(3, int(5 * fs)), bx + tw + 52 * fs, by + bh], fill=GOLD + (255,))
+                    d.text((bx + 26 * fs, by + bh / 2), lab, font=f_, fill=CREAM, anchor="lm")
+                    px, py = bx + tw + 52 * fs + 120 * fs, by - 70 * fs
+                    lw = max(2, int(3 * fs))
+                    d.line([(bx + tw + 52 * fs, by + bh / 2), (px - 40 * fs, by + bh / 2), (px, py)], fill=CREAM + (255,), width=lw)
+                    r_ = 13 * fs
+                    d.ellipse([px - r_ - 6 * fs, py - r_ - 6 * fs, px + r_ + 6 * fs, py + r_ + 6 * fs], outline=GOLD + (255,), width=lw)
+                    d.ellipse([px - r_ * 0.6, py - r_ * 0.6, px + r_ * 0.6, py + r_ * 0.6], fill=GOLD + (255,))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("pinlab", "vertical"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -1521,7 +1567,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -1548,6 +1594,27 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "iris":  # circle opens from the centre with a thin gold ring
+                    e = ease(k)
+                    R = e * math.hypot(self.W, self.H) / 2
+                    m = Image.new("L", (self.W, self.H), 0)
+                    dm = ImageDraw.Draw(m)
+                    dm.ellipse([self.W / 2 - R, self.H / 2 - R, self.W / 2 + R, self.H / 2 + R], fill=255)
+                    fr = Image.composite(cur, prev, m)
+                    if 0.02 < e < 0.98:
+                        rw = max(4, int(8 * self.W / 1080))
+                        ImageDraw.Draw(fr).ellipse([self.W / 2 - R, self.H / 2 - R, self.W / 2 + R, self.H / 2 + R], outline=GOLD, width=rw)
+                elif tr == "blinds":  # 8 vertical slats turn over to the next shot
+                    e = ease(k)
+                    n_ = 8
+                    sw = self.W / n_
+                    m = Image.new("L", (self.W, self.H), 0)
+                    dm = ImageDraw.Draw(m)
+                    for j in range(n_):
+                        lag = j / n_ * 0.4
+                        ej = min(max((e - lag) / 0.6, 0), 1)
+                        dm.rectangle([j * sw, 0, j * sw + sw * ej, self.H], fill=255)
+                    fr = Image.composite(cur, prev, m)
                 elif tr == "wipe":  # left-to-right reveal with a gold edge
                     xw = int(ease(k) * self.W)
                     fr = prev.copy()

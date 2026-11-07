@@ -1,0 +1,144 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  5.5 sot  •  220 m²  •  2 mərtəbə",
+  "5 otaq  •  3 sanuzel  •  Qarderob",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-5-5sot-220m-B",
+ "label_style": "rule",
+ "share": "Bu videonu 'ev tikəndə belə tik' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "seal",
+  "seal": [
+   "MONOLİT",
+   "BETON",
+   "2 MƏRTƏBƏ"
+  ],
+  "lines": [
+   "Mərdəkanda",
+   "əsrlik villa"
+  ],
+  "sub": "5.5 sot  •  220 m²  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_path",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_palm",
+   1.5,
+   "in",
+   "Fasad",
+   "iris"
+  ],
+  [
+   "facade_up",
+   1.5,
+   "left",
+   "Terras",
+   "iris"
+  ],
+  [
+   "pool_terrace",
+   1.5,
+   "out",
+   "Hovuz",
+   "iris"
+  ],
+  [
+   "summer_out",
+   1.5,
+   "right",
+   "Manqal",
+   "iris"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "in",
+   "Yay-qış mətbəxi",
+   "iris"
+  ],
+  [
+   "stairs",
+   1.5,
+   "up",
+   "Pilləkən holu",
+   "iris"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "iris"
+  ],
+  [
+   "living1",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "iris"
+  ],
+  [
+   "living2",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "iris"
+  ],
+  [
+   "corridor",
+   1.5,
+   "right",
+   "Dəhliz",
+   "iris"
+  ],
+  [
+   "bed2",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "iris"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "iris"
+  ],
+  [
+   "bed4",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "iris"
+  ],
+  [
+   "bed1",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "iris"
+  ],
+  [
+   "bath",
+   1.5,
+   "in",
+   "Sanuzel",
+   "iris"
+  ]
+ ]
+}
