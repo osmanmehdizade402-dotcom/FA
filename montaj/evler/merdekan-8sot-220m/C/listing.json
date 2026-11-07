@@ -1,0 +1,158 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  8 sot  •  220 m²",
+  "Yola 50 m  •  4 sanuzel  •  Qarderob",
+  "Böyük hovuz  •  Yay-qış mətbəxi  •  Parking"
+ ],
+ "music": null,
+ "slug": "merdekan-8sot-220m-C",
+ "label_style": "outline",
+ "share": "Böyük hovuz arzulayan o dostuna göndər!",
+ "hook": {
+  "style": "spotlight",
+  "spot": [
+   0.55,
+   0.62
+  ],
+  "kicker": "PREMİUM VİLLA",
+  "lines": [
+   "Mərdəkanın",
+   "ən yaşıl həyəti"
+  ],
+  "nums": [
+   [
+    "8",
+    "sot"
+   ],
+   [
+    "220",
+    "m²"
+   ],
+   [
+    "4",
+    "sanuzel"
+   ]
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "garden_house",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_house",
+   1.5,
+   "in",
+   "Hovuz",
+   "diag"
+  ],
+  [
+   "garden_summer",
+   1.5,
+   "left",
+   "Həyət",
+   "diag"
+  ],
+  [
+   "summer_out",
+   1.5,
+   "out",
+   "Yay-qış mətbəxi",
+   "diag"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "right",
+   "Yay-qış mətbəxi",
+   "diag"
+  ],
+  [
+   "terrace",
+   1.5,
+   "in",
+   "Terras",
+   "diag"
+  ],
+  [
+   "corridor",
+   1.5,
+   "up",
+   "Dəhliz",
+   "diag"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "diag"
+  ],
+  [
+   "living2",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "diag"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "diag"
+  ],
+  [
+   "bed2",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "diag"
+  ],
+  [
+   "bed5",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "diag"
+  ],
+  [
+   "bed4",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "diag"
+  ],
+  [
+   "closet",
+   1.5,
+   "out",
+   "Qarderob",
+   "diag"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "diag"
+  ],
+  [
+   "bath2",
+   1.5,
+   "in",
+   "Sanuzel",
+   "diag"
+  ]
+ ]
+}
