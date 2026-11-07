@@ -1118,6 +1118,129 @@ class Renderer:
                 parts.append((line, fl, CREAM, W / 2 - d.textlength(line, font=fl) / 2, yy, 0))
                 yy += int(100 * fs)
             lay.alpha_composite(self.text_layer(parts, shadow=False))
+        elif self.hook_style == "blueprint":
+            # architect's drawing: faint grid, dimension line, technical title block
+            d = ImageDraw.Draw(lay)
+            step = int(90 * fs)
+            for x in range(0, W, step):
+                d.line([(x, 0), (x, H)], fill=CREAM + (34,), width=1)
+            for y in range(0, H, step):
+                d.line([(0, y), (W, y)], fill=CREAM + (34,), width=1)
+            g0 = int(H * 0.46)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.5, H - g0), 0, 1) * 190)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            lw = max(2, int(3 * fs))
+            yd = int(H * (0.43 if self.tall else 0.40))
+            x0d, x1d = mx, W - mx
+            d.line([(x0d, yd), (x1d, yd)], fill=CREAM + (255,), width=lw)
+            for xx_ in (x0d, x1d):
+                d.line([(xx_, yd - 22 * fs), (xx_, yd + 22 * fs)], fill=CREAM + (255,), width=lw)
+                sgn = 1 if xx_ == x0d else -1
+                d.polygon([(xx_, yd), (xx_ + sgn * 26 * fs, yd - 10 * fs), (xx_ + sgn * 26 * fs, yd + 10 * fs)], fill=CREAM + (255,))
+            fdm = font("Montserrat700.ttf", 40 * fs)
+            dt = hook["kicker"]
+            tw = d.textlength(dt, font=fdm)
+            d.rectangle([W / 2 - tw / 2 - 24 * fs, yd - 32 * fs, W / 2 + tw / 2 + 24 * fs, yd + 32 * fs], fill=GREEN_DARK + (255,))
+            d.text((W / 2, yd), dt, font=fdm, fill=GOLD, anchor="mm")
+            # title block
+            by = yd + int(90 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            fc = font("Montserrat600.ttf", 34 * fs)
+            fsmall = font("Montserrat700.ttf", 26 * fs)
+            rows_h = [int(56 * fs)] + [int(100 * fs)] * len(hook["lines"]) + [int(86 * fs)]
+            bh = sum(rows_h)
+            d.rectangle([mx, by, W - mx, by + bh], fill=GREEN_DARK + (225,), outline=CREAM + (255,), width=lw)
+            y = by
+            d.text((mx + 26 * fs, y + rows_h[0] / 2), "LAYİHƏ", font=fsmall, fill=GOLD, anchor="lm")
+            d.text((W - mx - 26 * fs, y + rows_h[0] / 2), "VƏRƏQ 01", font=fsmall, fill=GOLD, anchor="rm")
+            y += rows_h[0]
+            for i, line in enumerate(hook["lines"]):
+                d.line([(mx, y), (W - mx, y)], fill=CREAM + (200,), width=max(1, lw // 2))
+                d.text((mx + 26 * fs, y + rows_h[1 + i] / 2), line, font=fl, fill=CREAM if i == 0 else GOLD, anchor="lm")
+                y += rows_h[1 + i]
+            d.line([(mx, y), (W - mx, y)], fill=CREAM + (200,), width=max(1, lw // 2))
+            cells = [c.strip() for c in hook["sub"].split("•")]
+            cw_ = (W - 2 * mx) / len(cells)
+            for j, ctext in enumerate(cells):
+                if j:
+                    d.line([(mx + j * cw_, y), (mx + j * cw_, y + rows_h[-1])], fill=CREAM + (200,), width=max(1, lw // 2))
+                d.text((mx + j * cw_ + cw_ / 2, y + rows_h[-1] / 2), ctext, font=fc, fill=CREAM, anchor="mm")
+        elif self.hook_style == "seal":
+            # gold rosette seal with serrated edge, words around a big centre word, title under it
+            g0 = int(H * 0.40)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.5, H - g0), 0, 1) * 205)[:, None].astype(np.uint8)
+            n = int(H * 0.22)
+            g[:n, :, 3] = np.maximum(g[:n, :, 3], (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8))
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            R = int(200 * fs)
+            S = 2 * R + 40
+            sl = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+            ds = ImageDraw.Draw(sl)
+            c = S / 2
+            pts = []
+            for k in range(72):
+                rr = R if k % 2 == 0 else R * 0.93
+                a_ = k * math.pi / 36
+                pts.append((c + rr * math.cos(a_), c + rr * math.sin(a_)))
+            ds.polygon(pts, fill=GOLD + (255,))
+            ds.ellipse([c - R * 0.84, c - R * 0.84, c + R * 0.84, c + R * 0.84], fill=GREEN + (255,))
+            ds.ellipse([c - R * 0.78, c - R * 0.78, c + R * 0.78, c + R * 0.78], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            top, mid, bot = hook["seal"]
+            ds.text((c, c - R * 0.40), top, font=font("Montserrat700.ttf", 34 * fs), fill=GOLD, anchor="mm")
+            fm_ = font("Playfair700.ttf", 104 * fs)
+            while ds.textlength(mid, font=fm_) > R * 1.4:
+                fm_ = font("Playfair700.ttf", fm_.size - 4)
+            ds.text((c, c + 4 * fs), mid, font=fm_, fill=CREAM, anchor="mm")
+            ds.text((c, c + R * 0.42), bot, font=font("Montserrat700.ttf", 34 * fs), fill=GOLD, anchor="mm")
+            sl = sl.rotate(-8, resample=Image.BICUBIC)
+            sy = int(H * (0.15 if self.tall else 0.10))
+            shd = Image.new("RGBA", sl.size, (0, 0, 0, 0))
+            shd.putalpha(sl.split()[3].filter(ImageFilter.GaussianBlur(16 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(shd, (W // 2 - S // 2 + 8, sy + 14))
+            lay.alpha_composite(sl, (W // 2 - S // 2, sy))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 96 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            y = sy + S + int(30 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, y, 0))
+                y += int(110 * fs)
+            parts.append((hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, y + int(6 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            self.watermark_pos = (int(W / 2 - self.watermark.width / 2), int(H * 0.025))
+        elif self.hook_style == "callout":
+            # dots on the photo with leader lines to small labels, title band at the bottom
+            g0 = int(H * 0.58)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.4, H - g0), 0, 1) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fcl = font("Montserrat700.ttf", 38 * fs)
+            lw = max(2, int(3 * fs))
+            for fx, fy, side, text in hook["callouts"]:
+                px, py = fx * W, fy * H
+                lx = mx if side == "l" else W - mx
+                ly = py - int(90 * fs)
+                ex = px + (-1 if side == "l" else 1) * int(110 * fs)
+                d.line([(px, py), (ex, ly), (lx + (1 if side == "l" else -1) * 0, ly)], fill=CREAM + (255,), width=lw)
+                r_ = int(13 * fs)
+                d.ellipse([px - r_ - 6 * fs, py - r_ - 6 * fs, px + r_ + 6 * fs, py + r_ + 6 * fs], outline=GOLD + (255,), width=lw)
+                d.ellipse([px - r_ * 0.6, py - r_ * 0.6, px + r_ * 0.6, py + r_ * 0.6], fill=GOLD + (255,))
+                tw = d.textlength(text, font=fcl)
+                bh = int(66 * fs)
+                bx0 = lx if side == "l" else lx - tw - 44 * fs
+                d.rounded_rectangle([bx0, ly - bh, bx0 + tw + 44 * fs, ly], radius=int(12 * fs), fill=GREEN_DARK + (235,))
+                d.text((bx0 + 22 * fs, ly - bh / 2), text, font=fcl, fill=CREAM, anchor="lm")
+            fl = font("Playfair700.ttf", 96 * fs)
+            fsub = font("Montserrat600.ttf", 42 * fs)
+            y = int(H * (0.62 if self.tall else 0.60))
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(110 * fs)
+            parts.append((hook["sub"], fsub, CREAM, mx, y + int(6 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):

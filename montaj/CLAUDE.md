@@ -60,7 +60,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 ## C. Dizayn
 
 15. **Hər evin dizaynı fərqli.** Giriş kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili (`label_style`),
-    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid`, `viewfinder`, `news`, `ticket`, `pin`, `chat`, `triptych` (render.py `build_hook_v2`) —
+    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid`, `viewfinder`, `news`, `ticket`, `pin`, `chat`, `triptych`, `blueprint`, `seal`, `callout` (render.py `build_hook_v2`) —
     lazım olsa yenisini əlavə et.
 15a. **`polaroid` giriş üslubu QADAĞANDIR (QANUN, 2026-11-04)** — variant kimi təklif etmə; yerinə yeni, fərqli formatda bir şey düzəlt.
 15b. **Təkrar yoxdur (QANUN):** hər yeni evdə giriş üslubu, kadr yazısı stili və keçid birləşməsi ƏVVƏLKİ evlərdə
