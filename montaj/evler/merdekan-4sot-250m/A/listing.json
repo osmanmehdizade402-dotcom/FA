@@ -1,0 +1,141 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4 sot  •  250 m²  •  2 mərtəbə",
+  "4 otaq  •  4 hamam otağı  •  Tam əşyalı",
+  "Hovuz  •  Kamin  •  Terras  •  Çıxarış"
+ ],
+ "music": null,
+ "slug": "merdekan-4sot-250m-A",
+ "label_style": "plate",
+ "plate_sub": "MƏRDƏKAN VİLLA",
+ "share": "Bu videonu 'evin içi belə olmalıdır' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "plaque",
+  "kicker": "SATIŞDA  •  MƏRDƏKAN",
+  "lines": [
+   "Sənət əsəri",
+   "kimi villa"
+  ],
+  "sub": "2 mərtəbə, 250 m², 4 sot | Tam əşyalı, kamin, isti döşəmə",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living_dining",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_pool",
+   1.5,
+   "in",
+   "Fasad",
+   "split"
+  ],
+  [
+   "pool_view",
+   1.5,
+   "left",
+   "Hovuz",
+   "split"
+  ],
+  [
+   "terrace",
+   1.5,
+   "out",
+   "Terras və manqal",
+   "split"
+  ],
+  [
+   "entrance",
+   1.5,
+   "right",
+   "Giriş",
+   "split"
+  ],
+  [
+   "living2",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "split"
+  ],
+  [
+   "living3",
+   1.5,
+   "up",
+   "Qonaq otağı",
+   "split"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "up",
+   "Mətbəx",
+   "split"
+  ],
+  [
+   "stairs",
+   1.5,
+   "out",
+   "Pilləkən",
+   "split"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "split"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "split"
+  ],
+  [
+   "bed3",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "split"
+  ],
+  [
+   "bath1",
+   1.5,
+   "in",
+   "Hamam otağı",
+   "split"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Hamam otağı",
+   "split"
+  ],
+  [
+   "bath3",
+   1.5,
+   "left",
+   "Hamam otağı",
+   "split"
+  ],
+  [
+   "pool_pergola",
+   1.5,
+   "in",
+   "Hovuz",
+   "split"
+  ]
+ ]
+}

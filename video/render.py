@@ -382,6 +382,43 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("plate", "block"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "plate":  # small museum plate: cream, thin gold rule, serif title + tiny caps line
+                    f1 = font("Playfair700.ttf", 50 * fs)
+                    f2 = font("Montserrat700.ttf", 22 * fs)
+                    sub = LISTING.get("plate_sub", "MƏRDƏKAN")
+                    tw = max(d.textlength(lab, font=f1), d.textlength(sub, font=f2) + 40 * fs)
+                    bw, bh = tw + 70 * fs, int(140 * fs)
+                    x0, y0 = W - mx - bw, H - int(340 * u) - bh
+                    sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                    ImageDraw.Draw(sh).rectangle([x0 + 8, y0 + 12, x0 + bw + 8, y0 + bh + 12], fill=(0, 0, 0, 120))
+                    lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(12 * fs)))
+                    d = ImageDraw.Draw(lay)
+                    d.rectangle([x0, y0, x0 + bw, y0 + bh], fill=CREAM + (250,))
+                    d.text((x0 + 35 * fs, y0 + 28 * fs), lab, font=f1, fill=GREEN)
+                    d.line([(x0 + 35 * fs, y0 + 96 * fs), (x0 + 85 * fs, y0 + 96 * fs)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                    d.text((x0 + 100 * fs, y0 + 96 * fs), sub, font=f2, fill=GOLD, anchor="lm")
+                else:  # solid gold block, green caps, top-left under the logo
+                    f_ = font("Montserrat700.ttf", 58 * fs)
+                    t = az_upper(lab)
+                    bb = d.textbbox((0, 0), t, font=f_)
+                    bw, bh = bb[2] - bb[0] + 60 * fs, int(104 * fs)
+                    x0 = mx
+                    y0 = self.watermark_pos[1] + self.watermark.height + int(36 * fs)
+                    d.rectangle([x0, y0, x0 + bw, y0 + bh], fill=GOLD + (255,))
+                    d.rectangle([x0, y0 + bh, x0 + bw * 0.35, y0 + bh + max(4, int(8 * fs))], fill=CREAM + (255,))
+                    d.text((x0 + 30 * fs, y0 + bh / 2), t, font=f_, fill=GREEN, anchor="lm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("corner", "outline"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -1818,7 +1855,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -1845,6 +1882,24 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "split":  # previous shot splits horizontally, halves slide up and down
+                    e = ease(k)
+                    off = int(e * self.H / 2)
+                    fr = cur.copy()
+                    top = prev.crop((0, 0, self.W, self.H // 2))
+                    bot = prev.crop((0, self.H // 2, self.W, self.H))
+                    fr.paste(top, (0, -off))
+                    fr.paste(bot, (0, self.H // 2 + off))
+                    if 0 < off < self.H // 2:
+                        dd = ImageDraw.Draw(fr)
+                        bw = max(4, int(6 * self.W / 1080))
+                        dd.rectangle([0, self.H // 2 - off - bw, self.W, self.H // 2 - off], fill=GOLD)
+                        dd.rectangle([0, self.H // 2 + off, self.W, self.H // 2 + off + bw], fill=GOLD)
+                elif tr == "drop":  # next shot drops in from the top with a small bounce
+                    e = k
+                    yy = (1 - e) ** 2 * -self.H + (math.sin(e * math.pi) * 0.04 * self.H if e > 0.7 else 0)
+                    fr = prev.copy()
+                    fr.paste(cur, (0, int(min(yy, 0) if e < 0.7 else -abs(yy) * 0.3)))
                 elif tr == "doors":  # next shot opens like two doors from the centre
                     e = ease(k)
                     half = int(e * self.W / 2)
