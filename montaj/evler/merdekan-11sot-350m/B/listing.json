@@ -1,0 +1,145 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  11 sot  •  350 m²  •  2 mərtəbə",
+  "Qonaq otağı + 5 yataq  •  5 sanuzel",
+  "Daşma hovuz  •  Yay mətbəxi  •  3 eyvan"
+ ],
+ "music": null,
+ "slug": "merdekan-11sot-350m-B",
+ "label_style": "frame",
+ "share": "Böyük ailəsi üçün ev axtaran dostuna göndər — 5 yataq, 11 sot!",
+ "hook": {
+  "style": "mosaic",
+  "extra": [
+   "hall_stairs",
+   "kitchen",
+   "pergola_balcony"
+  ],
+  "kicker": "MƏRDƏKAN",
+  "lines": [
+   "Lüks",
+   "villa"
+  ],
+  "sub": "11 sot  •  350 m²",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "pool_sunset",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_front",
+   1.5,
+   "in",
+   "Fasad",
+   "stripes"
+  ],
+  [
+   "pool_palms",
+   1.5,
+   "left",
+   "Daşma hovuz",
+   "stripes"
+  ],
+  [
+   "colonnade",
+   1.5,
+   "out",
+   "Sütunlu terras",
+   "stripes"
+  ],
+  [
+   "garden_pavilion",
+   1.5,
+   "right",
+   "Yay mətbəxi",
+   "stripes"
+  ],
+  [
+   "terrace_pool",
+   1.5,
+   "in",
+   "Terras",
+   "stripes"
+  ],
+  [
+   "hall_stairs",
+   1.5,
+   "up",
+   "Giriş holu",
+   "stripes"
+  ],
+  [
+   "gallery",
+   1.5,
+   "out",
+   "2-ci mərtəbə",
+   "stripes"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "left",
+   "Mətbəx",
+   "stripes"
+  ],
+  [
+   "living2",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "stripes"
+  ],
+  [
+   "bed2",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "stripes"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "stripes"
+  ],
+  [
+   "bed5",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "stripes"
+  ],
+  [
+   "bath3",
+   1.5,
+   "out",
+   "Sanuzel",
+   "stripes"
+  ],
+  [
+   "bath2",
+   1.5,
+   "left",
+   "Sanuzel",
+   "stripes"
+  ],
+  [
+   "bath5",
+   1.5,
+   "in",
+   "Sanuzel",
+   "stripes"
+  ]
+ ]
+}
