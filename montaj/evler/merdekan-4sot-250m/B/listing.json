@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4 sot  •  250 m²  •  2 mərtəbə",
+  "4 otaq  •  4 hamam otağı  •  Tam əşyalı",
+  "Hovuz  •  Kamin  •  Terras  •  Çıxarış"
+ ],
+ "music": null,
+ "slug": "merdekan-4sot-250m-B",
+ "label_style": "block",
+ "share": "Kamin qarşısında qış axşamı arzulayan dostuna göndər!",
+ "hook": {
+  "style": "stack",
+  "lines": [
+   "TAM",
+   "ƏŞYALI",
+   "VİLLA"
+  ],
+  "sub": "Mərdəkan  •  250 m²  •  hovuz  •  kamin",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_pool",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "living_dining",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "drop"
+  ],
+  [
+   "pool_view",
+   1.5,
+   "left",
+   "Hovuz",
+   "drop"
+  ],
+  [
+   "terrace",
+   1.5,
+   "out",
+   "Terras və manqal",
+   "drop"
+  ],
+  [
+   "entrance",
+   1.5,
+   "right",
+   "Giriş",
+   "drop"
+  ],
+  [
+   "living2",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "drop"
+  ],
+  [
+   "living3",
+   1.5,
+   "up",
+   "Qonaq otağı",
+   "drop"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "up",
+   "Mətbəx",
+   "drop"
+  ],
+  [
+   "stairs",
+   1.5,
+   "out",
+   "Pilləkən",
+   "drop"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "drop"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "drop"
+  ],
+  [
+   "bed3",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "drop"
+  ],
+  [
+   "bath1",
+   1.5,
+   "in",
+   "Hamam otağı",
+   "drop"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Hamam otağı",
+   "drop"
+  ],
+  [
+   "bath3",
+   1.5,
+   "left",
+   "Hamam otağı",
+   "drop"
+  ],
+  [
+   "pool_pergola",
+   1.5,
+   "in",
+   "Hovuz",
+   "drop"
+  ]
+ ]
+}
