@@ -1575,6 +1575,87 @@ class Renderer:
                 parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
                 y += int(104 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "colonnade":
+            # two gold pilasters framing a centred classical title, capital + base ornaments
+            g0 = int(H * 0.36)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 2.0, H - g0), 0, 1) ** 0.7 * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            y0 = int(H * (0.52 if self.tall else 0.40))
+            y1 = int(H * (0.78 if self.tall else 0.80))
+            pw = int(26 * fs)
+            for x in (mx, W - mx - pw):
+                d.rectangle([x, y0, x + pw, y1], fill=GOLD + (235,))
+                for k in range(3):
+                    xx_ = x + pw * (k + 1) / 4
+                    d.line([(xx_, y0 + 30 * fs), (xx_, y1 - 30 * fs)], fill=GREEN + (90,), width=max(1, int(2 * fs)))
+                d.rectangle([x - 14 * fs, y0 - 22 * fs, x + pw + 14 * fs, y0], fill=GOLD + (255,))
+                d.rectangle([x - 14 * fs, y1, x + pw + 14 * fs, y1 + 22 * fs], fill=GOLD + (255,))
+            d.line([(mx - 14 * fs, y0 - 34 * fs), (W - mx + 14 * fs, y0 - 34 * fs)], fill=GOLD + (255,), width=max(2, int(4 * fs)))
+            cx = W / 2
+            fk = font("Montserrat700.ttf", 32 * fs)
+            tr_ = 10 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            parts = [(hook["kicker"], fk, GOLD, cx - kw / 2, y0 + int(30 * fs), tr_)]
+            y = y0 + int(90 * fs)
+            fl = font("Playfair700.ttf", 100 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, cx - d.textlength(line, font=fl) / 2, y, 0))
+                y += int(114 * fs)
+            fsub = font("Montserrat600.ttf", 36 * fs)
+            parts.append((hook["sub"], fsub, CREAM, cx - d.textlength(hook["sub"], font=fsub) / 2, y + int(14 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "mosaic":
+            # 2x2 photo grid with thin cream gutters and a round gold medallion in the centre
+            keys = [self.shots[0][0]] + hook.get("extra", [])
+            cw, ch = W // 2, H // 2
+            for j, k in enumerate(keys[:4]):
+                im = load_photo(k)
+                iw, ih = im.size
+                ar = cw / ch
+                bw, bh = (ih * ar, ih) if iw / ih > ar else (iw, iw / ar)
+                tile = im.resize((cw, ch), Image.BICUBIC, box=((iw - bw) / 2, (ih - bh) / 2, (iw + bw) / 2, (ih + bh) / 2))
+                lay.alpha_composite(tile.convert("RGBA"), ((j % 2) * cw, (j // 2) * ch))
+            d = ImageDraw.Draw(lay)
+            gw = max(4, int(8 * fs))
+            d.rectangle([cw - gw // 2, 0, cw + gw // 2, H], fill=CREAM + (255,))
+            d.rectangle([0, ch - gw // 2, W, ch + gw // 2], fill=CREAM + (255,))
+            R = int(230 * fs)
+            d.ellipse([cw - R - 14 * fs, ch - R - 14 * fs, cw + R + 14 * fs, ch + R + 14 * fs], fill=CREAM + (255,))
+            d.ellipse([cw - R, ch - R, cw + R, ch + R], fill=GREEN + (255,), outline=GOLD + (255,), width=max(3, int(5 * fs)))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            d.text((cw, ch - R * 0.55), hook["kicker"], font=fk, fill=GOLD, anchor="mm")
+            fl = font("Playfair700.ttf", 74 * fs)
+            yy = ch - R * 0.22
+            for i, line in enumerate(hook["lines"]):
+                d.text((cw, yy), line, font=fl, fill=CREAM if i == 0 else GOLD, anchor="mm")
+                yy += 84 * fs
+            d.text((cw, ch + R * 0.58), hook["sub"], font=font("Montserrat600.ttf", 28 * fs), fill=CREAM, anchor="mm")
+        elif self.hook_style == "ledger":
+            # right-aligned column of big numbers with units, gold hairlines, title on the left
+            g0 = int(H * 0.22)
+            ramp = np.clip(np.linspace(0, 2.2, H - g0), 0, 1) ** 0.7
+            g[g0:, :, 3] = (ramp * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            y = int(H * (0.40 if self.tall else 0.30))
+            fl = font("Playfair700.ttf", 92 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(104 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            y += int(30 * fs)
+            fn = font("Playfair700.ttf", 86 * fs)
+            fu = font("Montserrat700.ttf", 30 * fs)
+            rh = int(108 * fs)
+            for num, unit in hook["nums"]:
+                d.line([(mx, y), (W - mx, y)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+                d.text((mx, y + rh / 2), unit, font=fu, fill=CREAM, anchor="lm")
+                d.text((W - mx, y + rh / 2 + 4 * fs), num, font=fn, fill=GOLD, anchor="rm")
+                y += rh
+            d.line([(mx, y), (W - mx, y)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
