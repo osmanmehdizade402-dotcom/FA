@@ -382,6 +382,54 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("banner", "frame"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "banner":  # gold banner with swallow-tail ends, centred, green serif text
+                    f_ = font("Playfair700.ttf", 54 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    bh = int(96 * fs)
+                    bw = tw + 120 * fs
+                    x0, y0 = W / 2 - bw / 2, H - int(340 * u) - bh
+                    tail = 46 * fs
+                    for sgn, xe in ((-1, x0), (1, x0 + bw)):
+                        d.polygon([(xe, y0 + 14 * fs), (xe + sgn * tail * 1.4, y0 + 14 * fs), (xe + sgn * tail * 0.8, y0 + bh / 2 + 14 * fs),
+                                   (xe + sgn * tail * 1.4, y0 + bh + 14 * fs), (xe, y0 + bh + 14 * fs)], fill=(150, 124, 72, 255))
+                    d.rectangle([x0, y0, x0 + bw, y0 + bh], fill=GOLD + (255,))
+                    d.line([(x0 + 18 * fs, y0 + 10 * fs), (x0 + bw - 18 * fs, y0 + 10 * fs)], fill=CREAM + (200,), width=max(1, int(2 * fs)))
+                    d.line([(x0 + 18 * fs, y0 + bh - 10 * fs), (x0 + bw - 18 * fs, y0 + bh - 10 * fs)], fill=CREAM + (200,), width=max(1, int(2 * fs)))
+                    d.text((W / 2, y0 + bh / 2), lab, font=f_, fill=GREEN, anchor="mm")
+                else:  # thin cream frame inset around the shot; label sits in a gap cut into the bottom edge
+                    ins = int(40 * W / 1080)
+                    lw = max(2, int(4 * fs))
+                    f_ = font("Montserrat700.ttf", 40 * fs)
+                    t = az_upper(lab)
+                    tr_ = 8 * fs
+                    tw = sum(d.textlength(c, font=f_) + tr_ for c in t) - tr_
+                    yb = H - int(300 * u)
+                    gap = tw / 2 + 36 * fs
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.70)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 120)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    d = ImageDraw.Draw(lay)
+                    c = CREAM + (235,)
+                    d.line([(ins, ins), (W - ins, ins)], fill=c, width=lw)
+                    d.line([(ins, ins), (ins, yb)], fill=c, width=lw)
+                    d.line([(W - ins, ins), (W - ins, yb)], fill=c, width=lw)
+                    d.line([(ins, yb), (W / 2 - gap, yb)], fill=c, width=lw)
+                    d.line([(W / 2 + gap, yb), (W - ins, yb)], fill=c, width=lw)
+                    x = W / 2 - tw / 2
+                    lay.alpha_composite(self.text_layer([(t, f_, CREAM, x, yb - 24 * fs, tr_)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("plate", "block"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -1936,7 +1984,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -1963,6 +2011,34 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "tiles":  # grid of tiles flips to the next shot in a diagonal wave
+                    e = k
+                    nx, ny = 4, 7
+                    tw_, th_ = self.W / nx, self.H / ny
+                    m = Image.new("L", (self.W, self.H), 0)
+                    dm = ImageDraw.Draw(m)
+                    for ix in range(nx):
+                        for iy in range(ny):
+                            lag = (ix + iy) / (nx + ny - 2) * 0.55
+                            ej = ease(min(max((e - lag) / 0.45, 0), 1))
+                            if ej <= 0:
+                                continue
+                            cx_, cy_ = (ix + 0.5) * tw_, (iy + 0.5) * th_
+                            hw, hh = tw_ / 2 * ej, th_ / 2 * ej
+                            dm.rectangle([cx_ - hw, cy_ - hh, cx_ + hw, cy_ + hh], fill=255)
+                    fr = Image.composite(cur, prev, m)
+                elif tr == "stripes":  # horizontal stripes slide in alternately from left and right
+                    e = ease(k)
+                    n_ = 6
+                    sh = self.H / n_
+                    fr = prev.copy()
+                    for j in range(n_):
+                        lag = j / n_ * 0.3
+                        ej = ease(min(max((k - lag) / 0.7, 0), 1))
+                        y0_, y1_ = int(j * sh), int((j + 1) * sh)
+                        strip = cur.crop((0, y0_, self.W, y1_))
+                        off = int((1 - ej) * self.W) * (1 if j % 2 == 0 else -1)
+                        fr.paste(strip, (off, y0_))
                 elif tr == "split":  # previous shot splits horizontally, halves slide up and down
                     e = ease(k)
                     off = int(e * self.H / 2)

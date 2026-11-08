@@ -81,6 +81,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     - Mərdəkan 5.5 sot 220 m²: seal / rule / iris; callout / leader / blinds
     - Mərdəkan 8 sot 220 m²: diagonal / corner / doors; spotlight / outline / diag
     - Mərdəkan 4 sot 250 m²: plaque / plate / split; stack / block / drop
+    - Mərdəkan 11 sot 350 m²: colonnade / banner / tiles; mosaic / frame / stripes
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
@@ -130,5 +131,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block`, `banner`, `frame` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop, tiles, stripes), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

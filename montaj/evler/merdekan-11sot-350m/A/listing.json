@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  11 sot  •  350 m²  •  2 mərtəbə",
+  "Qonaq otağı + 5 yataq  •  5 sanuzel",
+  "Daşma hovuz  •  Yay mətbəxi  •  3 eyvan"
+ ],
+ "music": null,
+ "slug": "merdekan-11sot-350m-A",
+ "label_style": "banner",
+ "share": "Bu videonu 'saray belə olar' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "colonnade",
+  "kicker": "MƏRDƏKAN",
+  "lines": [
+   "Klassik",
+   "saray-villa"
+  ],
+  "sub": "11 sot  •  350 m²  •  5 yataq  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_front",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_palms",
+   1.5,
+   "in",
+   "Daşma hovuz",
+   "tiles"
+  ],
+  [
+   "columns_view",
+   1.5,
+   "left",
+   "Sütunlu terras",
+   "tiles"
+  ],
+  [
+   "garden_pavilion",
+   1.5,
+   "out",
+   "Yay mətbəxi",
+   "tiles"
+  ],
+  [
+   "arch_terrace",
+   1.5,
+   "right",
+   "Terras",
+   "tiles"
+  ],
+  [
+   "terrace_pool",
+   1.5,
+   "in",
+   "Hovuz kənarı",
+   "tiles"
+  ],
+  [
+   "hall_stairs",
+   1.5,
+   "up",
+   "Giriş holu",
+   "tiles"
+  ],
+  [
+   "gallery",
+   1.5,
+   "out",
+   "2-ci mərtəbə",
+   "tiles"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "left",
+   "Mətbəx",
+   "tiles"
+  ],
+  [
+   "living1",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "tiles"
+  ],
+  [
+   "bed3",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "tiles"
+  ],
+  [
+   "bed4",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "tiles"
+  ],
+  [
+   "bed5",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "tiles"
+  ],
+  [
+   "bed2",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "tiles"
+  ],
+  [
+   "bath4",
+   1.5,
+   "left",
+   "Sanuzel",
+   "tiles"
+  ],
+  [
+   "bath1",
+   1.5,
+   "in",
+   "Sanuzel",
+   "tiles"
+  ]
+ ]
+}
