@@ -1,0 +1,145 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4.2 sot  •  160 m²  •  1 mərtəbə",
+  "Qonaq otağı + 3 yataq  •  2 sanuzel",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-4-2sot-160m-B",
+ "label_style": "sprocket",
+ "share": "Hovuz kənarında manqal arzulayan dostuna göndər!",
+ "hook": {
+  "style": "filmstrip",
+  "extra": [
+   "facade_garden",
+   "kitchen",
+   "bed1"
+  ],
+  "kicker": "TAM ƏŞYALI",
+  "lines": [
+   "Bir mərtəbə,",
+   "sıfır pilləkən"
+  ],
+  "sub": "4.2 sot  •  160 m² | 3 yataq  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_pool",
+   1.5,
+   "in",
+   "Fasad",
+   "filmroll"
+  ],
+  [
+   "pool_palm",
+   1.5,
+   "left",
+   "Hovuz",
+   "filmroll"
+  ],
+  [
+   "facade_garden",
+   1.5,
+   "out",
+   "Həyət",
+   "filmroll"
+  ],
+  [
+   "terrace_table",
+   1.5,
+   "right",
+   "Terras",
+   "filmroll"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "in",
+   "Yay-qış mətbəxi",
+   "filmroll"
+  ],
+  [
+   "bbq",
+   1.5,
+   "up",
+   "Manqal",
+   "filmroll"
+  ],
+  [
+   "corridor1",
+   1.5,
+   "out",
+   "Dəhliz",
+   "filmroll"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "left",
+   "Mətbəx",
+   "filmroll"
+  ],
+  [
+   "dining",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "filmroll"
+  ],
+  [
+   "bed1b",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "filmroll"
+  ],
+  [
+   "bed2b",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "filmroll"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "filmroll"
+  ],
+  [
+   "bed_small",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "filmroll"
+  ],
+  [
+   "bath2",
+   1.5,
+   "left",
+   "Sanuzel",
+   "filmroll"
+  ],
+  [
+   "bath3",
+   1.5,
+   "in",
+   "Sanuzel",
+   "filmroll"
+  ]
+ ]
+}
