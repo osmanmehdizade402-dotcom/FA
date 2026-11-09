@@ -1837,6 +1837,91 @@ class Renderer:
             y += int(24 * fs)
             d.line([(mx, y + 20 * fs), (mx + 70 * fs, y + 20 * fs)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
             d.text((mx + 90 * fs, y + 20 * fs), hook["sub"], font=font("Montserrat600.ttf", 34 * fs), fill=GOLD, anchor="lm")
+        elif self.hook_style == "waterline":
+            # title sits on a horizontal 'water surface' line, reflected title below it (mirror + ripple fade)
+            g0 = int(H * 0.22)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 2.4, H - g0), 0, 1) ** 0.6 * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 108 * fs)
+            yl = int(H * (0.56 if self.tall else 0.52))
+            title = Image.new("RGBA", (W, int(260 * fs)), (0, 0, 0, 0))
+            dt = ImageDraw.Draw(title)
+            yy = 0
+            for i, line in enumerate(hook["lines"]):
+                dt.text((W / 2, yy), line, font=fl, fill=(CREAM if i == 0 else GOLD) + (255,), anchor="ma")
+                yy += int(118 * fs)
+            bb = title.getbbox()
+            title = title.crop((0, 0, W, bb[3] + 4))
+            lay.alpha_composite(title, (0, yl - title.height))
+            refl = title.transpose(Image.FLIP_TOP_BOTTOM)
+            ra = np.asarray(refl).copy()
+            fade = np.linspace(0.45, 0.0, ra.shape[0])[:, None]
+            ra[..., 3] = (ra[..., 3] * fade).astype(np.uint8)
+            refl = Image.fromarray(ra, "RGBA")
+            rw = np.asarray(refl)
+            out = np.zeros_like(rw)
+            for yy in range(rw.shape[0]):
+                sh = int(6 * fs * math.sin(yy / (9 * fs)))
+                out[yy] = np.roll(rw[yy], sh, axis=0)
+            lay.alpha_composite(Image.fromarray(out, "RGBA").filter(ImageFilter.GaussianBlur(1.5)), (0, yl + int(10 * fs)))
+            d = ImageDraw.Draw(lay)
+            d.line([(mx, yl + 4 * fs), (W - mx, yl + 4 * fs)], fill=GOLD + (230,), width=max(2, int(3 * fs)))
+            fk = font("Montserrat700.ttf", 34 * fs)
+            tr_ = 10 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            lay.alpha_composite(self.text_layer([(hook["kicker"], fk, GOLD, W / 2 - kw / 2, yl - title.height - int(64 * fs), tr_)]))
+            fsub = font("Montserrat600.ttf", 38 * fs)
+            ImageDraw.Draw(lay).text((W / 2, yl + int(200 * fs)), hook["sub"], font=fsub, fill=CREAM, anchor="ma")
+        elif self.hook_style == "keycard":
+            # hotel key card: dark green card with gold chip, room-number style title, 'CHECK-IN' line
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cw_, ch_ = int(W * 0.80), int(W * 0.80 / 1.586)
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_, ch_], radius=int(34 * fs), fill=GREEN_DARK + (245,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            pad = int(46 * fs)
+            chip = [pad, int(ch_ * 0.30), pad + int(96 * fs), int(ch_ * 0.30) + int(74 * fs)]
+            dc.rounded_rectangle(chip, radius=int(12 * fs), fill=GOLD + (255,))
+            for k in range(1, 3):
+                yk = chip[1] + (chip[3] - chip[1]) * k / 3
+                dc.line([(chip[0] + 8, yk), (chip[2] - 8, yk)], fill=(150, 124, 72, 255), width=2)
+            dc.line([((chip[0] + chip[2]) / 2, chip[1] + 8), ((chip[0] + chip[2]) / 2, chip[3] - 8)], fill=(150, 124, 72, 255), width=2)
+            dc.text((pad, pad), hook["kicker"], font=font("Montserrat700.ttf", 28 * fs), fill=GOLD)
+            dc.text((cw_ - pad, pad), "VIP", font=font("Playfair700.ttf", 44 * fs), fill=GOLD, anchor="ra")
+            fl = font("Playfair700.ttf", 78 * fs)
+            yy = int(ch_ * 0.56)
+            for i, line in enumerate(hook["lines"]):
+                dc.text((pad, yy), line, font=fl, fill=CREAM if i == 0 else GOLD)
+                yy += int(86 * fs)
+            dc.text((cw_ - pad, ch_ - pad), hook["sub"], font=font("Montserrat600.ttf", 26 * fs), fill=CREAM, anchor="rd")
+            card = card.rotate(-6, expand=True, resample=Image.BICUBIC)
+            ox, oy = W // 2 - card.width // 2, int(H * (0.42 if self.tall else 0.33))
+            shd = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            shd.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(20 * fs)).point(lambda v: int(v * 0.6)))
+            lay.alpha_composite(shd, (ox + 10, oy + 20))
+            lay.alpha_composite(card, (ox, oy))
+        elif self.hook_style == "countdown":
+            # 'reasons' countdown: huge gold 5 on the left, list of five short reasons on the right
+            g[..., 3] = (np.clip(np.linspace(1.3, 0.75, W), 0, 1) * 200)[None, :].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            top = int(H * (0.32 if self.tall else 0.24))
+            fbig = font("Playfair700.ttf", 360 * fs)
+            d.text((mx - 10 * fs, top - 40 * fs), str(len(hook["lines"])), font=fbig, fill=GOLD + (255,))
+            fk = font("Montserrat700.ttf", 34 * fs)
+            d.text((mx, top + int(440 * fs)), hook["kicker"], font=fk, fill=CREAM)
+            fi = font("Montserrat700.ttf", 42 * fs)
+            x0 = mx + int(250 * fs)
+            yy = top + int(20 * fs)
+            parts = []
+            for j, line in enumerate(hook["lines"]):
+                parts.append((f"{j + 1}.", fi, GOLD, x0, yy, 0))
+                parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
+                yy += int(76 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
