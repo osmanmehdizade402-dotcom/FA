@@ -1704,6 +1704,96 @@ class Renderer:
                 d.text((W - mx, y + rh / 2 + 4 * fs), num, font=fn, fill=GOLD, anchor="rm")
                 y += rh
             d.line([(mx, y), (W - mx, y)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+        elif self.hook_style == "neon":
+            # glowing warm LED outline (echoes the facade's light strips) framing a centred title
+            g[..., 3] = 120
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            dg = ImageDraw.Draw(glow)
+            x0, x1 = mx, W - mx
+            y0 = int(H * (0.30 if self.tall else 0.24))
+            y1 = int(H * (0.66 if self.tall else 0.70))
+            neon = (255, 205, 110)
+            dg.rounded_rectangle([x0, y0, x1, y1], radius=int(30 * fs), outline=neon + (255,), width=max(4, int(8 * fs)))
+            halo = glow.filter(ImageFilter.GaussianBlur(18 * fs))
+            lay.alpha_composite(halo)
+            lay.alpha_composite(halo)
+            d = ImageDraw.Draw(lay)
+            d.rounded_rectangle([x0, y0, x1, y1], radius=int(30 * fs), outline=(255, 236, 190, 255), width=max(2, int(3 * fs)))
+            fk = font("Montserrat700.ttf", 34 * fs)
+            tr_ = 10 * fs
+            kw = sum(d.textlength(c, font=fk) + tr_ for c in hook["kicker"]) - tr_
+            d.rectangle([W / 2 - kw / 2 - 26 * fs, y0 - 26 * fs, W / 2 + kw / 2 + 26 * fs, y0 + 26 * fs], fill=(10, 18, 16, 255))
+            lay.alpha_composite(self.text_layer([(hook["kicker"], fk, neon, W / 2 - kw / 2, y0 - 20 * fs, tr_)], shadow=False))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 104 * fs)
+            n = len(hook["lines"])
+            y = (y0 + y1) / 2 - n * 58 * fs - 30 * fs
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else neon, W / 2 - d.textlength(line, font=fl) / 2, y, 0))
+                y += int(116 * fs)
+            fsub = font("Montserrat600.ttf", 38 * fs)
+            parts.append((hook["sub"], fsub, CREAM, W / 2 - d.textlength(hook["sub"], font=fsub) / 2, y + 12 * fs, 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "filmstrip":
+            # vertical film strip on the right with 3 frames, title on the left over a dark gradient
+            gg = np.zeros((H, W, 4), np.uint8)
+            gg[..., 3] = (np.clip(np.linspace(1.2, 0.0, W), 0, 1) * 200)[None, :].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+            sw = int(W * 0.36)
+            sx = W - sw - int(30 * fs)
+            d = ImageDraw.Draw(lay)
+            d.rectangle([sx, 0, sx + sw, H], fill=(14, 14, 14, 245))
+            hole = int(22 * fs)
+            for yy in range(int(14 * fs), H, int(48 * fs)):
+                for xx in (sx + int(10 * fs), sx + sw - int(10 * fs) - hole):
+                    d.rounded_rectangle([xx, yy, xx + hole, yy + hole * 0.75], radius=int(4 * fs), fill=CREAM + (230,))
+            fw = sw - int(70 * fs)
+            fh = int(fw * 1.25)
+            keys = hook.get("extra", [])
+            ytop = int(H * (0.14 if self.tall else 0.08))
+            gap = (H - 2 * ytop - 3 * fh) / 2
+            for j, k in enumerate(keys[:3]):
+                im = load_photo(k)
+                iw, ih = im.size
+                ar = fw / fh
+                bw, bh = (ih * ar, ih) if iw / ih > ar else (iw, iw / ar)
+                tile = im.resize((fw, fh), Image.BICUBIC, box=((iw - bw) / 2, (ih - bh) / 2, (iw + bw) / 2, (ih + bh) / 2))
+                lay.alpha_composite(tile.convert("RGBA"), (sx + int(35 * fs), int(ytop + j * (fh + gap))))
+            fl = font("Playfair700.ttf", 88 * fs)
+            fk = font("Montserrat700.ttf", 32 * fs)
+            y = int(H * (0.40 if self.tall else 0.34))
+            parts = [(hook["kicker"], fk, GOLD, mx, y, 8 * fs)]
+            y += int(64 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, y, 0))
+                y += int(100 * fs)
+            fsub = font("Montserrat600.ttf", 34 * fs)
+            for line in hook["sub"].split("|"):
+                parts.append((line.strip(), fsub, CREAM, mx, y + 14 * fs, 0))
+                y += int(50 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "quote":
+            # big gold quotation marks + italic-feel serif quote, attribution line
+            g0 = int(H * 0.40)
+            g[g0:, :, 3] = (np.clip(np.linspace(0, 1.8, H - g0), 0, 1) ** 0.8 * 220)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            y = int(H * (0.44 if self.tall else 0.36))
+            fq = font("Playfair700.ttf", 300 * fs)
+            d.text((mx - 10 * fs, y - 90 * fs), "“", font=fq, fill=GOLD + (255,))
+            fl = font("Playfair700.ttf", 86 * fs)
+            y += int(130 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM, mx, y, 0))
+                y += int(102 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            y += int(24 * fs)
+            d.line([(mx, y + 20 * fs), (mx + 70 * fs, y + 20 * fs)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+            d.text((mx + 90 * fs, y + 20 * fs), hook["sub"], font=font("Montserrat600.ttf", 34 * fs), fill=GOLD, anchor="lm")
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
