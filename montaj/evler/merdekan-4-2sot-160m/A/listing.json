@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  4.2 sot  •  160 m²  •  1 mərtəbə",
+  "Qonaq otağı + 3 yataq  •  2 sanuzel",
+  "Hovuz  •  Yay-qış mətbəxi  •  Kupça"
+ ],
+ "music": null,
+ "slug": "merdekan-4-2sot-160m-A",
+ "label_style": "glow",
+ "share": "Bu videonu 'pilləkənsiz ev arzum' deyən o dostuna göndər!",
+ "hook": {
+  "style": "neon",
+  "kicker": "MƏRDƏKAN",
+  "lines": [
+   "Axşam işığında",
+   "modern villa"
+  ],
+  "sub": "4.2 sot  •  160 m²  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_pool",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_palm",
+   1.5,
+   "in",
+   "Hovuz",
+   "glowcut"
+  ],
+  [
+   "facade_garden",
+   1.5,
+   "left",
+   "Həyət",
+   "glowcut"
+  ],
+  [
+   "terrace_pool",
+   1.5,
+   "out",
+   "Terras",
+   "glowcut"
+  ],
+  [
+   "summer_in",
+   1.5,
+   "right",
+   "Yay-qış mətbəxi",
+   "glowcut"
+  ],
+  [
+   "bbq",
+   1.5,
+   "in",
+   "Manqal",
+   "glowcut"
+  ],
+  [
+   "corridor2",
+   1.5,
+   "up",
+   "Dəhliz",
+   "glowcut"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "glowcut"
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "glowcut"
+  ],
+  [
+   "dining",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "glowcut"
+  ],
+  [
+   "bed1b",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "glowcut"
+  ],
+  [
+   "bed2",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "glowcut"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "glowcut"
+  ],
+  [
+   "bed_small",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "glowcut"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "glowcut"
+  ],
+  [
+   "bath3",
+   1.5,
+   "in",
+   "Sanuzel",
+   "glowcut"
+  ]
+ ]
+}

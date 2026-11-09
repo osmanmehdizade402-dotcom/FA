@@ -382,6 +382,49 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("glow", "sprocket"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "glow":  # warm LED underline with soft halo, caption above it (echoes LED strips)
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.62)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 140)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    f_ = font("Playfair700.ttf", 64 * fs)
+                    tw = ImageDraw.Draw(lay).textlength(lab, font=f_)
+                    yb = H - int(350 * u)
+                    neon = (255, 205, 110)
+                    gl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                    ImageDraw.Draw(gl).rounded_rectangle([W / 2 - tw / 2 - 30 * fs, yb, W / 2 + tw / 2 + 30 * fs, yb + 8 * fs], radius=int(4 * fs), fill=neon + (255,))
+                    lay.alpha_composite(gl.filter(ImageFilter.GaussianBlur(14 * fs)))
+                    lay.alpha_composite(gl.filter(ImageFilter.GaussianBlur(5 * fs)))
+                    ImageDraw.Draw(lay).rounded_rectangle([W / 2 - tw / 2 - 30 * fs, yb + 2 * fs, W / 2 + tw / 2 + 30 * fs, yb + 6 * fs], radius=int(2 * fs), fill=(255, 240, 205, 255))
+                    lay.alpha_composite(self.text_layer([(lab, f_, CREAM, W / 2 - tw / 2, yb - 92 * fs, 0)]))
+                else:  # little film-frame tag: black strip with sprocket holes, cream caps inside
+                    f_ = font("Montserrat700.ttf", 42 * fs)
+                    t = az_upper(lab)
+                    tr_ = 6 * fs
+                    tw = sum(d.textlength(c, font=f_) + tr_ for c in t) - tr_
+                    bw, bh = tw + 90 * fs, int(128 * fs)
+                    x0, y0 = mx, H - int(340 * u) - bh
+                    d.rectangle([x0, y0, x0 + bw, y0 + bh], fill=(14, 14, 14, 240))
+                    hole = int(14 * fs)
+                    for xx in np.arange(x0 + 14 * fs, x0 + bw - hole, 30 * fs):
+                        for yy in (y0 + 9 * fs, y0 + bh - 9 * fs - hole * 0.7):
+                            d.rounded_rectangle([xx, yy, xx + hole, yy + hole * 0.7], radius=int(3 * fs), fill=CREAM + (220,))
+                    x = x0 + 45 * fs
+                    for c in t:
+                        d.text((x, y0 + bh / 2), c, font=f_, fill=GOLD, anchor="lm")
+                        x += d.textlength(c, font=f_) + tr_
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("banner", "frame"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -2074,7 +2117,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2101,6 +2144,28 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "glowcut":  # warm light leak sweeps across, cut happens under the glow
+                    e = ease(k)
+                    base = prev if k < 0.5 else cur
+                    leak = Image.new("RGB", (self.W, self.H), (255, 196, 110))
+                    xx = np.linspace(0, 1, self.W)[None, :]
+                    cx = -0.3 + 1.6 * e
+                    a = np.exp(-((xx - cx) / 0.25) ** 2) * math.sin(math.pi * k) * 0.85
+                    m = Image.fromarray((np.repeat(a, self.H, 0) * 255).astype(np.uint8), "L")
+                    fr = Image.composite(leak, base, m)
+                elif tr == "filmroll":  # vertical film advance: frames scroll up with a black gap + sprocket edges
+                    e = ease(k)
+                    gap = int(60 * self.W / 1080)
+                    off = int(e * (self.H + gap))
+                    fr = Image.new("RGB", (self.W, self.H), (12, 12, 12))
+                    fr.paste(prev, (0, -off))
+                    fr.paste(cur, (0, self.H + gap - off))
+                    dd = ImageDraw.Draw(fr)
+                    sw = int(34 * self.W / 1080)
+                    for xs in (0, self.W - sw):
+                        dd.rectangle([xs, 0, xs + sw, self.H], fill=(12, 12, 12))
+                        for yy in range(-off % 48, self.H, 48):
+                            dd.rounded_rectangle([xs + 8, yy, xs + sw - 8, yy + 22], radius=4, fill=(230, 226, 214))
                 elif tr == "tiles":  # grid of tiles flips to the next shot in a diagonal wave
                     e = k
                     nx, ny = 4, 7
