@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  6 sot  •  260 m²",
+  "5 otaq  •  3 qarderob  •  4+1 sanuzel",
+  "İsti hovuz  •  Besedka  •  Tam əşyalı"
+ ],
+ "music": null,
+ "slug": "merdekan-6sot-260m-B",
+ "label_style": "doortag",
+ "share": "Bu videonu 'VIP ev belə olar' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "keycard",
+  "kicker": "MƏRDƏKAN  •  6 SOT",
+  "lines": [
+   "Lüks villaya",
+   "xoş gəldiniz"
+  ],
+  "sub": "260 m²  •  5 otaq  •  3 qarderob",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living2",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_waterfall",
+   1.5,
+   "in",
+   "İsti hovuz",
+   "swipe"
+  ],
+  [
+   "courtyard",
+   1.5,
+   "left",
+   "Həyət",
+   "swipe"
+  ],
+  [
+   "gazebo_pool",
+   1.5,
+   "out",
+   "Besedka",
+   "swipe"
+  ],
+  [
+   "gazebo_in",
+   1.5,
+   "right",
+   "Besedka mətbəxi",
+   "swipe"
+  ],
+  [
+   "veranda",
+   1.5,
+   "up",
+   "Terras",
+   "swipe"
+  ],
+  [
+   "hall_door",
+   1.5,
+   "in",
+   "Giriş holu",
+   "swipe"
+  ],
+  [
+   "hall_marble",
+   1.5,
+   "left",
+   "Hol",
+   "swipe"
+  ],
+  [
+   "living1",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "swipe"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "right",
+   "Mətbəx",
+   "swipe"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "swipe"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "swipe"
+  ],
+  [
+   "bed4",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "swipe"
+  ],
+  [
+   "closet",
+   1.5,
+   "out",
+   "Qarderob",
+   "swipe"
+  ],
+  [
+   "bath1",
+   1.5,
+   "right",
+   "Sanuzel",
+   "swipe"
+  ],
+  [
+   "bath2",
+   1.5,
+   "up",
+   "Sanuzel",
+   "swipe"
+  ]
+ ]
+}

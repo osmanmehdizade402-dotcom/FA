@@ -382,6 +382,48 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("wave", "doortag"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                if style == "wave":  # serif caption, gold wavy underline (water)
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.64)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 140)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    f_ = font("Playfair700.ttf", 66 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    yb = H - int(350 * u)
+                    lay.alpha_composite(self.text_layer([(lab, f_, CREAM, mx, yb - 96 * fs, 0)]))
+                    d = ImageDraw.Draw(lay)
+                    pts = [(mx + x, yb + 8 * fs * math.sin(x / (18 * fs))) for x in np.arange(0, tw + 40 * fs, 3)]
+                    d.line(pts, fill=GOLD + (255,), width=max(3, int(5 * fs)), joint="curve")
+                else:  # hotel door hanger: cream tag with round hole, top-right under the safe area
+                    f_ = font("Montserrat700.ttf", 40 * fs)
+                    t = az_upper(lab)
+                    tw = d.textlength(t, font=f_)
+                    tw_, th_ = int(max(tw + 60 * fs, 220 * fs)), int(300 * fs)
+                    tag = Image.new("RGBA", (tw_, th_), (0, 0, 0, 0))
+                    dt = ImageDraw.Draw(tag)
+                    dt.rounded_rectangle([0, 0, tw_, th_], radius=int(26 * fs), fill=CREAM + (250,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                    r_ = int(36 * fs)
+                    dt.ellipse([tw_ / 2 - r_, 40 * fs, tw_ / 2 + r_, 40 * fs + 2 * r_], fill=(0, 0, 0, 0), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                    dt.line([(tw_ * 0.2, 150 * fs), (tw_ * 0.8, 150 * fs)], fill=GOLD + (255,), width=max(1, int(2 * fs)))
+                    dt.text((tw_ / 2, 210 * fs), t, font=f_, fill=GREEN, anchor="mm")
+                    tag = tag.rotate(5, expand=True, resample=Image.BICUBIC)
+                    ox, oy = W - mx - tag.width, H - int(360 * u) - tag.height
+                    sh = Image.new("RGBA", tag.size, (0, 0, 0, 0))
+                    sh.putalpha(tag.split()[3].filter(ImageFilter.GaussianBlur(12 * fs)).point(lambda v: int(v * 0.5)))
+                    lay.alpha_composite(sh, (ox + 8, oy + 14))
+                    lay.alpha_composite(tag, (ox, oy))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("glow", "sprocket"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -2202,7 +2244,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2229,6 +2271,27 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "ripple":  # water ripple: rows wobble sideways while crossfading
+                    e = ease(k)
+                    amp = math.sin(math.pi * k) * 28 * self.W / 1080
+                    rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    rc = self.shot_frame(i, t).convert("RGB")
+                    bl = np.asarray(Image.blend(rp, rc, e))
+                    ys = np.arange(self.H)
+                    shift = (amp * np.sin(ys / (22 * self.H / 1920) + k * 10)).astype(int)
+                    idx = (np.arange(self.W)[None, :] - shift[:, None]) % self.W
+                    fr = Image.fromarray(bl[ys[:, None], idx])
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "swipe":  # key-card swipe: next shot slides in from right, prev slightly scales back
+                    e = ease(k)
+                    z = 1 - 0.08 * e
+                    pw_, ph_ = int(self.W * z), int(self.H * z)
+                    fr = Image.new("RGB", (self.W, self.H), (10, 16, 15))
+                    fr.paste(prev.resize((pw_, ph_)), ((self.W - pw_) // 2, (self.H - ph_) // 2))
+                    x = int((1 - e) * self.W)
+                    fr.paste(cur, (x, 0))
+                    if 0 < x < self.W:
+                        ImageDraw.Draw(fr).rectangle([x - 6, 0, x, self.H], fill=GOLD)
                 elif tr == "glowcut":  # warm light leak sweeps across, cut happens under the glow
                     e = ease(k)
                     base = prev if k < 0.5 else cur

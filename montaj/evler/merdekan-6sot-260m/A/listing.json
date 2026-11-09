@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  6 sot  •  260 m²",
+  "5 otaq  •  3 qarderob  •  4+1 sanuzel",
+  "İsti hovuz  •  Besedka  •  Tam əşyalı"
+ ],
+ "music": null,
+ "slug": "merdekan-6sot-260m-A",
+ "label_style": "wave",
+ "share": "Qışda da hovuzda üzmək istəyən o dostuna göndər!",
+ "hook": {
+  "style": "waterline",
+  "kicker": "MƏRDƏKAN",
+  "lines": [
+   "İsti hovuz,",
+   "4 fəsil üzmək"
+  ],
+  "sub": "6 sot  •  260 m²  •  5 otaq",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "pool_waterfall",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "courtyard",
+   1.5,
+   "in",
+   "Həyət",
+   "ripple"
+  ],
+  [
+   "gazebo_pool",
+   1.5,
+   "left",
+   "Besedka",
+   "ripple"
+  ],
+  [
+   "gazebo_in",
+   1.5,
+   "out",
+   "Besedka mətbəxi",
+   "ripple"
+  ],
+  [
+   "veranda",
+   1.5,
+   "right",
+   "Terras",
+   "ripple"
+  ],
+  [
+   "bougainvillea",
+   1.5,
+   "up",
+   "Həyət",
+   "ripple"
+  ],
+  [
+   "hall_door",
+   1.5,
+   "in",
+   "Giriş holu",
+   "ripple"
+  ],
+  [
+   "hall_marble",
+   1.5,
+   "left",
+   "Hol",
+   "ripple"
+  ],
+  [
+   "living1",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "ripple"
+  ],
+  [
+   "living2",
+   1.5,
+   "right",
+   "Qonaq otağı",
+   "ripple"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "up",
+   "Mətbəx",
+   "ripple"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "ripple"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "ripple"
+  ],
+  [
+   "bed4",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "ripple"
+  ],
+  [
+   "closet",
+   1.5,
+   "right",
+   "Qarderob",
+   "ripple"
+  ],
+  [
+   "bath1",
+   1.5,
+   "up",
+   "Sanuzel",
+   "ripple"
+  ]
+ ]
+}
