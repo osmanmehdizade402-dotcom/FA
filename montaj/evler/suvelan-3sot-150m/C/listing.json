@@ -1,0 +1,149 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3 sot  •  150 m²",
+  "4 otaq + mətbəx  •  2 sanuzel",
+  "Filtrli hovuz  •  Söhbətgah  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-3sot-150m-C",
+ "label_style": "starrow",
+ "share": "Şəhər səsindən yorulan, bağ evi arzulayan dostuna göndər!",
+ "hook": {
+  "style": "stars",
+  "kicker": "ŞÜVƏLAN  •  3 SOT  •  150 m²",
+  "lines": [
+   "Hər detal",
+   "5 ulduzluq"
+  ],
+  "rows": [
+   "Filtrli hovuz",
+   "Söhbətgah + manqal",
+   "Təmir",
+   "Lokasiya"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "pool_bbq",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_front",
+   1.5,
+   "in",
+   "Fasad",
+   "flip"
+  ],
+  [
+   "facade_side",
+   1.5,
+   "left",
+   "Fasad",
+   "flip",
+   [
+    0.27,
+    0.55,
+    1.42
+   ]
+  ],
+  [
+   "bbq",
+   1.5,
+   "out",
+   "Söhbətgah",
+   "flip"
+  ],
+  [
+   "entrance",
+   1.5,
+   "right",
+   "Giriş",
+   "flip",
+   [
+    0.45,
+    0.42,
+    1.18
+   ]
+  ],
+  [
+   "corridor1",
+   1.5,
+   "up",
+   "Dəhliz",
+   "flip"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "in",
+   "Mətbəx",
+   "flip"
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "flip"
+  ],
+  [
+   "living_tv",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "flip"
+  ],
+  [
+   "corridor2",
+   1.5,
+   "right",
+   "Dəhliz",
+   "flip"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "flip"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "flip"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "flip"
+  ],
+  [
+   "bath1",
+   1.5,
+   "out",
+   "Sanuzel",
+   "flip"
+  ],
+  [
+   "bath2",
+   1.5,
+   "right",
+   "Sanuzel",
+   "flip"
+  ]
+ ]
+}

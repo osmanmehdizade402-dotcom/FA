@@ -382,6 +382,47 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("bearing", "starrow"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            def star(dr, x, y, r, fill):
+                pts_ = []
+                for k in range(10):
+                    a_ = -math.pi / 2 + k * math.pi / 5
+                    rr = r if k % 2 == 0 else r * 0.45
+                    pts_.append((x + rr * math.cos(a_), y + rr * math.sin(a_)))
+                dr.polygon(pts_, fill=fill)
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.66)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 140)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                yb = H - int(350 * u)
+                if style == "bearing":  # small compass disc with gold needle, caption right, thin rule
+                    R = int(34 * fs)
+                    cx, cy = int(mx + R), yb - int(40 * fs)
+                    d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=GREEN_DARK + (220,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                    w_ = R * 0.22
+                    d.polygon([(cx, cy - R * 0.72), (cx + w_, cy), (cx - w_, cy)], fill=GOLD + (255,))
+                    d.polygon([(cx, cy + R * 0.72), (cx + w_, cy), (cx - w_, cy)], fill=CREAM + (255,))
+                    f_ = font("Montserrat700.ttf", 52 * fs)
+                    tx = cx + R + int(24 * fs)
+                    lay.alpha_composite(self.text_layer([(az_upper(lab), f_, CREAM, tx, cy - 34 * fs, 3 * fs)]))
+                    d = ImageDraw.Draw(lay)
+                    d.line([(cx - R, cy + R + 20 * fs), (W * 0.62, cy + R + 20 * fs)], fill=GOLD + (230,), width=max(2, int(3 * fs)))
+                else:  # starrow: serif caption with a row of five small gold stars above it
+                    f_ = font("Playfair700.ttf", 68 * fs)
+                    for k in range(5):
+                        star(d, mx + 16 * fs + k * 40 * fs, yb - int(120 * fs), 15 * fs, GOLD + (255,))
+                    lay.alpha_composite(self.text_layer([(lab, f_, CREAM, mx, yb - 92 * fs, 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("frost", "waypoint"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -2017,8 +2058,8 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "compass":
             # compass rose: gold ring with needle, four key facts at N/E/S/W, title above
-            n = int(H * 0.80)
-            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 230)[:, None].astype(np.uint8)
+            n = int(H * 0.66)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.3, n), 0, 1)) * 150)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             d = ImageDraw.Draw(lay)
             R = int((128 if self.tall else 100) * fs)
@@ -2047,6 +2088,12 @@ class Renderer:
             fl = font("Playfair700.ttf", 84 * fs)
             fk = font("Montserrat700.ttf", 30 * fs)
             yy = cy - R - int(430 * fs)
+            halo = Image.new("L", (W, H), 0)
+            ImageDraw.Draw(halo).ellipse([W * 0.08, yy - 40 * fs, W * 0.92, yy + 300 * fs], fill=150)
+            halo = halo.filter(ImageFilter.GaussianBlur(60 * fs))
+            hl = Image.new("RGBA", (W, H), (0, 0, 0, 0)); hl.putalpha(halo)
+            lay.alpha_composite(hl)
+            d = ImageDraw.Draw(lay)
             kw = d.textlength(hook["kicker"], font=fk) + 6 * fs * len(hook["kicker"])
             parts.append((hook["kicker"], fk, GOLD, cx - kw / 2, yy, 6 * fs))
             yy += int(58 * fs)
@@ -2116,7 +2163,7 @@ class Renderer:
             rh = int(76 * fs)
             ch_ = int(250 * fs) + rh * len(rows) + int(30 * fs)
             cx0 = int(mx)
-            cy0 = int(H * (0.80 if self.tall else 0.83)) - ch_
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - ch_
             card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
             dc = ImageDraw.Draw(card)
             dc.rounded_rectangle([0, 0, cw_ - 1, ch_ - 1], radius=int(26 * fs), fill=GREEN_DARK + (232,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
@@ -2515,7 +2562,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2541,6 +2588,32 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "spin":  # compass turn: next shot rotates in from -10deg while scaling down, crossfade
+                    e = ease(k)
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    ang = -10 * (1 - e)
+                    z = 1 + 0.25 * (1 - e)
+                    cw, ch = int(self.W * z), int(self.H * z)
+                    cz = cur.resize((cw, ch), Image.BILINEAR).rotate(ang, resample=Image.BILINEAR)
+                    cz = cz.crop(((cw - self.W) // 2, (ch - self.H) // 2, (cw - self.W) // 2 + self.W, (ch - self.H) // 2 + self.H))
+                    fr = Image.blend(prev, cz, min(1, e * 1.4))
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "flip":  # card flip around vertical axis: prev squeezes to a line, cur opens out
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    fr = Image.new("RGB", (self.W, self.H), GREEN_DARK)
+                    if k < 0.5:
+                        w_ = max(2, int(self.W * math.cos(k * math.pi)))
+                        sq = prev.resize((w_, int(self.H * (1 - 0.06 * math.sin(k * math.pi)))))
+                    else:
+                        w_ = max(2, int(self.W * -math.cos(k * math.pi)))
+                        sq = cur.resize((w_, int(self.H * (1 - 0.06 * math.sin(k * math.pi)))))
+                    fr.paste(sq, ((self.W - w_) // 2, (self.H - sq.height) // 2))
+                    dd = ImageDraw.Draw(fr)
+                    x0 = (self.W - w_) // 2
+                    dd.rectangle([x0, (self.H - sq.height) // 2, x0 + w_ - 1, (self.H + sq.height) // 2], outline=GOLD, width=4)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "pane":  # frosted glass pane sweeps left->right: cur behind it, blurred band at the edge
                     e = ease(k)

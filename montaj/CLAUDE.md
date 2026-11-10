@@ -60,7 +60,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 ## C. Dizayn
 
 15. **Hər evin dizaynı fərqli.** Giriş kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili (`label_style`),
-    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid`, `viewfinder`, `news`, `ticket`, `pin`, `chat`, `triptych`, `blueprint`, `seal`, `callout`, `postcard`, `diagonal`, `spotlight`, `plaque`, `stack`, `lens`, `colonnade`, `mosaic`, `ledger`, `neon`, `filmstrip`, `quote`, `waterline`, `keycard`, `countdown`, `glasspane`, `swiss`, `route` (render.py `build_hook_v2`) —
+    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid`, `viewfinder`, `news`, `ticket`, `pin`, `chat`, `triptych`, `blueprint`, `seal`, `callout`, `postcard`, `diagonal`, `spotlight`, `plaque`, `stack`, `lens`, `colonnade`, `mosaic`, `ledger`, `neon`, `filmstrip`, `quote`, `waterline`, `keycard`, `countdown`, `glasspane`, `swiss`, `route`, `compass`, `hangsign`, `stars` (render.py `build_hook_v2`) —
     lazım olsa yenisini əlavə et.
 15a. **`polaroid` giriş üslubu QADAĞANDIR (QANUN, 2026-11-04)** — variant kimi təklif etmə; yerinə yeni, fərqli formatda bir şey düzəlt.
 15b. **Təkrar yoxdur (QANUN):** hər yeni evdə giriş üslubu, kadr yazısı stili və keçid birləşməsi ƏVVƏLKİ evlərdə
@@ -85,6 +85,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     - Mərdəkan 4.2 sot 160 m²: neon / glow / glowcut; filmstrip / sprocket / filmroll
     - Mərdəkan 6 sot 260 m²: waterline / wave / ripple; keycard / doortag / swipe
     - Mərdəkan 6 sot 240 m²: glasspane / frost / pane; route / waypoint / pan (təklif olunub, işlənməyib: swiss)
+    - Şüvəlan 3 sot 150 m²: compass / bearing / spin; stars / starrow / flip (təklif olunub, işlənməyib: hangsign)
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
@@ -134,5 +135,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block`, `banner`, `frame`, `glow`, `sprocket`, `wave`, `doortag`, `frost`, `waypoint` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop, tiles, stripes, glowcut, filmroll, ripple, swipe, pane, pan), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block`, `banner`, `frame`, `glow`, `sprocket`, `wave`, `doortag`, `frost`, `waypoint`, `bearing`, `starrow` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop, tiles, stripes, glowcut, filmroll, ripple, swipe, pane, pan, spin, flip), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

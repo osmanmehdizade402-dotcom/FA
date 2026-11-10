@@ -1,0 +1,149 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3 sot  •  150 m²",
+  "4 otaq + mətbəx  •  2 sanuzel",
+  "Filtrli hovuz  •  Söhbətgah  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-3sot-150m-A",
+ "label_style": "bearing",
+ "share": "Bu videonu 'kiçik həyətdə hovuz olmaz' deyən o dostuna göndər!",
+ "hook": {
+  "style": "compass",
+  "kicker": "ŞÜVƏLAN  •  ƏSAS YOLA YAXIN",
+  "lines": [
+   "Hər tərəfi",
+   "rahatlıqdır"
+  ],
+  "points": [
+   "HOVUZ",
+   "150 m²",
+   "4 OTAQ",
+   "3 sot"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "facade_front",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_side",
+   1.5,
+   "in",
+   "Fasad",
+   "spin",
+   [
+    0.27,
+    0.55,
+    1.42
+   ]
+  ],
+  [
+   "pool_bbq",
+   1.5,
+   "left",
+   "Hovuz",
+   "spin"
+  ],
+  [
+   "bbq",
+   1.5,
+   "out",
+   "Söhbətgah",
+   "spin"
+  ],
+  [
+   "entrance",
+   1.5,
+   "right",
+   "Giriş",
+   "spin",
+   [
+    0.45,
+    0.42,
+    1.18
+   ]
+  ],
+  [
+   "corridor1",
+   1.5,
+   "up",
+   "Dəhliz",
+   "spin"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "in",
+   "Mətbəx",
+   "spin"
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "spin"
+  ],
+  [
+   "living_tv",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "spin"
+  ],
+  [
+   "corridor2",
+   1.5,
+   "right",
+   "Dəhliz",
+   "spin"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "spin"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "spin"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "spin"
+  ],
+  [
+   "bath1",
+   1.5,
+   "out",
+   "Sanuzel",
+   "spin"
+  ],
+  [
+   "bath2",
+   1.5,
+   "right",
+   "Sanuzel",
+   "spin"
+  ]
+ ]
+}
