@@ -1964,6 +1964,95 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "glasspane":
+            # panoramic glass pane: translucent frosted panel with diagonal glare, thin gold frame + mullion
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 100)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            pw_, ph_ = int(W - 2 * mx), int(430 * fs)
+            px, py = int(mx), int(H * (0.555 if self.tall else 0.47))
+            base_ = self.kb(self.shots[0][0], self.shots[0][2], 0.0, focus=self.focus[0]).convert("RGB")
+            frost = base_.crop((px, py, px + pw_, py + ph_)).filter(ImageFilter.GaussianBlur(26 * fs))
+            frost = Image.blend(frost, Image.new("RGB", frost.size, GREEN_DARK), 0.55).convert("RGBA")
+            glare = np.zeros((ph_, pw_, 4), np.uint8)
+            xx, yy_ = np.meshgrid(np.arange(pw_), np.arange(ph_))
+            band = np.exp(-((xx - yy_ * 0.9 - pw_ * 0.62) / (pw_ * 0.09)) ** 2)
+            glare[..., :3] = 255
+            glare[..., 3] = (band * 46).astype(np.uint8)
+            frost.alpha_composite(Image.fromarray(glare, "RGBA"))
+            m = Image.new("L", frost.size, 0)
+            ImageDraw.Draw(m).rounded_rectangle([0, 0, pw_, ph_], radius=int(10 * fs), fill=255)
+            frost.putalpha(m)
+            lay.alpha_composite(frost, (px, py))
+            d = ImageDraw.Draw(lay)
+            d.rounded_rectangle([px, py, px + pw_, py + ph_], radius=int(10 * fs), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            d.line([(px + pw_ * 0.78, py), (px + pw_ * 0.78, py + ph_)], fill=GOLD + (150,), width=max(1, int(2 * fs)))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 82 * fs)
+            parts = [(hook["kicker"], fk, GOLD, px + 46 * fs, py + 44 * fs, 6 * fs)]
+            yy = py + int(104 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, px + 46 * fs, yy, 0))
+                yy += int(96 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, px + 46 * fs, yy + int(26 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "swiss":
+            # Swiss typographic grid: vertical gold rule, huge two-word statement, specs in a 3-column grid
+            g[..., 3] = (np.clip(np.linspace(1.5, 0.35, W), 0, 1) * 225)[None, :].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            top = int(H * (0.30 if self.tall else 0.20))
+            d.rectangle([mx, top, mx + max(4, int(6 * fs)), top + int(560 * fs)], fill=GOLD + (255,))
+            x0 = mx + int(40 * fs)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 120 * fs)
+            parts = [(hook["kicker"], fk, GOLD, x0, top, 8 * fs)]
+            yy = top + int(70 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, x0, yy, 0))
+                yy += int(140 * fs)
+            cells = [c.strip() for c in hook["sub"].split("•")]
+            fv = font("Playfair700.ttf", 56 * fs)
+            fc = font("Montserrat600.ttf", 26 * fs)
+            cw = (W - x0 - mx) / max(1, len(cells))
+            yg = yy + int(40 * fs)
+            d.line([(x0, yg - 18 * fs), (W - mx, yg - 18 * fs)], fill=CREAM + (160,), width=max(1, int(2 * fs)))
+            for j, c in enumerate(cells):
+                v, _, cap = c.partition(" ")
+                parts.append((v, fv, GOLD, x0 + j * cw, yg, 0))
+                parts.append((az_upper(cap), fc, CREAM, x0 + j * cw, yg + int(72 * fs), 3 * fs))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "route":
+            # map route: dashed gold path from a landmark dot to the house marker, labels at both ends
+            n = int(H * 0.72)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.7, n), 0, 1)) * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            ya = int(H * (0.745 if self.tall else 0.76))
+            xa, xb, yb = mx + int(30 * fs), W - mx - int(60 * fs), ya - int(200 * fs)
+            pts = []
+            for k in range(101):
+                t = k / 100
+                x = (1 - t) ** 2 * xa + 2 * (1 - t) * t * (W * 0.62) + t * t * xb
+                y = (1 - t) ** 2 * ya + 2 * (1 - t) * t * (ya + 40 * fs) + t * t * yb
+                pts.append((x, y))
+            for k in range(0, 100, 6):
+                d.line(pts[k:k + 4], fill=GOLD + (255,), width=max(3, int(6 * fs)))
+            r_ = int(16 * fs)
+            d.ellipse([xa - r_, ya - r_, xa + r_, ya + r_], fill=CREAM + (255,), outline=GOLD + (255,), width=max(2, int(4 * fs)))
+            R = int(40 * fs)
+            d.ellipse([xb - R, yb - 2 * R, xb + R, yb], fill=GOLD + (255,))
+            d.polygon([(xb - R * 0.7, yb - R * 0.6), (xb + R * 0.7, yb - R * 0.6), (xb, yb + R * 0.8)], fill=GOLD + (255,))
+            d.ellipse([xb - R * 0.38, yb - R * 1.38, xb + R * 0.38, yb - R * 0.62], fill=GREEN_DARK + (255,))
+            fs_ = font("Montserrat700.ttf", 28 * fs)
+            parts = [(hook["kicker"], fs_, CREAM, xa - r_, ya + int(30 * fs), 2 * fs)]
+            fl = font("Playfair700.ttf", 80 * fs)
+            yy = yb - int(420 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(92 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, yy + int(16 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
         self.hook_v2 = lay
 
     def build_endcard(self, logo):
