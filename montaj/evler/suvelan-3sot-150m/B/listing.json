@@ -1,0 +1,143 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3 sot  •  150 m²",
+  "4 otaq + mətbəx  •  2 sanuzel",
+  "Filtrli hovuz  •  Söhbətgah  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-3sot-150m-B",
+ "label_style": "pennant",
+ "share": "Bu videonu 'yayı burada keçirək' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "hangsign",
+  "kicker": "Yeni tikili",
+  "lines": [
+   "Şüvəlanda hovuzlu",
+   "bağ evi"
+  ],
+  "sub": "3 sot  •  150 m²  •  4 otaq  •  kupça",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_side",
+   2.0,
+   "in_slow",
+   null,
+   null,
+   [
+    0.27,
+    0.55,
+    1.42
+   ]
+  ],
+  [
+   "facade_front",
+   1.5,
+   "in",
+   "Fasad",
+   "swing"
+  ],
+  [
+   "pool_bbq",
+   1.5,
+   "left",
+   "Hovuz",
+   "swing"
+  ],
+  [
+   "bbq",
+   1.5,
+   "out",
+   "Söhbətgah",
+   "swing"
+  ],
+  [
+   "entrance",
+   1.5,
+   "right",
+   "Giriş",
+   "swing",
+   [
+    0.45,
+    0.42,
+    1.18
+   ]
+  ],
+  [
+   "corridor1",
+   1.5,
+   "up",
+   "Dəhliz",
+   "swing"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "in",
+   "Mətbəx",
+   "swing"
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "swing"
+  ],
+  [
+   "living_tv",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "swing"
+  ],
+  [
+   "corridor2",
+   1.5,
+   "right",
+   "Dəhliz",
+   "swing"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "swing"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "swing"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "swing"
+  ],
+  [
+   "bath1",
+   1.5,
+   "out",
+   "Sanuzel",
+   "swing"
+  ],
+  [
+   "bath2",
+   1.5,
+   "right",
+   "Sanuzel",
+   "swing"
+  ]
+ ]
+}

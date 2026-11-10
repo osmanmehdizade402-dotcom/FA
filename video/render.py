@@ -382,6 +382,35 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "pennant":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.70)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 120)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Montserrat700.ttf", 46 * fs)
+                t = az_upper(lab)
+                tw = d.textlength(t, font=f_) + 3 * fs * len(t)
+                yb = H - int(350 * u)
+                fh = int(96 * fs)
+                px = int(mx)
+                y0 = yb - fh
+                d.rectangle([px, y0 - int(30 * fs), px + max(5, int(8 * fs)), yb + int(60 * fs)], fill=GOLD + (255,))
+                d.ellipse([px - 6 * fs, y0 - 44 * fs, px + 14 * fs, y0 - 24 * fs], fill=GOLD + (255,))
+                x0 = px + int(8 * fs)
+                x1 = x0 + int(tw + 70 * fs)
+                d.polygon([(x0, y0), (x1 + int(46 * fs), y0), (x1, y0 + fh / 2), (x1 + int(46 * fs), yb), (x0, yb)], fill=GREEN_DARK + (235,))
+                d.line([(x0, y0), (x1 + int(46 * fs), y0), (x1, y0 + fh / 2), (x1 + int(46 * fs), yb), (x0, yb)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                lay.alpha_composite(self.text_layer([(t, f_, CREAM, x0 + 30 * fs, y0 + 22 * fs, 3 * fs)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("bearing", "starrow"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -2562,7 +2591,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2589,6 +2618,18 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "swing":  # prev swings away like a sign hinged at its top-left corner, cur underneath
+                    e = ease(k)
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGBA")
+                    cur = self.shot_frame(i, t).convert("RGBA")
+                    ang = 75 * e
+                    rp = prev.rotate(ang, center=(0, 0), resample=Image.BICUBIC)
+                    sh = Image.new("RGBA", rp.size, (0, 0, 0, 0))
+                    sh.putalpha(rp.split()[3].filter(ImageFilter.GaussianBlur(20)).point(lambda v: int(v * 0.45)))
+                    fr = cur.copy()
+                    fr.alpha_composite(sh, (12, 18))
+                    fr.alpha_composite(rp)
+                    fr = self.decorate(fr, i, t).convert("RGB")
                 elif tr == "spin":  # compass turn: next shot rotates in from -10deg while scaling down, crossfade
                     e = ease(k)
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
