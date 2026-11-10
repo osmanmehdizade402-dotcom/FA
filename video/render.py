@@ -2015,6 +2015,128 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "compass":
+            # compass rose: gold ring with needle, four key facts at N/E/S/W, title above
+            n = int(H * 0.80)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 230)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            R = int((128 if self.tall else 100) * fs)
+            cx, cy = W // 2, int(H * (0.665 if self.tall else 0.63))
+            lw = max(2, int(3 * fs))
+            d.ellipse([cx - R, cy - R, cx + R, cy + R], outline=GOLD + (255,), width=lw)
+            d.ellipse([cx - R * 0.82, cy - R * 0.82, cx + R * 0.82, cy + R * 0.82], outline=GOLD + (140,), width=max(1, lw // 2))
+            for k in range(36):
+                a = k * math.pi / 18
+                r1 = R * (0.86 if k % 9 else 0.70)
+                d.line([(cx + r1 * math.cos(a), cy + r1 * math.sin(a)), (cx + R * 0.97 * math.cos(a), cy + R * 0.97 * math.sin(a))], fill=GOLD + (200,), width=max(1, lw // 2))
+            w_ = R * 0.16
+            d.polygon([(cx, cy - R * 0.66), (cx + w_, cy), (cx, cy + R * 0.66), (cx - w_, cy)], fill=CREAM + (255,))
+            d.polygon([(cx, cy - R * 0.66), (cx + w_, cy), (cx - w_, cy)], fill=GOLD + (255,))
+            d.polygon([(cx - R * 0.66, cy), (cx, cy - w_), (cx + R * 0.66, cy), (cx, cy + w_)], fill=CREAM + (170,))
+            d.ellipse([cx - 9 * fs, cy - 9 * fs, cx + 9 * fs, cy + 9 * fs], fill=GREEN_DARK + (255,), outline=GOLD + (255,), width=lw)
+            fp = font("Montserrat700.ttf", 34 * fs)
+            pts = hook["points"]
+            gap = int(26 * fs)
+            parts = []
+            for j, (txt, ax, ay) in enumerate(zip(pts, (0, 1, 0, -1), (-1, 0, 1, 0))):
+                tw = d.textlength(txt, font=fp)
+                x = cx + ax * (R + gap) - (tw / 2 if ax == 0 else (0 if ax > 0 else tw))
+                y = cy + ay * (R + gap) - (44 * fs if ay < 0 else (0 if ay > 0 else 20 * fs))
+                parts.append((txt, fp, GOLD if ay else CREAM, x, y, 0))
+            fl = font("Playfair700.ttf", 84 * fs)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            yy = cy - R - int(430 * fs)
+            kw = d.textlength(hook["kicker"], font=fk) + 6 * fs * len(hook["kicker"])
+            parts.append((hook["kicker"], fk, GOLD, cx - kw / 2, yy, 6 * fs))
+            yy += int(58 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, cx - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(96 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "hangsign":
+            # estate-agent yard sign: gold post + arm, green board on two chains, small rider plaque on top
+            n = int(H * 0.50)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 170)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            px = int(mx + 10 * fs)
+            top = int(H * (0.40 if self.tall else 0.30))
+            bw, bh = int(W - 2 * mx - 90 * fs), int(440 * fs)
+            bx = int(px + 70 * fs)
+            arm_y = top + int(70 * fs)
+            pw = max(8, int(16 * fs))
+            d.rectangle([px, top, px + pw, H], fill=GOLD + (255,))
+            d.rectangle([px, arm_y, bx + bw, arm_y + pw], fill=GOLD + (255,))
+            d.ellipse([px - 6 * fs, top - 14 * fs, px + pw + 6 * fs, top + 8 * fs], fill=GOLD + (255,))
+            by = arm_y + int(90 * fs)
+            for xc in (bx + bw * 0.12, bx + bw * 0.88):
+                for k in range(5):
+                    y0 = arm_y + pw + k * 16 * fs
+                    d.ellipse([xc - 6 * fs, y0, xc + 6 * fs, y0 + 18 * fs], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            rw, rh = int(bw * 0.5), int(64 * fs)
+            fr_ = font("Montserrat700.ttf", 28 * fs)
+            board = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+            db = ImageDraw.Draw(board)
+            db.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(14 * fs), fill=GREEN_DARK + (245,), outline=GOLD + (255,), width=max(3, int(5 * fs)))
+            db.rounded_rectangle([int(14 * fs), int(14 * fs), bw - int(14 * fs), bh - int(14 * fs)], radius=int(8 * fs), outline=GOLD + (120,), width=max(1, int(2 * fs)))
+            fS = font("Playfair700.ttf", 104 * fs)
+            db.text((bw / 2, int(36 * fs)), "SATILIR", font=fS, fill=GOLD, anchor="ma")
+            db.line([(bw * 0.18, int(168 * fs)), (bw * 0.82, int(168 * fs))], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            fl = font("Playfair700.ttf", 54 * fs)
+            yy = int(190 * fs)
+            for i, line in enumerate(hook["lines"]):
+                db.text((bw / 2, yy), line, font=fl, fill=CREAM if i == 0 else GOLD, anchor="ma")
+                yy += int(64 * fs)
+            db.text((bw / 2, bh - int(42 * fs)), hook["sub"], font=font("Montserrat600.ttf", 28 * fs), fill=CREAM, anchor="md")
+            sh = Image.new("RGBA", board.size, (0, 0, 0, 0))
+            sh.putalpha(board.split()[3].filter(ImageFilter.GaussianBlur(16 * fs)).point(lambda v: int(v * 0.55)))
+            lay.alpha_composite(sh, (bx + 10, by + 18))
+            lay.alpha_composite(board, (bx, by))
+            d = ImageDraw.Draw(lay)
+            rx = int(bx + bw / 2 - rw / 2)
+            ry = arm_y - rh - int(14 * fs)
+            d.rounded_rectangle([rx, ry, rx + rw, ry + rh], radius=int(10 * fs), fill=CREAM + (250,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            d.text((rx + rw / 2, ry + rh / 2), az_upper(hook["kicker"]), font=fr_, fill=GREEN, anchor="mm")
+            d.line([(rx + rw / 2, ry + rh), (rx + rw / 2, arm_y)], fill=GOLD + (255,), width=max(2, int(4 * fs)))
+        elif self.hook_style == "stars":
+            # rating card: title + rows of features each with five gold stars
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            def star(dr, x, y, r, fill):
+                pts_ = []
+                for k in range(10):
+                    a = -math.pi / 2 + k * math.pi / 5
+                    rr = r if k % 2 == 0 else r * 0.45
+                    pts_.append((x + rr * math.cos(a), y + rr * math.sin(a)))
+                dr.polygon(pts_, fill=fill)
+            rows = hook["rows"]
+            cw_ = int(W - 2 * mx)
+            rh = int(76 * fs)
+            ch_ = int(250 * fs) + rh * len(rows) + int(30 * fs)
+            cx0 = int(mx)
+            cy0 = int(H * (0.80 if self.tall else 0.83)) - ch_
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_ - 1, ch_ - 1], radius=int(26 * fs), fill=GREEN_DARK + (232,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            pad = int(44 * fs)
+            dc.text((pad, int(34 * fs)), hook["kicker"], font=font("Montserrat700.ttf", 26 * fs), fill=GOLD)
+            fl = font("Playfair700.ttf", 66 * fs)
+            dc.text((pad, int(76 * fs)), hook["lines"][0], font=fl, fill=CREAM)
+            dc.text((pad, int(150 * fs)), hook["lines"][1], font=fl, fill=GOLD)
+            fr_ = font("Montserrat600.ttf", 36 * fs)
+            y = int(250 * fs)
+            for j, row in enumerate(rows):
+                dc.line([(pad, y), (cw_ - pad, y)], fill=CREAM + (60,), width=1)
+                dc.text((pad, y + rh / 2), row, font=fr_, fill=CREAM, anchor="lm")
+                for k in range(5):
+                    star(dc, cw_ - pad - 22 * fs - k * 50 * fs, y + rh / 2, 20 * fs, GOLD + (255,))
+                y += rh
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 16))
+            lay.alpha_composite(card, (cx0, cy0))
         elif self.hook_style == "glasspane":
             # panoramic glass pane: translucent frosted panel with diagonal glare, thin gold frame + mullion
             n = int(H * 0.30)
