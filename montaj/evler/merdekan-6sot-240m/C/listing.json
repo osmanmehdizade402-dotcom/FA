@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  6 sot  •  240 m²",
+  "4 yataq  •  4 sanuzel  •  qarderob",
+  "Yay-qış mətbəxi  •  Kombi  •  Tam əşyalı"
+ ],
+ "music": null,
+ "slug": "merdekan-6sot-240m-C",
+ "label_style": "waypoint",
+ "share": "Hər həftə sonu qonaq çağıran o dostuna göndər — yay-qış mətbəxi, hovuz hazırdır!",
+ "hook": {
+  "style": "route",
+  "kicker": "QƏBƏLƏ XANLAR RESTORANI",
+  "lines": [
+   "Elit və sakit",
+   "lokasiyada villa"
+  ],
+  "sub": "6 sot  •  240 m²  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "pool_garage",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_front",
+   1.5,
+   "in",
+   "Fasad",
+   "pan"
+  ],
+  [
+   "pool_gazebo",
+   1.5,
+   "left",
+   "Hovuz",
+   "pan"
+  ],
+  [
+   "gazebo_in",
+   1.5,
+   "out",
+   "Yay-qış mətbəxi",
+   "pan"
+  ],
+  [
+   "summer_kitchen",
+   1.5,
+   "right",
+   "Yay-qış mətbəxi",
+   "pan"
+  ],
+  [
+   "terrace",
+   1.5,
+   "up",
+   "Terras",
+   "pan"
+  ],
+  [
+   "hall_entry",
+   1.5,
+   "in",
+   "Giriş holu",
+   "pan"
+  ],
+  [
+   "living1",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "pan"
+  ],
+  [
+   "dining",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "pan"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "right",
+   "Mətbəx",
+   "pan"
+  ],
+  [
+   "bed_master",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "pan"
+  ],
+  [
+   "bed_pink",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "pan"
+  ],
+  [
+   "bed_grey",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "pan"
+  ],
+  [
+   "bed_blue",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "pan"
+  ],
+  [
+   "closet1",
+   1.5,
+   "right",
+   "Qarderob",
+   "pan"
+  ],
+  [
+   "bath_grey",
+   1.5,
+   "up",
+   "Sanuzel",
+   "pan"
+  ]
+ ]
+}

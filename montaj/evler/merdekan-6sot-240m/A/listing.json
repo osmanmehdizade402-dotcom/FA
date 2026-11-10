@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  6 sot  •  240 m²",
+  "4 yataq  •  4 sanuzel  •  qarderob",
+  "Yay-qış mətbəxi  •  Kombi  •  Tam əşyalı"
+ ],
+ "music": null,
+ "slug": "merdekan-6sot-240m-A",
+ "label_style": "frost",
+ "share": "Bu videonu 'minimalizm belə olar' deyəcəyin dizayner dostuna göndər!",
+ "hook": {
+  "style": "glasspane",
+  "kicker": "MƏRDƏKAN  •  6 SOT",
+  "lines": [
+   "Panoram vitraj,",
+   "minimalist villa"
+  ],
+  "sub": "240 m²  •  4 yataq  •  tam əşyalı",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_front",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_gazebo",
+   1.5,
+   "in",
+   "Hovuz",
+   "pane"
+  ],
+  [
+   "pool_garage",
+   1.5,
+   "left",
+   "Həyət",
+   "pane"
+  ],
+  [
+   "gazebo_out",
+   1.5,
+   "out",
+   "Yay-qış mətbəxi",
+   "pane"
+  ],
+  [
+   "summer_kitchen",
+   1.5,
+   "right",
+   "Yay-qış mətbəxi",
+   "pane"
+  ],
+  [
+   "terrace",
+   1.5,
+   "up",
+   "Terras",
+   "pane"
+  ],
+  [
+   "hall_entry",
+   1.5,
+   "in",
+   "Giriş holu",
+   "pane"
+  ],
+  [
+   "living2",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "pane"
+  ],
+  [
+   "living1",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "pane"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "right",
+   "Mətbəx",
+   "pane"
+  ],
+  [
+   "bed_master",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "pane"
+  ],
+  [
+   "bed_pink",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "pane"
+  ],
+  [
+   "bed_grey",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "pane"
+  ],
+  [
+   "bed_blue",
+   1.5,
+   "out",
+   "Yataq otağı",
+   "pane"
+  ],
+  [
+   "closet2",
+   1.5,
+   "right",
+   "Qarderob",
+   "pane"
+  ],
+  [
+   "bath_beige",
+   1.5,
+   "up",
+   "Sanuzel",
+   "pane"
+  ]
+ ]
+}

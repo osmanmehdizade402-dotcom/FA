@@ -382,6 +382,57 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") in ("frost", "waypoint"):
+            self.labels = {}
+            style = LISTING["label_style"]
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                yb = H - int(340 * u)
+                if style == "frost":  # frosted glass tile, gold accent bar, cream caption
+                    f_ = font("Montserrat700.ttf", 58 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    bw, bh = int(tw + 104 * fs), int(122 * fs)
+                    x0, y0 = int(mx), yb - bh
+                    tile = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+                    dt = ImageDraw.Draw(tile)
+                    dt.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(16 * fs), fill=GREEN_DARK + (120,), outline=(255, 255, 255, 150), width=max(1, int(2 * fs)))
+                    gl = np.zeros((bh, bw, 4), np.uint8); gl[..., :3] = 255
+                    gl[: bh // 2, :, 3] = (np.linspace(40, 0, bh // 2))[:, None].astype(np.uint8)
+                    tile.alpha_composite(Image.fromarray(gl, "RGBA"))
+                    dt.rectangle([int(22 * fs), int(24 * fs), int(28 * fs), bh - int(24 * fs)], fill=GOLD + (255,))
+                    self.frost_box = None
+                    lay.alpha_composite(tile, (x0, y0))
+                    lay.alpha_composite(self.text_layer([(lab, f_, CREAM, x0 + 58 * fs, y0 + 26 * fs, 0)]))
+                    self.labels[lab] = ("frost", (x0, y0, bw, bh), lay)
+                    continue
+                else:  # waypoint: gold pin, caption, dashed route underline
+                    gg = np.zeros((H, W, 4), np.uint8)
+                    g0 = int(H * 0.68)
+                    gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 150)[:, None].astype(np.uint8)
+                    lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                    d = ImageDraw.Draw(lay)
+                    R = int(26 * fs)
+                    cx, cy = mx + R, yb - int(60 * fs)
+                    d.ellipse([cx - R, cy - 2 * R, cx + R, cy], fill=GOLD + (255,))
+                    d.polygon([(cx - R * 0.7, cy - R * 0.6), (cx + R * 0.7, cy - R * 0.6), (cx, cy + R * 0.8)], fill=GOLD + (255,))
+                    d.ellipse([cx - R * 0.38, cy - R * 1.38, cx + R * 0.38, cy - R * 0.62], fill=GREEN_DARK + (255,))
+                    f_ = font("Montserrat700.ttf", 50 * fs)
+                    tw = d.textlength(lab, font=f_)
+                    tx = cx + R + int(22 * fs)
+                    lay.alpha_composite(self.text_layer([(lab, f_, CREAM, tx, cy - 2 * R - 6 * fs, 0)]))
+                    d = ImageDraw.Draw(lay)
+                    yl = cy + int(30 * fs)
+                    x = mx
+                    while x < tx + tw:
+                        d.line([(x, yl), (min(x + 22 * fs, tx + tw), yl)], fill=GOLD + (255,), width=max(3, int(5 * fs)))
+                        x += 36 * fs
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") in ("wave", "doortag"):
             self.labels = {}
             style = LISTING["label_style"]
@@ -2024,7 +2075,7 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "route":
             # map route: dashed gold path from a landmark dot to the house marker, labels at both ends
-            n = int(H * 0.72)
+            n = int(H * (0.72 if self.tall else 0.92))
             g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.7, n), 0, 1)) * 225)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             d = ImageDraw.Draw(lay)
@@ -2243,7 +2294,16 @@ class Renderer:
             a_in = ease_out((t - 0.14) / 0.22)
             a_out = 1 - ease((t - (dur - 0.12)) / 0.12)
             a = min(a_in, a_out)
-            lay = self.fade(self.labels[label], a, dy=30 * (1 - a_in))
+            L_ = self.labels[label]
+            if isinstance(L_, tuple):  # frost: blur the live frame under the tile
+                _, (x0, y0, bw, bh), L_ = L_
+                if a > 0.01:
+                    dy_ = int(30 * (1 - a_in))
+                    reg = im.crop((x0, y0 + dy_, x0 + bw, y0 + dy_ + bh)).filter(ImageFilter.GaussianBlur(14 * self.fs))
+                    mk = Image.new("L", (bw, bh), 0)
+                    ImageDraw.Draw(mk).rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(16 * self.fs), fill=int(255 * a))
+                    im.paste(reg, (x0, y0 + dy_), mk)
+            lay = self.fade(L_, a, dy=30 * (1 - a_in))
             if lay:
                 im.alpha_composite(lay)
         if i == 0:  # phone box only on the hook shot (user rule)
@@ -2333,7 +2393,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2359,6 +2419,41 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "pane":  # frosted glass pane sweeps left->right: cur behind it, blurred band at the edge
+                    e = ease(k)
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    bw = int(self.W * 0.28)
+                    x = int(-bw + e * (self.W + 2 * bw))
+                    fr = prev.copy()
+                    if x > 0:
+                        fr.paste(cur.crop((0, 0, min(x, self.W), self.H)), (0, 0))
+                    a, b = max(0, x - bw), min(self.W, x + bw // 2)
+                    if b > a:
+                        band = Image.blend(prev.crop((a, 0, b, self.H)), cur.crop((a, 0, b, self.H)), 0.5).filter(ImageFilter.GaussianBlur(18 * self.W / 1080))
+                        band = Image.blend(band, Image.new("RGB", band.size, (235, 240, 238)), 0.18)
+                        fr.paste(band, (a, 0))
+                        dd = ImageDraw.Draw(fr)
+                        for xe in (a, b - 1):
+                            dd.line([(xe, 0), (xe, self.H)], fill=GOLD, width=3)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "pan":  # horizontal push with motion blur (map scroll)
+                    e = ease(k)
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    off = int(e * self.W)
+                    fr = Image.new("RGB", (self.W, self.H))
+                    fr.paste(prev, (-off, 0))
+                    fr.paste(cur, (self.W - off, 0))
+                    sp = math.sin(math.pi * k)
+                    if sp > 0.15:
+                        r_ = int(sp * 26 * self.W / 1080)
+                        arr = np.asarray(fr).astype(np.float32)
+                        kern = np.ones(2 * r_ + 1, np.float32) / (2 * r_ + 1)
+                        cs = np.cumsum(np.pad(arr, ((0, 0), (r_ + 1, r_), (0, 0)), mode="edge"), axis=1)
+                        arr = (cs[:, 2 * r_ + 1:] - cs[:, :-2 * r_ - 1]) / (2 * r_ + 1)
+                        fr = Image.fromarray(np.clip(arr, 0, 255).astype(np.uint8))
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "ripple":  # water ripple: rows wobble sideways while crossfading
                     e = ease(k)
