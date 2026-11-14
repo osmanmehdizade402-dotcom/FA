@@ -92,11 +92,21 @@ def brighten(im):
     # soft shoulder instead of hard clipping
     arr = np.where(arr > 0.9, 0.9 + (1 - np.exp(-(arr - 0.9) / 0.1)) * 0.1, arr)
     im = Image.fromarray((arr * 255).clip(0, 255).astype(np.uint8))
+    if not vivid():
+        return ImageEnhance.Contrast(im).enhance(1.03)  # natural colours (user rule 2026-11-14)
     im = ImageEnhance.Color(im).enhance(1.12)
     return ImageEnhance.Contrast(im).enhance(1.05)
 
 
+def vivid():
+    """User rule (2026-11-14): videos are NOT colour-graded any more -- natural colours.
+    The old vivid look only for listings that set "look": "vivid"."""
+    return (LISTING or {}).get("look") == "vivid"
+
+
 def grade(im, vignette=True):
+    if not vivid():
+        return im
     """Colour look (user rule, ref: autumn-lake reel): rich saturated warm colours, glowing
     highlights, cool teal-blue shadows, gentle S-curve and soft vignette. Keeps brightness."""
     a = np.asarray(im).astype(np.float32) / 255
@@ -159,7 +169,7 @@ def clip_look(ref):
         x = np.where(x > 0.9, 0.9 + (1 - np.exp(-(x - 0.9) / 0.1)) * 0.1, x)
         x = (x * 255).clip(0, 255)
         L = x @ np.array([0.299, 0.587, 0.114])
-        x = (L[..., None] + (x - L[..., None]) * 1.12).clip(0, 255)
+        x = (L[..., None] + (x - L[..., None]) * (1.12 if vivid() else 1.0)).clip(0, 255)
         return x
     rmean = (tone(np.asarray(ref.resize((270, 480)))) @ np.array([0.299, 0.587, 0.114])).mean()
     q = np.arange(64) * 4 + 2
@@ -170,7 +180,7 @@ def clip_look(ref):
     H, W = ref.height, ref.width
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
     r = np.sqrt(((xx - W / 2) / (W / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) / np.sqrt(2)
-    vig = (1 - 0.22 * np.clip((r - 0.45) / 0.55, 0, 1) ** 1.6)[..., None]
+    vig = (1 - (0.22 if vivid() else 0.0) * np.clip((r - 0.45) / 0.55, 0, 1) ** 1.6)[..., None]
     def look(f):
         g = lut[f[..., 0] >> 2, f[..., 1] >> 2, f[..., 2] >> 2]
         return Image.fromarray((g * vig).astype(np.uint8))

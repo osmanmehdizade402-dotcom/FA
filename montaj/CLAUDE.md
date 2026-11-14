@@ -97,8 +97,10 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     `python3 ../video/tiltcheck.py evler/<ad> yoxlama.jpg` — əyri qalan kadr varsa düzəlt və ya başqa şəkil seç.
     Göndərəndə hansı şəkillərin düzəldildiyini qısa yaz.
 18. **İşıqlandırma** — qaranlıq tonlar avtomatik işıqlandırılır (`brighten`).
-19. **Rəng tonu** — canlı, rəngli, kino effekti (`grade`): nümunə `video/reference/reng-tonu-numune.mp4`.
-    Sıra: düzəltmə → işıqlandırma → rəng tonu.
+19. **Rəng tonu — RƏNGLİ ETMƏ (QANUN, 2026-11-14):** videolar artıq rənglənmir — şəkillər öz təbii
+    rəngində qalır (doyğunluq artırılmır, kino effekti/vinyet yoxdur). render.py `vivid()` default olaraq
+    söndürülüb; köhnə canlı ton yalnız `listing.json`-da `"look": "vivid"` yazılsa işləyir (istifadəçi istəsə).
+    Sıra: düzəltmə → işıqlandırma (yalnız işıq, rəng yox).
 
 ## E. Uzunluq və temp
 
