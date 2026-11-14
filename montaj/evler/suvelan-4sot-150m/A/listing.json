@@ -1,0 +1,132 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4 sot  •  150 m²",
+  "4 otaq  •  2 sanuzel + həyətdə s/q",
+  "İsti hovuz  •  Besedka  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-4sot-150m-A",
+ "label_style": "tick",
+ "share": "Qışda da hovuzda üzmək istəyən o dostuna göndər!",
+ "hook": {
+  "style": "seasons",
+  "kicker": "ŞÜVƏLAN  •  4 SOT",
+  "lines": [
+   "İsti hovuz —",
+   "4 fəsil üzmək"
+  ],
+  "seasons": [
+   "Yaz",
+   "Yay",
+   "Payız",
+   "Qış"
+  ],
+  "sub": "150 m²  •  4 otaq  •  besedka",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "pool_facade",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_front",
+   1.5,
+   "in",
+   "Fasad",
+   "pixel"
+  ],
+  [
+   "yard_garage",
+   1.5,
+   "left",
+   "Həyət",
+   "pixel"
+  ],
+  [
+   "pool_sun",
+   1.5,
+   "out",
+   "Hovuz",
+   "pixel"
+  ],
+  [
+   "bbq_pool",
+   1.5,
+   "right",
+   "Besedka və manqal",
+   "pixel"
+  ],
+  [
+   "terrace",
+   1.5,
+   "up",
+   "Terras",
+   "pixel"
+  ],
+  [
+   "corridor",
+   1.5,
+   "in",
+   "Dəhliz",
+   "pixel"
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "pixel"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "pixel"
+  ],
+  [
+   "bed1",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "pixel"
+  ],
+  [
+   "bed2",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "pixel"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "pixel"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "pixel"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Sanuzel",
+   "pixel"
+  ]
+ ]
+}

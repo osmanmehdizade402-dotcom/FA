@@ -392,6 +392,28 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "tick":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.66)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 150)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                R = int(30 * fs)
+                yb = H - int(360 * u)
+                cx, cy = mx + R, yb - R
+                d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=GOLD + (255,))
+                d.line([(cx - R * 0.45, cy + R * 0.02), (cx - R * 0.1, cy + R * 0.38), (cx + R * 0.5, cy - R * 0.35)], fill=GREEN_DARK + (255,), width=max(3, int(6 * fs)), joint="curve")
+                f_ = font("Montserrat700.ttf", 54 * fs)
+                lay.alpha_composite(self.text_layer([(lab, f_, CREAM, cx + R + 22 * fs, cy - 36 * fs, 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "hollow":
             self.labels = {}
             for s in self.shots:
@@ -2123,8 +2145,8 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "seasons":
             # four season tiles in a row (all ticked) under a two-line title: 'all-year' feature
-            n = int(H * 0.62)
-            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 220)[:, None].astype(np.uint8)
+            n = int(H * (0.75 if self.tall else 0.98))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.6, n), 0, 1)) * 220)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             d = ImageDraw.Draw(lay)
             fk = font("Montserrat700.ttf", 30 * fs)
@@ -2756,7 +2778,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2782,6 +2804,17 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "pixel":  # pixelate out, switch at the middle, de-pixelate in
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    src = prev if k < 0.5 else cur
+                    blk = max(1, int(math.sin(math.pi * k) * 48 * self.W / 1080))
+                    if blk > 1:
+                        sm = src.resize((max(1, self.W // blk), max(1, self.H // blk)), Image.BILINEAR)
+                        fr = sm.resize((self.W, self.H), Image.NEAREST)
+                    else:
+                        fr = src
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "defocus":  # lens refocus: prev blurs out, cur sharpens in
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
