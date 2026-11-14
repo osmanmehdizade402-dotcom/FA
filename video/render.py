@@ -2121,6 +2121,37 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "seasons":
+            # four season tiles in a row (all ticked) under a two-line title: 'all-year' feature
+            n = int(H * 0.62)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 220)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            top = int(H * (0.555 if self.tall else 0.43))
+            parts = [(hook["kicker"], fk, GOLD, mx, top, 6 * fs)]
+            yy = top + int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            seas = hook["seasons"]
+            gap = int(14 * fs)
+            tw_ = (W - 2 * mx - gap * (len(seas) - 1)) / len(seas)
+            th_ = int(120 * fs)
+            ty = yy + int(30 * fs)
+            fsn = font("Montserrat700.ttf", 28 * fs)
+            for j, nm in enumerate(seas):
+                x0 = mx + j * (tw_ + gap)
+                d.rounded_rectangle([x0, ty, x0 + tw_, ty + th_], radius=int(16 * fs), fill=GREEN_DARK + (225,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                cx, cy, r_ = x0 + tw_ / 2, ty + int(40 * fs), int(18 * fs)
+                d.ellipse([cx - r_, cy - r_, cx + r_, cy + r_], fill=GOLD + (255,))
+                d.line([(cx - r_ * 0.5, cy), (cx - r_ * 0.1, cy + r_ * 0.4), (cx + r_ * 0.55, cy - r_ * 0.4)], fill=GREEN_DARK + (255,), width=max(2, int(4 * fs)))
+                d.text((cx, ty + th_ - int(22 * fs)), az_upper(nm), font=fsn, fill=CREAM, anchor="md")
+            fsb = font("Montserrat600.ttf", 32 * fs)
+            d.text((mx, ty + th_ + int(30 * fs)), hook["sub"], font=fsb, fill=CREAM)
         elif self.hook_style == "bignum":
             # huge outlined number (area) across the frame, gold stroke; title + sub below
             n = int(H * 0.60)
@@ -2381,7 +2412,7 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "swiss":
             # Swiss typographic grid: vertical gold rule, huge two-word statement, specs in a 3-column grid
-            g[..., 3] = (np.clip(np.linspace(1.5, 0.35, W), 0, 1) * 225)[None, :].astype(np.uint8)
+            g[..., 3] = (np.clip(np.linspace(1.3, 0.0, W), 0, 1) * 200)[None, :].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             d = ImageDraw.Draw(lay)
             top = int(H * (0.30 if self.tall else 0.20))
