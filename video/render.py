@@ -2085,6 +2085,104 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "bignum":
+            # huge outlined number (area) across the frame, gold stroke; title + sub below
+            n = int(H * 0.60)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            big = hook["big"]
+            sz = 400
+            while True:
+                fb = font("Playfair700.ttf", sz * fs)
+                if d.textlength(big, font=fb) <= W - 2 * mx or sz < 120:
+                    break
+                sz -= 10
+            bw_ = d.textlength(big, font=fb)
+            yb = int(H * (0.43 if self.tall else 0.30))
+            d.text((W / 2 - bw_ / 2, yb), big, font=fb, fill=(0, 0, 0, 0), stroke_width=max(3, int(5 * fs)), stroke_fill=GOLD + (255,))
+            fu = font("Montserrat700.ttf", 34 * fs)
+            yu = yb + int(sz * fs * 1.12)
+            uw = d.textlength(hook["unit"], font=fu) + 10 * fs * len(hook["unit"])
+            parts = [(hook["unit"], fu, GOLD, W / 2 - uw / 2, yu, 10 * fs)]
+            fl = font("Playfair700.ttf", 78 * fs)
+            yy = yu + int(70 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(90 * fs)
+            fsb = font("Montserrat600.ttf", 34 * fs)
+            parts.append((hook["sub"], fsb, CREAM, W / 2 - d.textlength(hook["sub"], font=fsb) / 2, yy + int(14 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "houseframe":
+            # green matte with a house-shaped (gable) window cut out; photo shows through; text on the matte below
+            hx0, hx1 = int(mx + 20 * fs), int(W - mx - 20 * fs)
+            top = int(H * (0.17 if self.tall else 0.11))
+            eave = top + int((hx1 - hx0) * 0.36)
+            bot = int(H * (0.58 if self.tall else 0.53))
+            m = Image.new("L", (W, H), 238)
+            ImageDraw.Draw(m).polygon([(hx0, eave), ((hx0 + hx1) / 2, top), (hx1, eave), (hx1, bot), (hx0, bot)], fill=0)
+            mat = Image.new("RGBA", (W, H), GREEN + (255,))
+            mat.putalpha(m)
+            lay.alpha_composite(mat)
+            d = ImageDraw.Draw(lay)
+            lw = max(3, int(5 * fs))
+            d.line([(hx0, bot), (hx0, eave), ((hx0 + hx1) / 2, top), (hx1, eave), (hx1, bot), (hx0, bot)], fill=GOLD + (255,), width=lw, joint="curve")
+            o = int(18 * fs)
+            d.line([(hx0 - o, eave + o * 0.4), ((hx0 + hx1) / 2, top - o * 1.2), (hx1 + o, eave + o * 0.4)], fill=GOLD + (160,), width=max(1, lw // 2), joint="curve")
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 80 * fs)
+            yy = bot + int(50 * fs)
+            kw = d.textlength(hook["kicker"], font=fk) + 6 * fs * len(hook["kicker"])
+            parts = [(hook["kicker"], fk, GOLD, W / 2 - kw / 2, yy, 6 * fs)]
+            yy += int(58 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(92 * fs)
+            fsb = font("Montserrat600.ttf", 34 * fs)
+            parts.append((hook["sub"], fsb, CREAM, W / 2 - d.textlength(hook["sub"], font=fsb) / 2, yy + int(10 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts, shadow=False))
+        elif self.hook_style == "tape":
+            # measuring tape: diagonal gold tape with tick marks and the plot size, title above
+            n = int(H * 0.60)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 205)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            tl, th = int(W * 1.5), int(118 * fs)
+            tp = Image.new("RGBA", (tl, th), GOLD + (255,))
+            dt = ImageDraw.Draw(tp)
+            dt.rectangle([0, 0, tl - 1, th - 1], outline=(150, 124, 72, 255), width=max(2, int(3 * fs)))
+            step = 22 * fs
+            fn = font("Montserrat700.ttf", 22 * fs)
+            k = 0
+            x = 0.0
+            while x < tl:
+                L = th * (0.42 if k % 10 == 0 else 0.26 if k % 5 == 0 else 0.16)
+                dt.line([(x, 0), (x, L)], fill=GREEN_DARK + (255,), width=max(1, int(2 * fs)))
+                if k % 10 == 0 and k:
+                    dt.text((x + 4 * fs, th * 0.44), str(k // 10), font=fn, fill=GREEN_DARK)
+                k += 1
+                x += step
+            ft = font("Montserrat700.ttf", 40 * fs)
+            label = hook["tape"]
+            lw_ = dt.textlength(label, font=ft)
+            bx = tl / 2 - lw_ / 2 - 26 * fs
+            dt.rounded_rectangle([bx, th * 0.30, bx + lw_ + 52 * fs, th * 0.92], radius=int(10 * fs), fill=GREEN_DARK + (255,))
+            dt.text((tl / 2, th * 0.61), label, font=ft, fill=CREAM, anchor="mm")
+            tp = tp.rotate(8, expand=True, resample=Image.BICUBIC)
+            ty = int(H * (0.50 if self.tall else 0.42))
+            sh = Image.new("RGBA", tp.size, (0, 0, 0, 0))
+            sh.putalpha(tp.split()[3].filter(ImageFilter.GaussianBlur(14 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (W // 2 - tp.width // 2 + 8, ty - tp.height // 2 + 14))
+            lay.alpha_composite(tp, (W // 2 - tp.width // 2, ty - tp.height // 2))
+            d = ImageDraw.Draw(lay)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = ty + tp.height // 2 + int(30 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "compass":
             # compass rose: gold ring with needle, four key facts at N/E/S/W, title above
             n = int(H * 0.66)
