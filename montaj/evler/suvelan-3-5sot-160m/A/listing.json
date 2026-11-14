@@ -1,0 +1,133 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3.5 sot  •  160 m²",
+  "4 otaq  •  2 sanuzel + həyətdə s/q",
+  "Hovuz  •  Besedka  •  İsti döşəmə"
+ ],
+ "music": null,
+ "slug": "suvelan-3-5sot-160m-A",
+ "label_style": "hollow",
+ "share": "Bu videonu 'hovuzlu ev xəyaldır' deyən o dostuna göndər!",
+ "hook": {
+  "style": "bignum",
+  "big": "160",
+  "unit": "KVADRAT METR",
+  "lines": [
+   "Şüvəlanda",
+   "ağ daş villa"
+  ],
+  "sub": "3.5 sot  •  4 otaq  •  hovuz",
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "kicker": ""
+ },
+ "shots": [
+  [
+   "facade_front",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_facade",
+   1.5,
+   "in",
+   "Hovuz",
+   "defocus",
+   [
+    0.62,
+    0.6,
+    1.3
+   ]
+  ],
+  [
+   "pool_garage",
+   1.5,
+   "left",
+   "Həyət",
+   "defocus"
+  ],
+  [
+   "yard_wide",
+   1.5,
+   "out",
+   "Həyət",
+   "defocus"
+  ],
+  [
+   "terrace_pool",
+   1.5,
+   "right",
+   "Terras",
+   "defocus"
+  ],
+  [
+   "bbq",
+   1.5,
+   "up",
+   "Besedka",
+   "defocus"
+  ],
+  [
+   "corridor",
+   1.5,
+   "in",
+   "Giriş holu",
+   "defocus"
+  ],
+  [
+   "hall",
+   1.5,
+   "left",
+   "Dəhliz",
+   "defocus"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "defocus"
+  ],
+  [
+   "living",
+   1.5,
+   "right",
+   "Qonaq otağı",
+   "defocus"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "defocus"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "defocus"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "defocus"
+  ],
+  [
+   "bath",
+   1.5,
+   "out",
+   "Sanuzel",
+   "defocus"
+  ]
+ ]
+}

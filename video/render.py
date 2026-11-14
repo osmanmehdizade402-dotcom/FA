@@ -382,6 +382,32 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "hollow":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.62)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 170)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                t = az_upper(lab)
+                sz = 96
+                while True:
+                    f_ = font("Montserrat700.ttf", sz * fs)
+                    if d.textlength(t, font=f_) <= W - 2 * mx or sz < 50:
+                        break
+                    sz -= 4
+                yb = H - int(350 * u) - int(sz * fs * 1.1)
+                d.text((mx, yb), t, font=f_, fill=(0, 0, 0, 0), stroke_width=max(2, int(3 * fs)), stroke_fill=GOLD + (255,))
+                ys = yb + int(sz * fs * 1.18)
+                d.rectangle([mx, ys, mx + int(90 * fs), ys + max(3, int(5 * fs))], fill=CREAM + (255,))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "pennant":
             self.labels = {}
             for s in self.shots:
@@ -2099,8 +2125,8 @@ class Renderer:
                     break
                 sz -= 10
             bw_ = d.textlength(big, font=fb)
-            yb = int(H * (0.43 if self.tall else 0.30))
-            d.text((W / 2 - bw_ / 2, yb), big, font=fb, fill=(0, 0, 0, 0), stroke_width=max(3, int(5 * fs)), stroke_fill=GOLD + (255,))
+            yb = int(H * (0.39 if self.tall else 0.27))
+            d.text((W / 2 - bw_ / 2, yb), big, font=fb, fill=GREEN_DARK + (120,), stroke_width=max(3, int(6 * fs)), stroke_fill=GOLD + (255,))
             fu = font("Montserrat700.ttf", 34 * fs)
             yu = yb + int(sz * fs * 1.12)
             uw = d.textlength(hook["unit"], font=fu) + 10 * fs * len(hook["unit"])
@@ -2689,7 +2715,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2715,6 +2741,15 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "defocus":  # lens refocus: prev blurs out, cur sharpens in
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    r_ = math.sin(math.pi * k) * 22 * self.W / 1080
+                    fr = Image.blend(prev, cur, e)
+                    if r_ > 0.5:
+                        fr = fr.filter(ImageFilter.GaussianBlur(r_))
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "swing":  # prev swings away like a sign hinged at its top-left corner, cur underneath
                     e = ease(k)
