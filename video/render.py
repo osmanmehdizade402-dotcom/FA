@@ -2143,6 +2143,56 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "invite":
+            # invitation card: cream card with double gold border, serif 'invitation' wording, centred
+            n = int(H * 0.40)
+            g[H - n:, :, 3] = (np.clip(np.linspace(0, 1.3, n), 0, 1) * 150)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cw_ = int(W - 2 * mx - 40 * fs)
+            ch_ = int(560 * fs)
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_ - 1, ch_ - 1], radius=int(10 * fs), fill=CREAM + (246,))
+            o1, o2 = int(18 * fs), int(28 * fs)
+            dc.rectangle([o1, o1, cw_ - o1, ch_ - o1], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            dc.rectangle([o2, o2, cw_ - o2, ch_ - o2], outline=GOLD + (170,), width=max(1, int(1.5 * fs)))
+            for cx_, cy_ in ((o2, o2), (cw_ - o2, o2), (o2, ch_ - o2), (cw_ - o2, ch_ - o2)):
+                r_ = 9 * fs
+                dc.polygon([(cx_, cy_ - r_), (cx_ + r_, cy_), (cx_, cy_ + r_), (cx_ - r_, cy_)], fill=GOLD + (255,))
+            fk = font("Montserrat700.ttf", 26 * fs)
+            dc.text((cw_ / 2, int(70 * fs)), hook["kicker"], font=fk, fill=GOLD, anchor="mm")
+            dc.line([(cw_ * 0.35, int(100 * fs)), (cw_ * 0.65, int(100 * fs))], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            fl = font("Playfair700.ttf", 72 * fs)
+            yy = int(140 * fs)
+            for i, line in enumerate(hook["lines"]):
+                dc.text((cw_ / 2, yy), line, font=fl, fill=GREEN if i == 0 else GOLD, anchor="ma")
+                yy += int(88 * fs)
+            dc.line([(cw_ * 0.42, yy + 18 * fs), (cw_ * 0.58, yy + 18 * fs)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            dc.text((cw_ / 2, yy + int(48 * fs)), hook["sub"], font=font("Montserrat600.ttf", 30 * fs), fill=GREEN, anchor="ma")
+            ch2 = min(ch_, int(yy + 130 * fs))
+            card = Image.new("RGBA", (cw_, ch2), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_ - 1, ch2 - 1], radius=int(10 * fs), fill=CREAM + (246,))
+            dc.rectangle([o1, o1, cw_ - o1, ch2 - o1], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            dc.rectangle([o2, o2, cw_ - o2, ch2 - o2], outline=GOLD + (170,), width=max(1, int(1.5 * fs)))
+            for cx_, cy_ in ((o2, o2), (cw_ - o2, o2), (o2, ch2 - o2), (cw_ - o2, ch2 - o2)):
+                r_ = 9 * fs
+                dc.polygon([(cx_, cy_ - r_), (cx_ + r_, cy_), (cx_, cy_ + r_), (cx_ - r_, cy_)], fill=GOLD + (255,))
+            dc.text((cw_ / 2, int(70 * fs)), hook["kicker"], font=fk, fill=GOLD, anchor="mm")
+            dc.line([(cw_ * 0.35, int(100 * fs)), (cw_ * 0.65, int(100 * fs))], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            yy = int(140 * fs)
+            for i, line in enumerate(hook["lines"]):
+                dc.text((cw_ / 2, yy), line, font=fl, fill=GREEN if i == 0 else GOLD, anchor="ma")
+                yy += int(88 * fs)
+            dc.line([(cw_ * 0.42, yy + 18 * fs), (cw_ * 0.58, yy + 18 * fs)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            dc.text((cw_ / 2, yy + int(48 * fs)), hook["sub"], font=font("Montserrat600.ttf", 30 * fs), fill=GREEN, anchor="ma")
+            ch_ = ch2
+            cx0 = (W - cw_) // 2
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - ch_
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(20 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 16))
+            lay.alpha_composite(card, (cx0, cy0))
         elif self.hook_style == "seasons":
             # four season tiles in a row (all ticked) under a two-line title: 'all-year' feature
             n = int(H * (0.75 if self.tall else 0.98))
