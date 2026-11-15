@@ -392,6 +392,35 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "placecard":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Playfair700.ttf", 52 * fs)
+                tw = d.textlength(lab, font=f_)
+                bw, bh = int(tw + 110 * fs), int(112 * fs)
+                x0, y0 = int((W - bw) / 2), H - int(350 * u) - bh
+                card = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+                dc = ImageDraw.Draw(card)
+                dc.rectangle([0, 0, bw - 1, bh - 1], fill=CREAM + (244,))
+                o = int(10 * fs)
+                dc.rectangle([o, o, bw - o, bh - o], outline=GOLD + (255,), width=max(1, int(2 * fs)))
+                r_ = 7 * fs
+                for cx_ in (o + 22 * fs, bw - o - 22 * fs):
+                    cy_ = bh / 2
+                    dc.polygon([(cx_, cy_ - r_), (cx_ + r_, cy_), (cx_, cy_ + r_), (cx_ - r_, cy_)], fill=GOLD + (255,))
+                dc.text((bw / 2, bh / 2), lab, font=f_, fill=GREEN, anchor="mm")
+                sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+                sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(14 * fs)).point(lambda v: int(v * 0.45)))
+                lay.alpha_composite(sh, (x0 + 6, y0 + 12))
+                lay.alpha_composite(card, (x0, y0))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "tick":
             self.labels = {}
             for s in self.shots:
@@ -2828,7 +2857,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2854,6 +2883,17 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "fold":  # invitation fold: prev folds closed from top & bottom to a gold line, cur unfolds
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    src, q = (prev, 1 - ease(k * 2)) if k < 0.5 else (cur, ease((k - 0.5) * 2))
+                    fr = Image.new("RGB", (self.W, self.H), GREEN_DARK)
+                    hh = max(2, int(self.H * q))
+                    fr.paste(src.resize((self.W, hh)), (0, (self.H - hh) // 2))
+                    dd = ImageDraw.Draw(fr)
+                    for yy_ in ((self.H - hh) // 2, (self.H + hh) // 2 - 1):
+                        dd.line([(0, yy_), (self.W, yy_)], fill=GOLD, width=4)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "pixel":  # pixelate out, switch at the middle, de-pixelate in
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

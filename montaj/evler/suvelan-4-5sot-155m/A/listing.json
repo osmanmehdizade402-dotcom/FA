@@ -1,0 +1,140 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4.5 sot  •  155 m²",
+  "4 otaq  •  3 sanuzel  •  qarderob",
+  "Hovuz  •  Besedka  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-4-5sot-155m-A",
+ "label_style": "placecard",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {
+  "style": "invite",
+  "kicker": "ŞÜVƏLAN  •  4.5 SOT",
+  "lines": [
+   "Sizi lüks villaya",
+   "dəvət edirik"
+  ],
+  "sub": "155 m²  •  4 otaq  •  3 sanuzel",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_path",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_facade",
+   1.5,
+   "in",
+   "Hovuz",
+   "fold"
+  ],
+  [
+   "yard_wide",
+   1.5,
+   "left",
+   "Həyət",
+   "fold"
+  ],
+  [
+   "garden_columns",
+   1.5,
+   "out",
+   "Həyət",
+   "fold"
+  ],
+  [
+   "gazebo_out",
+   1.5,
+   "right",
+   "Besedka",
+   "fold"
+  ],
+  [
+   "gazebo_in",
+   1.5,
+   "up",
+   "Besedka",
+   "fold"
+  ],
+  [
+   "hall2",
+   1.5,
+   "in",
+   "Giriş holu",
+   "fold"
+  ],
+  [
+   "hall1",
+   1.5,
+   "left",
+   "Dəhliz",
+   "fold"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "fold"
+  ],
+  [
+   "living2",
+   1.5,
+   "right",
+   "Qonaq otağı",
+   "fold"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "fold"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "fold"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "fold"
+  ],
+  [
+   "closet",
+   1.5,
+   "out",
+   "Qarderob",
+   "fold"
+  ],
+  [
+   "bath1",
+   1.5,
+   "right",
+   "Sanuzel",
+   "fold"
+  ],
+  [
+   "bath2",
+   1.5,
+   "up",
+   "Sanuzel",
+   "fold"
+  ]
+ ]
+}
