@@ -1,0 +1,146 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3.3 sot  •  140 m²",
+  "4 otaq  •  2 sanuzel  •  qarderob",
+  "Filtrli hovuz  •  Manqal  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-3-3sot-140m-C",
+ "label_style": "linecap",
+ "share": "Bu videonu 'bağ evimiz olsa, hər həftə sonu ordayıq' dediyin adama göndər!",
+ "hook": {
+  "style": "sidetitle",
+  "kicker": "ŞÜVƏLAN  •  YENİ TİKİLİ",
+  "lines": [
+   "Modern",
+   "bağ evi"
+  ],
+  "points": [
+   "3.3 sot  •  140 m²",
+   "4 otaq  •  2 sanuzel",
+   "Filtrli hovuz"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "hall2",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_facade",
+   1.5,
+   "in",
+   "Fasad",
+   "lift"
+  ],
+  [
+   "pool_facade",
+   1.5,
+   "left",
+   "Hovuz",
+   "lift",
+   [
+    0.3,
+    0.7,
+    1.7
+   ]
+  ],
+  [
+   "yard_bbq",
+   1.5,
+   "out",
+   "Həyət",
+   "lift"
+  ],
+  [
+   "yard_bbq",
+   1.5,
+   "right",
+   "Manqal",
+   "lift",
+   [
+    0.62,
+    0.56,
+    2.3
+   ]
+  ],
+  [
+   "terrace",
+   1.5,
+   "up",
+   "Terras",
+   "lift"
+  ],
+  [
+   "hall1",
+   1.5,
+   "in",
+   "Hol",
+   "lift"
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "lift"
+  ],
+  [
+   "living",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "lift",
+   [
+    0.35,
+    0.42,
+    1.45
+   ]
+  ],
+  [
+   "kitchen",
+   1.5,
+   "right",
+   "Mətbəx",
+   "lift"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "lift"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "lift"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "lift"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Sanuzel",
+   "lift"
+  ]
+ ]
+}

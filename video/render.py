@@ -392,6 +392,34 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "linecap":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.66)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 200)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                t = az_upper(lab)
+                f_ = font("Montserrat700.ttf", 52 * fs)
+                tr_ = 12 * fs
+                tw = sum(d.textlength(c, font=f_) + tr_ for c in t) - tr_
+                yb = H - int(370 * u)
+                x0 = W / 2 - tw / 2
+                lay.alpha_composite(self.text_layer([(t, f_, CREAM, x0, yb - 30 * fs, tr_)]))
+                d = ImageDraw.Draw(lay)
+                ly = yb + int(2 * fs)
+                gap = int(30 * fs)
+                L = int(90 * fs)
+                d.line([(x0 - gap - L, ly), (x0 - gap, ly)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                d.line([(x0 + tw + gap, ly), (x0 + tw + gap + L, ly)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "placecard":
             self.labels = {}
             for s in self.shots:
@@ -2966,7 +2994,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -2992,6 +3020,16 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "lift":  # cur rises from the bottom over a dimming prev, thin gold top edge
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    fr = Image.blend(prev, Image.new("RGB", prev.size, (0, 0, 0)), 0.45 * e)
+                    y = int((1 - e) * self.H)
+                    fr.paste(cur.crop((0, 0, self.W, self.H - y)), (0, y))
+                    if 0 < y < self.H:
+                        ImageDraw.Draw(fr).rectangle([0, y, self.W, y + 5], fill=GOLD)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "fold":  # invitation fold: prev folds closed from top & bottom to a gold line, cur unfolds
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
