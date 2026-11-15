@@ -2172,6 +2172,115 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "toggles":
+            # phone-settings style panel: rows of features each with a gold 'ON' toggle switch
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            rows = hook["rows"]
+            cw_ = int(W - 2 * mx)
+            rh = int(84 * fs)
+            head = int(200 * fs)
+            ch_ = head + rh * len(rows) + int(24 * fs)
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_ - 1, ch_ - 1], radius=int(34 * fs), fill=GREEN_DARK + (236,))
+            pad = int(40 * fs)
+            dc.text((pad, int(30 * fs)), hook["kicker"], font=font("Montserrat700.ttf", 26 * fs), fill=GOLD)
+            fl = font("Playfair700.ttf", 60 * fs)
+            dc.text((pad, int(70 * fs)), hook["lines"][0], font=fl, fill=CREAM)
+            dc.text((pad + dc.textlength(hook["lines"][0] + " ", font=fl), int(70 * fs)), hook["lines"][1], font=fl, fill=GOLD)
+            fr_ = font("Montserrat600.ttf", 36 * fs)
+            y = head
+            tw_, th_ = int(96 * fs), int(54 * fs)
+            for row in rows:
+                dc.line([(pad, y), (cw_ - pad, y)], fill=CREAM + (50,), width=1)
+                dc.text((pad, y + rh / 2), row, font=fr_, fill=CREAM, anchor="lm")
+                x1 = cw_ - pad
+                dc.rounded_rectangle([x1 - tw_, y + (rh - th_) / 2, x1, y + (rh + th_) / 2], radius=th_ // 2, fill=GOLD + (255,))
+                r_ = th_ / 2 - 5 * fs
+                cxk, cyk = x1 - th_ / 2, y + rh / 2
+                dc.ellipse([cxk - r_, cyk - r_, cxk + r_, cyk + r_], fill=CREAM + (255,))
+                y += rh
+            cx0 = int(mx)
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - ch_
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 16))
+            lay.alpha_composite(card, (cx0, cy0))
+        elif self.hook_style == "receipt":
+            # paper receipt with zig-zag bottom edge, dotted leaders, 'TOTAL: ...' line
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            rows = hook["rows"]
+            cw_ = int(W * 0.74)
+            rh = int(62 * fs)
+            ch_ = int(250 * fs) + rh * len(rows) + int(150 * fs)
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            zz = int(18 * fs)
+            dc.rectangle([0, 0, cw_, ch_ - zz], fill=(250, 248, 242, 255))
+            pts = [(0, ch_ - zz)]
+            k = 0
+            x = 0
+            while x <= cw_:
+                pts.append((x, ch_ - (0 if k % 2 else zz)))
+                x += zz
+                k += 1
+            pts += [(cw_, ch_ - zz)]
+            dc.polygon(pts, fill=(250, 248, 242, 255))
+            pad = int(40 * fs)
+            dc.text((cw_ / 2, int(40 * fs)), hook["kicker"], font=font("Montserrat700.ttf", 26 * fs), fill=GREEN, anchor="ma")
+            fl = font("Playfair700.ttf", 56 * fs)
+            dc.text((cw_ / 2, int(80 * fs)), hook["lines"][0], font=fl, fill=GREEN, anchor="ma")
+            dc.text((cw_ / 2, int(146 * fs)), hook["lines"][1], font=fl, fill=GOLD, anchor="ma")
+            y = int(240 * fs)
+            dash = lambda yy: [dc.line([(xx, yy), (xx + 10 * fs, yy)], fill=(120, 120, 110, 255), width=2) for xx in np.arange(pad, cw_ - pad, 18 * fs)]
+            dash(y - 16 * fs)
+            fr_ = font("Montserrat600.ttf", 30 * fs)
+            for row in rows:
+                name, _, val = row.partition("|")
+                dc.text((pad, y + rh / 2), name, font=fr_, fill=(40, 40, 36), anchor="lm")
+                dc.text((cw_ - pad, y + rh / 2), val or "✓", font=fr_ if val and val != "✓" else font("DejaVuSans-Bold.ttf", 30 * fs), fill=GREEN, anchor="rm")
+                y += rh
+            dash(y + 4 * fs)
+            dc.text((pad, y + 30 * fs), hook["total"][0], font=font("Montserrat700.ttf", 34 * fs), fill=GREEN)
+            dc.text((cw_ - pad, y + 30 * fs), hook["total"][1], font=font("Montserrat700.ttf", 34 * fs), fill=GOLD, anchor="ra")
+            card = card.rotate(-3, expand=True, resample=Image.BICUBIC)
+            cx0 = (W - card.width) // 2
+            cy0 = int(H * (0.79 if self.tall else 0.77)) - card.height
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.55)))
+            lay.alpha_composite(sh, (cx0 + 10, cy0 + 18))
+            lay.alpha_composite(card, (cx0, cy0))
+        elif self.hook_style == "sidetitle":
+            # giant title rotated 90deg up the left edge, gold rule beside it, facts stacked bottom-right
+            g[..., 3] = (np.clip(np.linspace(1.4, 0.0, W), 0, 1) * 200)[None, :].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            fl = font("Playfair700.ttf", 150 * fs)
+            txt = hook["lines"][0]
+            tmp = Image.new("RGBA", (int(H), int(220 * fs)), (0, 0, 0, 0))
+            dt = ImageDraw.Draw(tmp)
+            dt.text((0, 0), txt, font=fl, fill=CREAM + (255,))
+            bb = tmp.getbbox()
+            tmp = tmp.crop(bb).rotate(90, expand=True)
+            x0 = int(mx - 10 * fs)
+            yb = int(H * (0.79 if self.tall else 0.76))
+            lay.alpha_composite(tmp, (x0, yb - tmp.height))
+            d = ImageDraw.Draw(lay)
+            xr = x0 + tmp.width + int(22 * fs)
+            d.rectangle([xr, yb - tmp.height, xr + max(4, int(6 * fs)), yb], fill=GOLD + (255,))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            parts = [(hook["kicker"], fk, GOLD, xr + 36 * fs, yb - tmp.height, 6 * fs)]
+            fl2 = font("Playfair700.ttf", 74 * fs)
+            parts.append((hook["lines"][1], fl2, GOLD, xr + 36 * fs, yb - tmp.height + 50 * fs, 0))
+            fp = font("Montserrat600.ttf", 36 * fs)
+            yy = yb - len(hook["points"]) * int(58 * fs)
+            for ptx in hook["points"]:
+                parts.append(("—  " + ptx, fp, CREAM, xr + 36 * fs, yy, 0))
+                yy += int(58 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "invite":
             # invitation card: cream card with double gold border, serif 'invitation' wording, centred
             n = int(H * 0.40)
