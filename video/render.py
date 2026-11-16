@@ -2253,6 +2253,46 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "calendar":
+            # tear-off calendar page: green header with rings, big number, caption; title beside/below
+            n = int(H * (0.72 if self.tall else 0.95))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.3, n), 0, 1)) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cw_, ch_ = int(330 * fs), int(390 * fs)
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_ - 1, ch_ - 1], radius=int(18 * fs), fill=(250, 248, 242, 255))
+            hh = int(92 * fs)
+            dc.rounded_rectangle([0, 0, cw_ - 1, hh], radius=int(18 * fs), fill=GREEN + (255,))
+            dc.rectangle([0, hh - 20 * fs, cw_ - 1, hh], fill=GREEN + (255,))
+            dc.text((cw_ / 2, hh / 2 + 8 * fs), az_upper(hook["month"]), font=font("Montserrat700.ttf", 30 * fs), fill=GOLD, anchor="mm")
+            for xr in (cw_ * 0.28, cw_ * 0.72):
+                dc.rounded_rectangle([xr - 9 * fs, -14 * fs, xr + 9 * fs, 26 * fs], radius=int(9 * fs), fill=(60, 60, 60, 255))
+            dc.text((cw_ / 2, hh + (ch_ - hh) * 0.46), hook["big"], font=font("Playfair700.ttf", 150 * fs), fill=GREEN, anchor="mm")
+            dc.text((cw_ / 2, ch_ - 40 * fs), az_upper(hook["unit"]), font=font("Montserrat700.ttf", 26 * fs), fill=GOLD, anchor="mm")
+            for k in range(1, 4):  # torn under-pages
+                dc.line([(8 * fs, ch_ - k * 3), (cw_ - 8 * fs, ch_ - k * 3)], fill=(215, 210, 200, 255), width=1)
+            card = card.rotate(4, expand=True, resample=Image.BICUBIC)
+            cx0 = int(W - mx - card.width)
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - card.height
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(16 * fs)).point(lambda v: int(v * 0.55)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 16))
+            lay.alpha_composite(card, (cx0, cy0))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 82 * fs)
+            yy = cy0 - int(330 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(94 * fs)
+            fp = font("Montserrat600.ttf", 34 * fs)
+            yy = cy0 + int(40 * fs)
+            for ptx in hook["points"]:
+                parts.append(("—  " + ptx, fp, CREAM, mx, yy, 0))
+                yy += int(58 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "floors":
             # lift floor indicator: tall green panel on the right with round floor buttons (top lit), up-arrow
             n = int(H * (0.60 if self.tall else 0.85))
