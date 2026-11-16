@@ -2225,6 +2225,46 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "floors":
+            # lift floor indicator: tall green panel on the right with round floor buttons (top lit), up-arrow
+            n = int(H * 0.60)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.5, n), 0, 1)) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            fl_ = hook["floors"]
+            pw_ = int(150 * fs)
+            bh_ = int(150 * fs)
+            ph_ = int(130 * fs) + bh_ * len(fl_)
+            px = int(W - mx - pw_)
+            py = int(H * (0.80 if self.tall else 0.775)) - ph_
+            d = ImageDraw.Draw(lay)
+            d.rounded_rectangle([px, py, px + pw_, py + ph_], radius=int(24 * fs), fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            ax = px + pw_ / 2
+            ay = py + int(60 * fs)
+            a_ = 26 * fs
+            d.polygon([(ax, ay - a_), (ax + a_, ay + a_ * 0.4), (ax - a_, ay + a_ * 0.4)], fill=GOLD + (255,))
+            fb = font("Playfair700.ttf", 64 * fs)
+            fc = font("Montserrat700.ttf", 20 * fs)
+            for j, (num, cap) in enumerate(fl_):
+                cy_ = py + int(130 * fs) + bh_ * j + bh_ / 2 - 14 * fs
+                r_ = int(48 * fs)
+                lit = j == 0
+                d.ellipse([ax - r_, cy_ - r_, ax + r_, cy_ + r_], fill=(GOLD + (255,)) if lit else (GREEN + (255,)), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                d.text((ax, cy_), num, font=fb, fill=GREEN_DARK if lit else CREAM, anchor="mm")
+                d.text((ax, cy_ + r_ + 18 * fs), az_upper(cap), font=fc, fill=CREAM, anchor="mm")
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 82 * fs)
+            yy = py + int(20 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(94 * fs)
+            fp = font("Montserrat600.ttf", 34 * fs)
+            yy += int(20 * fs)
+            for ptx in hook["points"]:
+                parts.append(("—  " + ptx, fp, CREAM, mx, yy, 0))
+                yy += int(56 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "loupe":
             # magnifier: a gold-ringed circle shows a zoomed detail of the same photo, title below
             n = int(H * (0.55 if self.tall else 0.72))
