@@ -392,6 +392,34 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "notch":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Montserrat700.ttf", 50 * fs)
+                tw = d.textlength(lab, font=f_)
+                bh = int(100 * fs)
+                c_ = int(30 * fs)
+                x0 = int(W - mx - tw - 80 * fs)
+                x1 = int(W - mx)
+                y1 = H - int(350 * u)
+                y0 = y1 - bh
+                poly = [(x0 + c_, y0), (x1, y0), (x1, y1 - c_), (x1 - c_, y1), (x0, y1), (x0, y0 + c_)]
+                sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(sh).polygon([(x + 8, y + 12) for x, y in poly], fill=(0, 0, 0, 110))
+                lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(10 * fs)))
+                d = ImageDraw.Draw(lay)
+                d.polygon(poly, fill=GREEN_DARK + (240,))
+                d.line(poly + [poly[0]], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                d.rectangle([x0 + 22 * fs, y0 + bh / 2 - 3 * fs, x0 + 22 * fs + 18 * fs, y0 + bh / 2 + 3 * fs], fill=GOLD + (255,))
+                lay.alpha_composite(self.text_layer([(lab, f_, CREAM, x0 + 54 * fs, y0 + 20 * fs, 0)], shadow=False))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "halo":
             self.labels = {}
             for s in self.shots:
@@ -2227,7 +2255,7 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "floors":
             # lift floor indicator: tall green panel on the right with round floor buttons (top lit), up-arrow
-            n = int(H * 0.60)
+            n = int(H * (0.60 if self.tall else 0.85))
             g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.5, n), 0, 1)) * 215)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             fl_ = hook["floors"]
@@ -3099,7 +3127,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3125,6 +3153,23 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "liftdoor":  # lift doors: two green panels close over prev, gold up-arrow, then open on cur
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    q = ease(k * 2) if k < 0.5 else 1 - ease((k - 0.5) * 2)
+                    fr = (prev if k < 0.5 else cur).copy()
+                    half = int(q * self.W / 2)
+                    if half > 0:
+                        dd = ImageDraw.Draw(fr)
+                        dd.rectangle([0, 0, half, self.H], fill=GREEN_DARK)
+                        dd.rectangle([self.W - half, 0, self.W, self.H], fill=GREEN_DARK)
+                        dd.line([(half, 0), (half, self.H)], fill=GOLD, width=5)
+                        dd.line([(self.W - half, 0), (self.W - half, self.H)], fill=GOLD, width=5)
+                        if q > 0.85:
+                            a_ = 46 * self.W / 1080
+                            cx, cy = self.W / 2, self.H * 0.45
+                            dd.polygon([(cx, cy - a_), (cx + a_, cy + a_ * 0.5), (cx - a_, cy + a_ * 0.5)], fill=GOLD)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "lensin":  # cur appears magnified inside a growing gold-ringed lens, settles to 1x
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

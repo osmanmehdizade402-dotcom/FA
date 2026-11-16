@@ -1,0 +1,155 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  2 sot  •  120 m²",
+  "3 otaq  •  2 sanuzel + həyətdə s/q",
+  "İsti hovuz  •  Besedka  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-2sot-120m-A",
+ "label_style": "notch",
+ "share": "Bu videonu 'kiçik, amma hər şeyi var' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "floors",
+  "kicker": "ŞÜVƏLAN  •  2 SOT",
+  "lines": [
+   "İki mərtəbə,",
+   "bir arzu"
+  ],
+  "floors": [
+   [
+    "2",
+    "Yataq"
+   ],
+   [
+    "1",
+    "Qonaq"
+   ]
+  ],
+  "points": [
+   "120 m²  •  3 otaq",
+   "İsti hovuz  •  besedka"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "facade_pool",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_pool",
+   1.5,
+   "in",
+   "Həyət",
+   "liftdoor",
+   [
+    0.7,
+    0.45,
+    1.4
+   ]
+  ],
+  [
+   "pool",
+   1.5,
+   "left",
+   "Hovuz",
+   "liftdoor"
+  ],
+  [
+   "pool",
+   1.5,
+   "out",
+   "Hovuz",
+   "liftdoor",
+   [
+    0.36,
+    0.55,
+    1.6
+   ]
+  ],
+  [
+   "gazebo",
+   1.5,
+   "right",
+   "Besedka",
+   "liftdoor"
+  ],
+  [
+   "hall",
+   1.5,
+   "up",
+   "Giriş holu",
+   "liftdoor"
+  ],
+  [
+   "living_kitchen",
+   1.5,
+   "in",
+   "Qonaq otağı",
+   "liftdoor"
+  ],
+  [
+   "living_kitchen",
+   1.5,
+   "left",
+   "Mətbəx",
+   "liftdoor",
+   [
+    0.42,
+    0.46,
+    1.7
+   ]
+  ],
+  [
+   "living2",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "liftdoor"
+  ],
+  [
+   "stairs",
+   1.5,
+   "right",
+   "Pilləkən",
+   "liftdoor"
+  ],
+  [
+   "bed1",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "liftdoor"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "liftdoor"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "liftdoor"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Sanuzel",
+   "liftdoor"
+  ]
+ ]
+}
