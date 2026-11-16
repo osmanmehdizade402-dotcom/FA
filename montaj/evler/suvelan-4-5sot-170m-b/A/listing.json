@@ -1,0 +1,145 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  4.5 sot  •  170 m²",
+  "3 yataq + qonaq otağı  •  4 sanuzel",
+  "Hovuz  •  Yay mətbəxi  •  Tam əşyalı"
+ ],
+ "music": null,
+ "slug": "suvelan-4-5sot-170m-b-A",
+ "label_style": "halo",
+ "share": "Bu videonu 'çamadanı götür, köçürük' deyəcəyin adama göndər!",
+ "hook": {
+  "style": "loupe",
+  "loupe": [
+   0.55,
+   0.2,
+   2.2
+  ],
+  "kicker": "ŞÜVƏLAN  •  TAM ƏŞYALI",
+  "lines": [
+   "Hər detalda",
+   "lüks var"
+  ],
+  "sub": "4.5 sot  •  170 m²  •  4 sanuzel",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "living1",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_palm",
+   1.5,
+   "in",
+   "Fasad",
+   "lensin"
+  ],
+  [
+   "terrace_steps",
+   1.5,
+   "left",
+   "Terras",
+   "lensin"
+  ],
+  [
+   "pool",
+   1.5,
+   "out",
+   "Hovuz",
+   "lensin"
+  ],
+  [
+   "carport",
+   1.5,
+   "right",
+   "Həyət",
+   "lensin"
+  ],
+  [
+   "summer_kitchen",
+   1.5,
+   "up",
+   "Yay mətbəxi",
+   "lensin"
+  ],
+  [
+   "veranda",
+   1.5,
+   "in",
+   "Veranda",
+   "lensin"
+  ],
+  [
+   "hall2",
+   1.5,
+   "left",
+   "Giriş holu",
+   "lensin"
+  ],
+  [
+   "hall1",
+   1.5,
+   "out",
+   "Hol",
+   "lensin"
+  ],
+  [
+   "kitchen1",
+   1.5,
+   "right",
+   "Mətbəx",
+   "lensin"
+  ],
+  [
+   "living2",
+   1.5,
+   "up",
+   "Qonaq otağı",
+   "lensin"
+  ],
+  [
+   "bed2",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "lensin"
+  ],
+  [
+   "bed3",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "lensin"
+  ],
+  [
+   "bath1",
+   1.5,
+   "out",
+   "Sanuzel",
+   "lensin"
+  ],
+  [
+   "bath2",
+   1.5,
+   "right",
+   "Sanuzel",
+   "lensin"
+  ],
+  [
+   "bath3",
+   1.5,
+   "up",
+   "Sanuzel",
+   "lensin"
+  ]
+ ]
+}

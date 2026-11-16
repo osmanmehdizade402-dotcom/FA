@@ -392,6 +392,31 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "halo":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Playfair700.ttf", 74 * fs)
+                tw = d.textlength(lab, font=f_)
+                cy = H - int(400 * u)
+                hm = Image.new("L", (W, H), 0)
+                ImageDraw.Draw(hm).ellipse([W / 2 - tw / 2 - 120 * fs, cy - 110 * fs, W / 2 + tw / 2 + 120 * fs, cy + 90 * fs], fill=170)
+                hm = hm.filter(ImageFilter.GaussianBlur(50 * fs))
+                hl = Image.new("RGBA", (W, H), (0, 0, 0, 0)); hl.putalpha(hm)
+                lay.alpha_composite(hl)
+                d = ImageDraw.Draw(lay)
+                r_ = int(16 * fs)
+                ry = cy - int(80 * fs)
+                d.ellipse([W / 2 - r_, ry - r_, W / 2 + r_, ry + r_], outline=GOLD + (255,), width=max(2, int(4 * fs)))
+                d.ellipse([W / 2 - 4 * fs, ry - 4 * fs, W / 2 + 4 * fs, ry + 4 * fs], fill=GOLD + (255,))
+                lay.alpha_composite(self.text_layer([(lab, f_, CREAM, W / 2 - tw / 2, cy - 44 * fs, 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "linecap":
             self.labels = {}
             for s in self.shots:
@@ -2202,7 +2227,7 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "loupe":
             # magnifier: a gold-ringed circle shows a zoomed detail of the same photo, title below
-            n = int(H * 0.55)
+            n = int(H * (0.55 if self.tall else 0.72))
             g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.5, n), 0, 1)) * 215)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             gt = np.zeros((H, W, 4), np.uint8)
@@ -3034,7 +3059,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3060,6 +3085,21 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "lensin":  # cur appears magnified inside a growing gold-ringed lens, settles to 1x
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    cx, cy = self.W * 0.5, self.H * 0.45
+                    R = max(2, int(e * math.hypot(self.W, self.H) * 0.62))
+                    z = 1.35 - 0.35 * e
+                    cw, ch = int(self.W * z), int(self.H * z)
+                    cz = cur.resize((cw, ch), Image.BILINEAR).crop(((cw - self.W) // 2, (ch - self.H) // 2, (cw - self.W) // 2 + self.W, (ch - self.H) // 2 + self.H))
+                    m = Image.new("L", (self.W, self.H), 0)
+                    ImageDraw.Draw(m).ellipse([cx - R, cy - R, cx + R, cy + R], fill=255)
+                    fr = prev.copy()
+                    fr.paste(cz, (0, 0), m)
+                    ImageDraw.Draw(fr).ellipse([cx - R, cy - R, cx + R, cy + R], outline=GOLD, width=6)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "lift":  # cur rises from the bottom over a dimming prev, thin gold top edge
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
