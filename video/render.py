@@ -2200,6 +2200,46 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "loupe":
+            # magnifier: a gold-ringed circle shows a zoomed detail of the same photo, title below
+            n = int(H * 0.55)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.5, n), 0, 1)) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            gt = np.zeros((H, W, 4), np.uint8)
+            nt = int(H * 0.22)
+            gt[:nt, :, 3] = (np.linspace(1, 0, nt) * 140)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(gt, "RGBA"))
+            base_ = self.kb(self.shots[0][0], self.shots[0][2], 0.0, focus=self.focus[0]).convert("RGB")
+            fx, fy, z = hook["loupe"]
+            R = int((230 if self.tall else 190) * fs)
+            sx, sy = fx * W, fy * H
+            rr = R / z
+            crop = base_.crop((int(sx - rr), int(sy - rr), int(sx + rr), int(sy + rr))).resize((2 * R, 2 * R), Image.LANCZOS)
+            m = Image.new("L", (2 * R, 2 * R), 0)
+            ImageDraw.Draw(m).ellipse([0, 0, 2 * R - 1, 2 * R - 1], fill=255)
+            cx, cy = int(W - mx - R), int(H * (0.355 if self.tall else 0.33))
+            d = ImageDraw.Draw(lay)
+            d.ellipse([sx - rr, sy - rr, sx + rr, sy + rr], outline=GOLD + (230,), width=max(2, int(3 * fs)))
+            d.line([(sx, sy), (cx, cy)], fill=GOLD + (200,), width=max(2, int(3 * fs)))
+            sh = Image.new("RGBA", (2 * R + 60, 2 * R + 60), (0, 0, 0, 0))
+            ImageDraw.Draw(sh).ellipse([30, 40, 2 * R + 30, 2 * R + 50], fill=(0, 0, 0, 130))
+            lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(18)), (cx - R - 30, cy - R - 30))
+            ci = crop.convert("RGBA"); ci.putalpha(m)
+            lay.alpha_composite(ci, (cx - R, cy - R))
+            d = ImageDraw.Draw(lay)
+            lw = max(4, int(8 * fs))
+            d.ellipse([cx - R, cy - R, cx + R, cy + R], outline=GOLD + (255,), width=lw)
+            d.ellipse([cx - R - lw * 1.5, cy - R - lw * 1.5, cx + R + lw * 1.5, cy + R + lw * 1.5], outline=CREAM + (150,), width=max(1, lw // 3))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = int(H * (0.585 if self.tall else 0.50))
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, yy + int(14 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "toggles":
             # phone-settings style panel: rows of features each with a gold 'ON' toggle switch
             n = int(H * 0.30)
