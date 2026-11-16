@@ -1,0 +1,149 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3 sot  •  130 m²",
+  "4 otaq  •  2 sanuzel  •  qarderob",
+  "Filtrli hovuz  •  Söhbətgah  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-3sot-130m-A",
+ "label_style": "datetab",
+ "share": "Bu videonu 'nə vaxt köçürük?' deyən adama göndər!",
+ "hook": {
+  "style": "calendar",
+  "month": "Köç günü",
+  "big": "130",
+  "unit": "m²  •  3 sot",
+  "kicker": "ŞÜVƏLAN  •  YENİ TİKİLİ",
+  "lines": [
+   "Köç günün",
+   "bu gündür"
+  ],
+  "points": [
+   "4 otaq  •  1 mərtəbə",
+   "Hovuz  •  isti döşəmə",
+   "Kupça  •  ipoteka"
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "facade_front",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade_pool",
+   1.5,
+   "in",
+   "Fasad",
+   "tearoff"
+  ],
+  [
+   "yard_gazebo",
+   1.5,
+   "left",
+   "Həyət",
+   "tearoff"
+  ],
+  [
+   "yard_gazebo",
+   1.5,
+   "out",
+   "Hovuz",
+   "tearoff",
+   [
+    0.74,
+    0.58,
+    1.7
+   ]
+  ],
+  [
+   "yard_gazebo",
+   1.5,
+   "right",
+   "Söhbətgah",
+   "tearoff",
+   [
+    0.45,
+    0.47,
+    1.8
+   ]
+  ],
+  [
+   "hall",
+   1.5,
+   "up",
+   "Giriş holu",
+   "tearoff"
+  ],
+  [
+   "corridor",
+   1.5,
+   "in",
+   "Dəhliz",
+   "tearoff",
+   [
+    0.42,
+    0.45,
+    1.3
+   ]
+  ],
+  [
+   "living",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "tearoff"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "out",
+   "Mətbəx",
+   "tearoff"
+  ],
+  [
+   "bed1",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "tearoff"
+  ],
+  [
+   "bed2",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "tearoff"
+  ],
+  [
+   "bed3",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "tearoff"
+  ],
+  [
+   "bath1",
+   1.5,
+   "left",
+   "Sanuzel",
+   "tearoff"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Sanuzel",
+   "tearoff"
+  ]
+ ]
+}

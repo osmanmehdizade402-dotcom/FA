@@ -392,6 +392,35 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "datetab":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Playfair700.ttf", 66 * fs)
+                tw = d.textlength(lab, font=f_)
+                bw, bh = int(tw + 80 * fs), int(148 * fs)
+                hh = int(30 * fs)
+                card = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+                dc = ImageDraw.Draw(card)
+                dc.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(12 * fs), fill=(250, 248, 242, 250))
+                dc.rounded_rectangle([0, 0, bw - 1, hh], radius=int(12 * fs), fill=GREEN + (255,))
+                dc.rectangle([0, hh - 10 * fs, bw - 1, hh], fill=GREEN + (255,))
+                for xr in (bw * 0.25, bw * 0.75):
+                    dc.ellipse([xr - 6 * fs, hh / 2 - 6 * fs, xr + 6 * fs, hh / 2 + 6 * fs], fill=GOLD + (255,))
+                dc.text((bw / 2, hh + (bh - hh) / 2), lab, font=f_, fill=GREEN, anchor="mm")
+                card = card.rotate(-3, expand=True, resample=Image.BICUBIC)
+                x0, y0 = int(mx), H - int(350 * u) - card.height
+                sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+                sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(12 * fs)).point(lambda v: int(v * 0.5)))
+                lay.alpha_composite(sh, (x0 + 6, y0 + 12))
+                lay.alpha_composite(card, (x0, y0))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "notch":
             self.labels = {}
             for s in self.shots:
@@ -3243,7 +3272,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3270,6 +3299,20 @@ class Renderer:
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "tearoff":  # calendar tear-off: prev page lifts up from its top edge and flies off, cur underneath
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGBA")
+                    cur = self.shot_frame(i, t).convert("RGBA")
+                    e = ease(k)
+                    fr = cur.copy()
+                    pw_, ph_ = self.W, max(2, int(self.H * (1 - 0.35 * e)))
+                    pg = prev.resize((pw_, ph_)).rotate(-12 * e, expand=True, resample=Image.BICUBIC)
+                    x = int(self.W * 0.35 * e) - (pg.width - pw_) // 2
+                    y = int(-self.H * 1.05 * e * e)
+                    sh = Image.new("RGBA", pg.size, (0, 0, 0, 0))
+                    sh.putalpha(pg.split()[3].filter(ImageFilter.GaussianBlur(24)).point(lambda v: int(v * 0.5)))
+                    fr.alpha_composite(sh, (x + 14, y + 26)) if True else None
+                    fr.alpha_composite(pg, (x, y))
+                    fr = self.decorate(fr, i, t).convert("RGB")
                 elif tr == "liftdoor":  # lift doors: two green panels close over prev, gold up-arrow, then open on cur
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
                     cur = self.shot_frame(i, t).convert("RGB")
