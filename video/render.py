@@ -2253,6 +2253,82 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "notes":
+            # three tilted cream sticky notes with a gold pin each, title above
+            n = int(H * (0.76 if self.tall else 0.98))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.25, n), 0, 1)) * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            notes = hook["notes"]
+            nw = int((W - 2 * mx - 40 * fs) / 3)
+            ny = int(H * (0.80 if self.tall else 0.775)) - int(nw * 1.0)
+            angs = (-6, 3, -2)
+            for j, (big, cap) in enumerate(notes):
+                nt = Image.new("RGBA", (nw, nw), (0, 0, 0, 0))
+                dn = ImageDraw.Draw(nt)
+                dn.rectangle([0, 0, nw - 1, nw - 1], fill=(246, 240, 214, 255))
+                dn.rectangle([0, 0, nw - 1, int(nw * 0.12)], fill=(236, 226, 190, 255))
+                dn.text((nw / 2, nw * 0.48), big, font=font("Playfair700.ttf", 104 * fs), fill=GREEN, anchor="mm")
+                dn.text((nw / 2, nw * 0.80), az_upper(cap), font=font("Montserrat700.ttf", 24 * fs), fill=GOLD, anchor="mm")
+                nt = nt.rotate(angs[j], expand=True, resample=Image.BICUBIC)
+                x = int(mx + j * (nw + 20 * fs) + (nw - nt.width) / 2)
+                y = ny + (nt.height - nw) // -2 + (int(16 * fs) if j == 1 else 0)
+                sh = Image.new("RGBA", nt.size, (0, 0, 0, 0))
+                sh.putalpha(nt.split()[3].filter(ImageFilter.GaussianBlur(12 * fs)).point(lambda v: int(v * 0.5)))
+                lay.alpha_composite(sh, (x + 6, y + 12))
+                lay.alpha_composite(nt, (x, y))
+                d = ImageDraw.Draw(lay)
+                px_, py_, r_ = x + nt.width / 2, y + 14 * fs, 13 * fs
+                d.ellipse([px_ - r_, py_ - r_, px_ + r_, py_ + r_], fill=GOLD + (255,), outline=(150, 124, 72, 255), width=2)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = ny - int(300 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "orbit":
+            # gold disc with big number, text running around it in a circle; title to the left/below
+            n = int(H * (0.78 if self.tall else 0.98))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.25, n), 0, 1)) * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            R = int(185 * fs)
+            S = 2 * R + int(120 * fs)
+            disc = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+            dd = ImageDraw.Draw(disc)
+            c = S / 2
+            dd.ellipse([c - R, c - R, c + R, c + R], fill=GREEN_DARK + (235,), outline=GOLD + (255,), width=max(3, int(5 * fs)))
+            dd.ellipse([c - R * 0.66, c - R * 0.66, c + R * 0.66, c + R * 0.66], fill=GOLD + (255,))
+            dd.text((c, c - 14 * fs), hook["big"], font=font("Playfair700.ttf", 120 * fs), fill=GREEN_DARK, anchor="mm")
+            dd.text((c, c + 74 * fs), hook["unit"], font=font("Montserrat700.ttf", 24 * fs), fill=GREEN_DARK, anchor="mm")
+            ring = az_upper(hook["ring"])
+            fr_ = font("Montserrat700.ttf", 28 * fs)
+            rr = R * 0.83
+            step = 2 * math.pi / len(ring)
+            for k, ch in enumerate(ring):
+                a = -math.pi / 2 + k * step
+                gl = Image.new("RGBA", (int(40 * fs), int(40 * fs)), (0, 0, 0, 0))
+                ImageDraw.Draw(gl).text((gl.width / 2, gl.height / 2), ch, font=fr_, fill=CREAM, anchor="mm")
+                gl = gl.rotate(-math.degrees(a) - 90, resample=Image.BICUBIC)
+                disc.alpha_composite(gl, (int(c + rr * math.cos(a) - gl.width / 2), int(c + rr * math.sin(a) - gl.height / 2)))
+            cx0 = int(W - mx - S + 40 * fs)
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - S + int(40 * fs)
+            lay.alpha_composite(disc, (cx0, cy0))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 82 * fs)
+            yy = cy0 - int(250 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(94 * fs)
+            fp = font("Montserrat600.ttf", 34 * fs)
+            yy = cy0 + int(130 * fs)
+            for ptx in hook["points"]:
+                parts.append(("—  " + ptx, fp, CREAM, mx, yy, 0))
+                yy += int(58 * fs)
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "calendar":
             # tear-off calendar page: green header with rings, big number, caption; title beside/below
             n = int(H * (0.72 if self.tall else 0.95))
