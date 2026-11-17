@@ -2313,6 +2313,49 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "strike":
+            # price-campaign hook: a phrase crossed out with a gold slash, bold answer below, optional round sticker
+            n = int(H * (0.66 if self.tall else 0.95))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.35, n), 0, 1)) * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            top = int(H * (0.50 if self.tall else 0.36))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            parts = [(az_upper(hook["kicker"]), fk, GOLD, mx, top, 6 * fs)]
+            fc = font("Playfair700.ttf", 70 * fs)
+            yc = top + int(60 * fs)
+            parts.append((hook["crossed"], fc, (200, 200, 195), mx, yc, 0))
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            cw = d.textlength(hook["crossed"], font=fc)
+            ym = yc + int(48 * fs)
+            d.line([(mx - 10 * fs, ym + 14 * fs), (mx + cw + 10 * fs, ym - 14 * fs)], fill=GOLD + (255,), width=max(5, int(9 * fs)))
+            fl = font("Playfair700.ttf", 92 * fs)
+            yy = yc + int(120 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(104 * fs)
+            if hook.get("sub"):
+                parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, yy + int(16 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            if hook.get("sticker"):
+                R = int(118 * fs)
+                st = Image.new("RGBA", (2 * R + 20, 2 * R + 20), (0, 0, 0, 0))
+                ds = ImageDraw.Draw(st)
+                c = R + 10
+                pts = []
+                for k in range(48):
+                    a = k * math.pi / 24
+                    rr = R if k % 2 == 0 else R * 0.9
+                    pts.append((c + rr * math.cos(a), c + rr * math.sin(a)))
+                ds.polygon(pts, fill=GOLD + (255,))
+                ds.ellipse([c - R * 0.78, c - R * 0.78, c + R * 0.78, c + R * 0.78], outline=GREEN_DARK + (255,), width=max(2, int(3 * fs)))
+                l1, l2 = hook["sticker"]
+                ds.text((c, c - 22 * fs), l1, font=font("Montserrat700.ttf", 30 * fs), fill=GREEN_DARK, anchor="mm")
+                ds.text((c, c + 26 * fs), l2, font=font("Playfair700.ttf", 44 * fs), fill=GREEN_DARK, anchor="mm")
+                st = st.rotate(12, expand=True, resample=Image.BICUBIC)
+                lay.alpha_composite(st, (int(W - mx - st.width + 30 * fs), top - st.height + int(40 * fs)))
         elif self.hook_style == "passport":
             # passport entry stamp: tilted double-bordered gold stamp with place name, date-like line, title below
             n = int(H * (0.62 if self.tall else 0.92))
