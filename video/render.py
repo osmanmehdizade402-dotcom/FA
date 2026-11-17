@@ -2282,6 +2282,99 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "passport":
+            # passport entry stamp: tilted double-bordered gold stamp with place name, date-like line, title below
+            n = int(H * (0.62 if self.tall else 0.92))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 220)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            sw, sh_ = int(560 * fs), int(330 * fs)
+            st = Image.new("RGBA", (sw, sh_), (0, 0, 0, 0))
+            ds = ImageDraw.Draw(st)
+            lw = max(3, int(6 * fs))
+            ds.rounded_rectangle([0, 0, sw - 1, sh_ - 1], radius=int(26 * fs), fill=GREEN_DARK + (150,), outline=GOLD + (255,), width=lw)
+            o = int(16 * fs)
+            ds.rounded_rectangle([o, o, sw - o, sh_ - o], radius=int(18 * fs), outline=GOLD + (255,), width=max(1, lw // 2))
+            ds.text((sw / 2, int(62 * fs)), az_upper(hook["kicker"]), font=font("Montserrat700.ttf", 26 * fs), fill=GOLD, anchor="mm")
+            ds.text((sw / 2, sh_ / 2 + 4 * fs), az_upper(hook["place"]), font=font("Playfair700.ttf", 82 * fs), fill=CREAM, anchor="mm")
+            ds.line([(sw * 0.16, sh_ - 92 * fs), (sw * 0.84, sh_ - 92 * fs)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            ds.text((sw / 2, sh_ - 60 * fs), hook["stampsub"], font=font("Montserrat700.ttf", 28 * fs), fill=GOLD, anchor="mm")
+            for a_ in (0.08, 0.92):  # little stars at the ends of the rule
+                cx_, cy_ = sw * a_, sh_ - 92 * fs
+                ds.ellipse([cx_ - 5 * fs, cy_ - 5 * fs, cx_ + 5 * fs, cy_ + 5 * fs], fill=GOLD + (255,))
+            st = st.rotate(-8, expand=True, resample=Image.BICUBIC)
+            sx = int(W - mx - st.width + 20 * fs)
+            sy = int(H * (0.50 if self.tall else 0.38)) - st.height // 2
+            lay.alpha_composite(st, (sx, sy))
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = sy + st.height + int(30 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, yy + int(14 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "flapboard":
+            # airport split-flap board: dark panel, rows of letter tiles with a hairline split
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            rows = hook["rows"]
+            cols = max(len(r) for r in rows)
+            pad = int(30 * fs)
+            tw_ = (W - 2 * mx - 2 * pad - (cols - 1) * 6 * fs) / cols
+            th_ = tw_ * 1.45
+            bw = int(W - 2 * mx)
+            head = int(96 * fs)
+            bh = int(head + pad + len(rows) * (th_ + 12 * fs) + pad)
+            bx = int(mx)
+            by = int(H * (0.80 if self.tall else 0.775)) - bh
+            bd = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+            db = ImageDraw.Draw(bd)
+            db.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(20 * fs), fill=(18, 22, 21, 238), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            db.text((pad, head / 2 + 6 * fs), az_upper(hook["kicker"]), font=font("Montserrat700.ttf", 28 * fs), fill=GOLD, anchor="lm")
+            db.ellipse([bw - pad - 18 * fs, head / 2 - 3 * fs, bw - pad, head / 2 + 15 * fs], fill=(90, 200, 120, 255))
+            ft = font("Montserrat700.ttf", int(tw_ * 0.78))
+            y = head + pad / 2
+            for r, row in enumerate(rows):
+                txt = az_upper(row).ljust(cols)
+                for c, ch in enumerate(txt):
+                    x = pad + c * (tw_ + 6 * fs)
+                    db.rounded_rectangle([x, y, x + tw_, y + th_], radius=int(5 * fs), fill=(38, 44, 42, 255))
+                    if ch != " ":
+                        db.text((x + tw_ / 2, y + th_ / 2), ch, font=ft, fill=(CREAM if r else GOLD), anchor="mm")
+                    db.line([(x, y + th_ / 2), (x + tw_, y + th_ / 2)], fill=(10, 12, 12, 255), width=max(1, int(2 * fs)))
+                y += th_ + 12 * fs
+            sh = Image.new("RGBA", bd.size, (0, 0, 0, 0))
+            sh.putalpha(bd.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (bx + 8, by + 16))
+            lay.alpha_composite(bd, (bx, by))
+        elif self.hook_style == "chapter":
+            # film chapter card: centred roman numeral, hairlines, small caps, title
+            g[..., 3] = 120
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            gb = np.zeros((H, W, 4), np.uint8)
+            n = int(H * 0.55)
+            gb[H - n:, :, 3] = (np.clip(np.linspace(0, 1.3, n), 0, 1) * 120)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(gb, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            cy = int(H * (0.46 if self.tall else 0.40))
+            fr_ = font("Playfair700.ttf", 210 * fs)
+            d.text((W / 2, cy), hook["numeral"], font=fr_, fill=GOLD + (255,), anchor="mm")
+            fk = font("Montserrat700.ttf", 30 * fs)
+            kt = az_upper(hook["kicker"])
+            kw = d.textlength(kt, font=fk) + 10 * fs * len(kt)
+            yk = cy - int(170 * fs)
+            d.line([(mx, yk + 18 * fs), (W / 2 - kw / 2 - 26 * fs, yk + 18 * fs)], fill=GOLD + (220,), width=max(1, int(2 * fs)))
+            d.line([(W / 2 + kw / 2 + 26 * fs, yk + 18 * fs), (W - mx, yk + 18 * fs)], fill=GOLD + (220,), width=max(1, int(2 * fs)))
+            parts = [(kt, fk, CREAM, W / 2 - kw / 2, yk, 10 * fs)]
+            fl = font("Playfair700.ttf", 78 * fs)
+            yy = cy + int(140 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(90 * fs)
+            fs_ = font("Montserrat600.ttf", 32 * fs)
+            parts.append((hook["sub"], fs_, CREAM, W / 2 - d.textlength(hook["sub"], font=fs_) / 2, yy + int(16 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "notes":
             # three tilted cream sticky notes with a gold pin each, title above
             n = int(H * (0.76 if self.tall else 0.98))
