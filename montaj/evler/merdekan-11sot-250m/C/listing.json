@@ -1,0 +1,29 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Mərdəkan  •  11 sot  •  250 m²", "5 otaq  •  3 sanuzel  •  qarderob", "Hovuz  •  Yay-qış mətbəxi  •  Söhbətgah"],
+ "music": null,
+ "slug": "merdekan-11sot-250m-C",
+ "label_style": "triline",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {"style": "bands", "kicker": "MƏRDƏKAN  •  YENİ TİKİLİ", "bands": [["11", "sot"], ["250", "m²"], ["5", "otaq"]], "cta_style": "pill", "title": [], "pill": "", "sub": "", "lines": []},
+ "shots": [
+  ["pool", 2.0, "in_slow", null, null],
+  ["facade_wide", 1.5, "in", "Fasad", "slats"],
+  ["facade_palm", 1.5, "left", "Həyət", "slats"],
+  ["terrace_steps", 1.5, "out", "Terras", "slats"],
+  ["pergola", 1.5, "right", "Söhbətgah", "slats", [0.42, 0.40, 1.3]],
+  ["summer_kitchen", 1.5, "up", "Yay-qış mətbəxi", "slats"],
+  ["hall", 1.5, "in", "Giriş holu", "slats"],
+  ["kitchen", 1.5, "left", "Mətbəx", "slats"],
+  ["living", 1.5, "out", "Qonaq otağı", "slats"],
+  ["bed3", 1.5, "right", "Yataq otağı", "slats"],
+  ["bed1", 1.5, "up", "Yataq otağı", "slats"],
+  ["bed2", 1.5, "in", "Yataq otağı", "slats"],
+  ["bed4", 1.5, "left", "Yataq otağı", "slats"],
+  ["bath_grey", 1.5, "out", "Sanuzel", "slats"],
+  ["bath_black", 1.5, "right", "Sanuzel", "slats"],
+  ["bath_dark", 1.5, "up", "Sanuzel", "slats"]
+ ]
+}

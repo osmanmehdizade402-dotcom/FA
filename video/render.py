@@ -415,6 +415,28 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "triline":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.64)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 170)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                yb = H - int(360 * u)
+                lw = max(4, int(7 * fs))
+                for j, L in enumerate((70, 52, 34)):
+                    y = yb - 108 * fs + j * 22 * fs
+                    d.rectangle([mx, y, mx + L * fs, y + lw], fill=GOLD + (255,))
+                f_ = font("Playfair700.ttf", 68 * fs)
+                lay.alpha_composite(self.text_layer([(lab, f_, CREAM, mx + 100 * fs, yb - 140 * fs, 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "scene":
             self.labels = {}
             k_ = 0
@@ -3700,7 +3722,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3726,6 +3748,21 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "slats":  # three horizontal slats of cur slide in from the right, staggered, gold leading edges
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    fr = prev.copy()
+                    dd = ImageDraw.Draw(fr)
+                    hs = self.H / 3
+                    for j in range(3):
+                        e = ease(min(1, max(0, (k - j * 0.18) / 0.64)))
+                        x = int((1 - e) * self.W)
+                        y0_, y1_ = int(j * hs), int((j + 1) * hs)
+                        if x < self.W:
+                            fr.paste(cur.crop((x, y0_, self.W, y1_)), (x, y0_))
+                            if x > 0:
+                                dd.rectangle([x - 6, y0_, x, y1_], fill=GOLD)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "dip":  # film cut: dip to black with letterbox bars closing, then open on cur
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
