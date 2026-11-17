@@ -1,0 +1,135 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Mərdəkan  •  8 sot  •  230 m²",
+  "5 otaq  •  3 sanuzel  •  2 qarderob",
+  "İsti hovuz  •  Yay-qış mətbəxi  •  Yeni tikili"
+ ],
+ "music": null,
+ "slug": "merdekan-8sot-230m-A",
+ "label_style": "visa",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {
+  "style": "passport",
+  "kicker": "Giriş icazəsi",
+  "place": "Mərdəkan",
+  "stampsub": "8 SOT  •  230 m²",
+  "lines": [
+   "Elit məhəlləyə",
+   "xoş gəldin"
+  ],
+  "sub": "5 otaq  •  isti hovuz  •  yay-qış mətbəxi",
+  "cta_style": "pill",
+  "title": [],
+  "pill": ""
+ },
+ "shots": [
+  [
+   "facade_wide",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "entrance_path",
+   1.5,
+   "in",
+   "Giriş",
+   "stamp"
+  ],
+  [
+   "pool_terrace",
+   1.5,
+   "left",
+   "Hovuz",
+   "stamp"
+  ],
+  [
+   "pool_wide",
+   1.5,
+   "out",
+   "Hovuz",
+   "stamp"
+  ],
+  [
+   "garden",
+   1.5,
+   "right",
+   "Həyət",
+   "stamp"
+  ],
+  [
+   "summer_kitchen",
+   1.5,
+   "up",
+   "Yay-qış mətbəxi",
+   "stamp"
+  ],
+  [
+   "hall_entry",
+   1.5,
+   "in",
+   "Giriş holu",
+   "stamp"
+  ],
+  [
+   "hall_doors",
+   1.5,
+   "left",
+   "Hol",
+   "stamp"
+  ],
+  [
+   "hall2",
+   1.5,
+   "out",
+   "Hol",
+   "stamp"
+  ],
+  [
+   "corridor",
+   1.5,
+   "right",
+   "Dəhliz",
+   "stamp"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "up",
+   "Mətbəx",
+   "stamp"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "stamp"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "stamp"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Sanuzel",
+   "stamp"
+  ],
+  [
+   "bath3",
+   1.5,
+   "right",
+   "Sanuzel",
+   "stamp"
+  ]
+ ]
+}

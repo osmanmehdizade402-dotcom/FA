@@ -392,6 +392,37 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "visa":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.66)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 150)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                t = az_upper(lab)
+                f_ = font("Montserrat700.ttf", 58 * fs)
+                tw = d.textlength(t, font=f_) + 4 * fs * len(t)
+                bw, bh = int(tw + 90 * fs), int(136 * fs)
+                st = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+                ds = ImageDraw.Draw(st)
+                lw = max(3, int(5 * fs))
+                ds.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(16 * fs), fill=GREEN_DARK + (120,), outline=GOLD + (255,), width=lw)
+                o = int(10 * fs)
+                ds.rounded_rectangle([o, o, bw - o, bh - o], radius=int(10 * fs), outline=GOLD + (200,), width=max(1, lw // 2))
+                x = (bw - tw) / 2
+                for ch in t:
+                    ds.text((x, bh / 2), ch, font=f_, fill=CREAM, anchor="lm")
+                    x += ds.textlength(ch, font=f_) + 4 * fs
+                st = st.rotate(-5, expand=True, resample=Image.BICUBIC)
+                lay.alpha_composite(st, (int(mx), H - int(350 * u) - st.height))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "datetab":
             self.labels = {}
             for s in self.shots:
@@ -3365,7 +3396,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3391,6 +3422,23 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "stamp":  # stamp press: cur drops in from 1.3x with a slight twist, gold ring pulse on impact
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease_out(min(1, k * 1.25))
+                    z = 1.3 - 0.3 * e
+                    ang = -4 * (1 - e)
+                    cw, ch = int(self.W * z), int(self.H * z)
+                    cz = cur.resize((cw, ch), Image.BILINEAR).rotate(ang, resample=Image.BILINEAR)
+                    cz = cz.crop(((cw - self.W) // 2, (ch - self.H) // 2, (cw - self.W) // 2 + self.W, (ch - self.H) // 2 + self.H))
+                    fr = Image.blend(prev, cz, min(1, k * 2.2))
+                    if k > 0.7:
+                        q = (k - 0.7) / 0.3
+                        R = int((0.2 + 0.6 * q) * self.W)
+                        dd = ImageDraw.Draw(fr)
+                        cx, cy = self.W / 2, self.H * 0.45
+                        dd.ellipse([cx - R, cy - R, cx + R, cy + R], outline=GOLD, width=max(1, int(8 * (1 - q))))
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "tearoff":  # calendar tear-off: prev page lifts up from its top edge and flies off, cur underneath
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGBA")
