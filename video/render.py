@@ -2336,6 +2336,79 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "marquee":
+            # theatre marquee: dark board ringed with glowing bulbs, big caps title, small line under
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            bw = int(W - 2 * mx)
+            bh = int(430 * fs)
+            bx = int(mx)
+            by = int(H * (0.80 if self.tall else 0.775)) - bh
+            bd = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+            db = ImageDraw.Draw(bd)
+            db.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(22 * fs), fill=GREEN_DARK + (240,), outline=GOLD + (255,), width=max(3, int(5 * fs)))
+            step = 34 * fs
+            r_ = 7 * fs
+            glow = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+            dg = ImageDraw.Draw(glow)
+            pts = []
+            x = 26 * fs
+            while x < bw - 20 * fs:
+                pts += [(x, 22 * fs), (x, bh - 22 * fs)]
+                x += step
+            y = 22 * fs + step
+            while y < bh - 22 * fs - step / 2:
+                pts += [(22 * fs, y), (bw - 22 * fs, y)]
+                y += step
+            for (px, py) in pts:
+                dg.ellipse([px - r_ * 2.2, py - r_ * 2.2, px + r_ * 2.2, py + r_ * 2.2], fill=(255, 214, 140, 110))
+            bd.alpha_composite(glow.filter(ImageFilter.GaussianBlur(6 * fs)))
+            db = ImageDraw.Draw(bd)
+            for (px, py) in pts:
+                db.ellipse([px - r_, py - r_, px + r_, py + r_], fill=(255, 238, 200, 255))
+            db.text((bw / 2, int(78 * fs)), az_upper(hook["kicker"]), font=font("Montserrat700.ttf", 28 * fs), fill=GOLD, anchor="mm")
+            fl = font("Playfair700.ttf", 74 * fs)
+            yy = int(126 * fs)
+            for i, line in enumerate(hook["lines"]):
+                db.text((bw / 2, yy), az_upper(line), font=fl, fill=CREAM if i == 0 else GOLD, anchor="ma")
+                yy += int(92 * fs)
+            db.text((bw / 2, bh - int(64 * fs)), hook["sub"], font=font("Montserrat600.ttf", 30 * fs), fill=CREAM, anchor="mm")
+            sh = Image.new("RGBA", bd.size, (0, 0, 0, 0))
+            sh.putalpha(bd.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (bx + 8, by + 16))
+            lay.alpha_composite(bd, (bx, by))
+        elif self.hook_style == "museum":
+            # gallery placard: small white museum label card (title, 'artist', year, medium lines) bottom-left
+            n = int(H * 0.45)
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 150)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cw_ = int(W * 0.66)
+            pad = int(40 * fs)
+            fl = font("Playfair700.ttf", 60 * fs)
+            rows = hook["rows"]
+            ch_ = int(pad + 74 * fs * len(hook["lines"]) + 30 * fs + 46 * fs * len(rows) + pad)
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rectangle([0, 0, cw_ - 1, ch_ - 1], fill=(252, 251, 247, 250))
+            dc.rectangle([0, 0, int(8 * fs), ch_], fill=GOLD + (255,))
+            y = pad
+            for i, line in enumerate(hook["lines"]):
+                dc.text((pad, y), line, font=fl, fill=GREEN if i == 0 else (150, 120, 60))
+                y += int(74 * fs)
+            y += int(14 * fs)
+            dc.line([(pad, y), (cw_ - pad, y)], fill=(200, 196, 186, 255), width=max(1, int(2 * fs)))
+            y += int(16 * fs)
+            fr_ = font("Montserrat600.ttf", 28 * fs)
+            for j, r in enumerate(rows):
+                dc.text((pad, y), r, font=fr_ if j else font("Montserrat700.ttf", 28 * fs), fill=(60, 64, 60))
+                y += int(46 * fs)
+            cx0 = int(mx)
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - ch_
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(14 * fs)).point(lambda v: int(v * 0.45)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 14))
+            lay.alpha_composite(card, (cx0, cy0))
         elif self.hook_style == "strike":
             # price-campaign hook: a phrase crossed out with a gold slash, bold answer below, optional round sticker
             n = int(H * (0.66 if self.tall else 0.95))
