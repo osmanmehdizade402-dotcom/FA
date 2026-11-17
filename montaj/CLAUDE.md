@@ -19,6 +19,9 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 4a. **Bəyənilməyən B/C formatları QADAĞANDIR (QANUN, 2026-11-16, dəqiqləşdirilib):** hər evdə yenə 3 nümunə
    (A, B, C) göndərilir, amma əvvəllər B/C kimi təklif olunub bəyənilməyən formatlar bir daha təklif olunmur:
    `houseframe`, `tape`, `receipt`, `toggles`, `swiss`. B və C hər dəfə YENİ, fərqli formatda olur.
+4b. **Təkrar şəkil ləğv edilir (QANUN, 2026-11-17):** istifadəçi bilmədən eyni şəkli (və ya eyni bucaqdan
+   demək olar eyni kadrı) bir neçə dəfə göndərsə — təkrarı videoya salma, avtomatik çıxar (hash ilə yoxla) və
+   göndərəndə hansı təkrarın çıxarıldığını qısa yaz.
 5. **Qanun verəndə yalnız deyiləni et.** Yeni qayda gələndə onu bu fayla yaz və təsdiqlə; köhnə videoları
    özbaşına yenidən render edib göndərmə — yalnız istifadəçi desə.
 6. **Fayl altlıqları.** Hər faylı ayrıca göndər, altında hansı tətbiq üçün olduğunu yaz:
