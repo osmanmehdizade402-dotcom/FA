@@ -415,6 +415,38 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "scene":
+            self.labels = {}
+            k_ = 0
+            for s in self.shots:
+                lab = s[3]
+                if not lab:
+                    continue
+                key = lab
+                if key in self.labels:
+                    continue
+                k_ += 1
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.62)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 170)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                d = ImageDraw.Draw(lay)
+                yb = H - int(370 * u)
+                fk = font("Montserrat700.ttf", 32 * fs)
+                kt = "SƏHNƏ  " + str(k_).zfill(2)
+                kw = d.textlength(kt, font=fk) + 8 * fs * len(kt)
+                fl = font("Playfair700.ttf", 70 * fs)
+                lw = d.textlength(lab, font=fl)
+                parts = [(kt, fk, GOLD, W / 2 - kw / 2, yb - 150 * fs, 8 * fs), (lab, fl, CREAM, W / 2 - lw / 2, yb - 108 * fs, 0)]
+                lay.alpha_composite(self.text_layer(parts))
+                d = ImageDraw.Draw(lay)
+                ym = yb - 136 * fs
+                d.line([(W / 2 - kw / 2 - 80 * fs, ym), (W / 2 - kw / 2 - 20 * fs, ym)], fill=GOLD + (220,), width=max(1, int(2 * fs)))
+                d.line([(W / 2 + kw / 2 + 20 * fs, ym), (W / 2 + kw / 2 + 80 * fs, ym)], fill=GOLD + (220,), width=max(1, int(2 * fs)))
+                self.labels[key] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "visa":
             self.labels = {}
             for s in self.shots:
@@ -3559,7 +3591,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3585,6 +3617,20 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "dip":  # film cut: dip to black with letterbox bars closing, then open on cur
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    q = math.sin(math.pi * k)
+                    src = prev if k < 0.5 else cur
+                    fr = Image.blend(src, Image.new("RGB", src.size, (0, 0, 0)), 0.85 * q)
+                    bar = int(q * self.H * 0.16)
+                    if bar > 0:
+                        dd = ImageDraw.Draw(fr)
+                        dd.rectangle([0, 0, self.W, bar], fill=(0, 0, 0))
+                        dd.rectangle([0, self.H - bar, self.W, self.H], fill=(0, 0, 0))
+                        dd.line([(self.W * 0.2, bar), (self.W * 0.8, bar)], fill=GOLD, width=3)
+                        dd.line([(self.W * 0.2, self.H - bar), (self.W * 0.8, self.H - bar)], fill=GOLD, width=3)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "stamp":  # stamp press: cur drops in from 1.3x with a slight twist, gold ring pulse on impact
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

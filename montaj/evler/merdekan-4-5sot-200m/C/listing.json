@@ -1,0 +1,29 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Mərdəkan  •  4.5 sot  •  200 m²", "Zal + 4 yataq  •  4 sanuzel  •  qarderob", "İsitməli hovuz  •  Söhbətgah  •  Tam əşyalı"],
+ "music": null,
+ "slug": "merdekan-4-5sot-200m-C",
+ "label_style": "scene",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {"style": "chapter", "numeral": "I", "kicker": "Mərdəkan  •  bölüm", "lines": ["Yeni həyatın", "ilk səhifəsi"], "sub": "4.5 sot  •  200 m²  •  5 otaq  •  4 sanuzel", "cta_style": "pill", "title": [], "pill": ""},
+ "shots": [
+  ["facade_pool", 2.0, "in_slow", null, null],
+  ["pool_gazebo", 1.5, "in", "Hovuz", "dip"],
+  ["terrace_dining", 1.5, "left", "Terras", "dip"],
+  ["hall", 1.5, "out", "Giriş holu", "dip", [0.42, 0.45, 1.22]],
+  ["corridor", 1.5, "right", "Dəhliz", "dip"],
+  ["living2", 1.5, "up", "Qonaq otağı", "dip"],
+  ["living1", 1.5, "in", "Qonaq otağı", "dip"],
+  ["dining", 1.5, "left", "Qonaq otağı", "dip"],
+  ["kitchen", 1.5, "out", "Mətbəx", "dip"],
+  ["bed1b", 1.5, "right", "Yataq otağı", "dip"],
+  ["bed2", 1.5, "up", "Yataq otağı", "dip"],
+  ["bed3", 1.5, "in", "Yataq otağı", "dip"],
+  ["closet", 1.5, "left", "Qarderob", "dip"],
+  ["bath1", 1.5, "out", "Sanuzel", "dip"],
+  ["bath3", 1.5, "right", "Sanuzel", "dip"],
+  ["bath2", 1.5, "up", "Sanuzel", "dip"]
+ ]
+}
