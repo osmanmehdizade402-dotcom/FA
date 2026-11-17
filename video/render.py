@@ -2368,6 +2368,115 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "plot":
+            # top-down site plan card: lawn plot with house block, pool and pergola, dimension line "11 sot"
+            n = int(H * (0.75 if self.tall else 0.98))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.15, n), 0, 1)) * 235)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            cw_ = int(W - 2 * mx)
+            ch_ = int(cw_ * 0.48)
+            cx0 = int(mx)
+            cy0 = int(H * (0.80 if self.tall else 0.775)) - ch_
+            card = Image.new("RGBA", (cw_, ch_), (0, 0, 0, 0))
+            dc = ImageDraw.Draw(card)
+            dc.rounded_rectangle([0, 0, cw_ - 1, ch_ - 1], radius=int(16 * fs), fill=GREEN_DARK + (236,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            p = int(46 * fs)
+            px0, py0, px1, py1 = p, p, cw_ - p, ch_ - p
+            dc.rectangle([px0, py0, px1, py1], fill=(78, 120, 72, 255), outline=CREAM + (255,), width=max(2, int(3 * fs)))
+            for k in range(1, 9):  # mown-lawn stripes
+                x = px0 + (px1 - px0) * k / 9
+                dc.line([(x, py0 + 3), (x, py1 - 3)], fill=(92, 136, 84, 255), width=max(1, int(6 * fs)))
+            pw, ph = px1 - px0, py1 - py0
+            dc.rectangle([px0 + pw * 0.06, py0 + ph * 0.12, px0 + pw * 0.52, py0 + ph * 0.52], fill=CREAM + (255,))
+            dc.rectangle([px0 + pw * 0.40, py0 + ph * 0.12, px0 + pw * 0.52, py0 + ph * 0.80], fill=CREAM + (255,))
+            dc.rectangle([px0 + pw * 0.60, py0 + ph * 0.16, px0 + pw * 0.86, py0 + ph * 0.42], fill=(70, 150, 170, 255), outline=CREAM + (255,), width=max(1, int(2 * fs)))
+            dc.rectangle([px0 + pw * 0.70, py0 + ph * 0.62, px0 + pw * 0.94, py0 + ph * 0.88], fill=(150, 118, 80, 255))
+            fl_ = font("Montserrat700.ttf", 20 * fs)
+            dc.text((px0 + pw * 0.27, py0 + ph * 0.32), "EV", font=fl_, fill=GREEN, anchor="mm")
+            dc.text((px0 + pw * 0.73, py0 + ph * 0.29), "HOVUZ", font=fl_, fill=CREAM, anchor="mm")
+            dc.text((px0 + pw * 0.82, py0 + ph * 0.75), "SÖHBƏTGAH", font=font("Montserrat700.ttf", 15 * fs), fill=CREAM, anchor="mm")
+            yd = py1 + p * 0.5
+            dc.line([(px0, yd), (px1, yd)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+            for xx in (px0, px1):
+                dc.line([(xx, yd - 10 * fs), (xx, yd + 10 * fs)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+            fb = font("Montserrat700.ttf", 24 * fs)
+            tw = dc.textlength(hook["plot"], font=fb)
+            dc.rectangle([cw_ / 2 - tw / 2 - 14 * fs, yd - 16 * fs, cw_ / 2 + tw / 2 + 14 * fs, yd + 16 * fs], fill=GREEN_DARK + (255,))
+            dc.text((cw_ / 2, yd), hook["plot"], font=fb, fill=GOLD, anchor="mm")
+            sh = Image.new("RGBA", card.size, (0, 0, 0, 0))
+            sh.putalpha(card.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 16))
+            lay.alpha_composite(card, (cx0, cy0))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = cy0 - int(270 * fs)
+            hm = Image.new("L", (W, H), 0)
+            ImageDraw.Draw(hm).rectangle([0, yy - 40 * fs, W * 0.85, cy0 - 10 * fs], fill=175)
+            hm = hm.filter(ImageFilter.GaussianBlur(40 * fs))
+            hl = Image.new("RGBA", (W, H), (0, 0, 0, 0)); hl.putalpha(hm)
+            lay.alpha_composite(hl)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "ceiling":
+            # tall-ceiling hook: gold vertical dimension arrow floor-to-ceiling on the left, title at its side
+            n = int(H * 0.40)
+            g[H - n:, :, 3] = (np.clip(np.linspace(0, 1.3, n), 0, 1) * 180)[:, None].astype(np.uint8)
+            g[:, :int(W * 0.62), 3] = np.maximum(g[:, :int(W * 0.62), 3], (np.clip(np.linspace(1.2, 0, int(W * 0.62)), 0, 1) * 150)[None, :].astype(np.uint8))
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            ax = int(mx + 20 * fs)
+            y0, y1 = int(H * (0.24 if self.tall else 0.17)), int(H * (0.74 if self.tall else 0.72))
+            lw = max(3, int(5 * fs))
+            d.line([(ax, y0), (ax, y1)], fill=GOLD + (255,), width=lw)
+            a_ = 22 * fs
+            d.polygon([(ax, y0 - 4), (ax - a_ * 0.7, y0 + a_), (ax + a_ * 0.7, y0 + a_)], fill=GOLD + (255,))
+            d.polygon([(ax, y1 + 4), (ax - a_ * 0.7, y1 - a_), (ax + a_ * 0.7, y1 - a_)], fill=GOLD + (255,))
+            for yy_ in (y0, y1):
+                d.line([(ax - 30 * fs, yy_), (ax + 30 * fs, yy_)], fill=GOLD + (255,), width=lw)
+            tmp = Image.new("RGBA", (int(H), int(80 * fs)), (0, 0, 0, 0))
+            ImageDraw.Draw(tmp).text((0, 0), az_upper(hook["axis"]), font=font("Montserrat700.ttf", 30 * fs), fill=CREAM + (255,))
+            tmp = tmp.crop(tmp.getbbox()).rotate(90, expand=True)
+            lay.alpha_composite(tmp, (ax + int(22 * fs), (y0 + y1) // 2 - tmp.height // 2))
+            x0 = ax + int(90 * fs)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 92 * fs)
+            yy = y1 - int(400 * fs)
+            parts = [(hook["kicker"], fk, GOLD, x0, yy, 6 * fs)]
+            yy += int(58 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, x0, yy, 0))
+                yy += int(104 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 32 * fs), CREAM, x0, yy + int(14 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "bands":
+            # three staggered translucent green bands across the photo, one big fact each, kicker above
+            n = int(H * 0.30)
+            g[:n, :, 3] = (np.linspace(1, 0, n) * 110)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fb = font("Playfair700.ttf", 96 * fs)
+            fc = font("Montserrat700.ttf", 28 * fs)
+            bh = int(150 * fs)
+            gap = int(26 * fs)
+            yb = int(H * (0.80 if self.tall else 0.775)) - 3 * bh - 2 * gap
+            offs = (0.0, 0.10, 0.20)
+            for j, (big, cap) in enumerate(hook["bands"]):
+                x0 = int(W * offs[j])
+                y = yb + j * (bh + gap)
+                d.rectangle([x0, y, W, y + bh], fill=GREEN_DARK + (215,))
+                d.rectangle([x0, y, x0 + max(6, int(10 * fs)), y + bh], fill=GOLD + (255,))
+                tx = x0 + mx
+                d.text((tx, y + bh / 2), big, font=fb, fill=GOLD if j == 0 else CREAM, anchor="lm")
+                bw_ = d.textlength(big, font=fb)
+                d.text((tx + bw_ + 26 * fs, y + bh / 2), az_upper(cap), font=fc, fill=CREAM, anchor="lm")
+            fk = font("Montserrat700.ttf", 30 * fs)
+            kw = d.textlength(hook["kicker"], font=fk) + 6 * fs * len(hook["kicker"])
+            d.rectangle([0, yb - int(84 * fs), mx + kw + 30 * fs, yb - int(10 * fs)], fill=GREEN_DARK + (215,))
+            lay.alpha_composite(self.text_layer([(hook["kicker"], fk, GOLD, mx, yb - int(66 * fs), 6 * fs)]))
         elif self.hook_style == "marquee":
             # theatre marquee: dark board ringed with glowing bulbs, big caps title, small line under
             n = int(H * 0.30)
