@@ -44,6 +44,14 @@ EV_Q = "Qiymət üçün şərhə yazın:"
 EV_WORD = "“EV”"
 EV_DM = "DM-ə göndərirəm"
 EV_PILL = "Qiymət üçün şərhə “EV” yazın  ↓"
+# user rule 2026-11-17: "EV" comment CTA cancelled -> price campaign line (variant A) everywhere
+CAMP_OLD = "Elandakı qiymət"
+CAMP_NEW = "Bizdə daha sərfəlidir!"
+CAMP_DM = "Ətraflı məlumat üçün DM yazın"
+
+
+def campaign():
+    return (LISTING or {}).get("campaign", True)
 VERIFIED_TXT = "Xəzər Sahil — Yoxlanılmış Ev"  # badge for houses that passed the 3 checks ("verified": true)
 SAVE_TXT = "SAXLA, İTİRMƏ"  # test: mid-video save prompt (listing "save_cta": shot index)
 
@@ -325,6 +333,21 @@ class Renderer:
                 fp = font("Montserrat700.ttf", 42 * k)
                 if "comment_q" in (LISTING.get("text") or {}):
                     t = (T("comment_q", COMMENT_Q) + " " if LISTING["hook"]["cta_style"] == "pill" else "") + T("comment_a", COMMENT_A) + " ↓"
+                elif campaign():
+                    fo = font("Montserrat600.ttf", 34 * k)
+                    t_old, t_new = T("camp_old", CAMP_OLD), T("camp_new", CAMP_NEW)
+                    wo, wn = d.textlength(t_old, font=fo), d.textlength(t_new, font=fp)
+                    gap = 26 * k
+                    tw = wo + gap + wn
+                    ph = int(100 * k)
+                    yb = H - int(230 * self.u) - ph
+                    x0 = W / 2 - tw / 2
+                    d.rounded_rectangle([x0 - 40 * k, yb, x0 + tw + 40 * k, yb + ph], radius=ph // 2, fill=GOLD + (255,))
+                    d.text((x0, yb + ph / 2), t_old, font=fo, fill=(70, 90, 84), anchor="lm")
+                    d.line([(x0 - 4 * k, yb + ph / 2 + 2 * k), (x0 + wo + 4 * k, yb + ph / 2 + 2 * k)], fill=GREEN_DARK, width=max(2, int(4 * k)))
+                    d.text((x0 + wo + gap, yb + ph / 2), t_new, font=fp, fill=GREEN, anchor="lm")
+                    self.cta, self.cta_top = lay, yb
+                    return
                 else:
                     t = T("ev_pill", EV_PILL)
                 tw = d.textlength(t, font=fp)
@@ -3232,6 +3255,30 @@ class Renderer:
             items.append((self.text_layer([centered(line, fd, CREAM, y, 0)], False), 0.3 + 0.1 * i))
             y += 70 * fs
         y += 40 * fs
+        if "comment_q" not in (LISTING.get("text") or {}) and campaign():  # user rule 2026-11-17: price campaign
+            fq = font("Playfair700.ttf", 62 * fs)
+            t_old = T("camp_old", CAMP_OLD)
+            lay = self.text_layer([centered(t_old, fq, (205, 205, 198), y)], False)
+            dl = ImageDraw.Draw(lay)
+            wo = d.textlength(t_old, font=fq)
+            ym = y + 46 * fs
+            dl.line([(cx - wo / 2 - 12 * fs, ym + 12 * fs), (cx + wo / 2 + 12 * fs, ym - 12 * fs)], fill=GOLD + (255,), width=max(4, int(7 * fs)))
+            items.append((lay, 0.7))
+            y += 110 * fs
+            fw = font("Playfair700.ttf", 74 * fs)
+            t_new = T("camp_new", CAMP_NEW)
+            tw = d.textlength(t_new, font=fw)
+            ph = int(140 * fs)
+            lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            dd = ImageDraw.Draw(lay)
+            dd.rounded_rectangle([cx - tw / 2 - 50 * fs, y, cx + tw / 2 + 50 * fs, y + ph], radius=int(28 * fs), fill=GOLD + (255,))
+            dd.text((cx, y + ph / 2), t_new, font=fw, fill=GREEN, anchor="mm")
+            items.append((lay, 0.85))
+            y += ph + 26 * fs
+            items.append((self.text_layer([centered(T("camp_dm", CAMP_DM), font("Montserrat600.ttf", 42 * fs), CREAM, y)], False), 0.95))
+            y += 100 * fs
+            self._endcard_share(items, centered, y, d)
+            return
         if "comment_q" not in (LISTING.get("text") or {}):  # user rule: "EV" keyword CTA
             fq = font("Playfair700.ttf", 70 * fs)
             items.append((self.text_layer([centered(T("ev_q", EV_Q), fq, GOLD, y)], False), 0.7))

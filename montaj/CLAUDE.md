@@ -35,6 +35,12 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 
 ## B. Videonun məzmunu
 
+10a. **"EV" şərh çağırışı LƏĞV EDİLDİ (QANUN, 2026-11-17) — yerinə qiymət kampaniyası (variant A):**
+    giriş kadrındakı qızılı düymədə: üstündən xətt çəkilmiş "Elandakı qiymət" + **"Bizdə daha sərfəlidir!"**;
+    son kadrda: üstündən qızılı xətt çəkilmiş "Elandakı qiymət" + qızılı düymədə **"Bizdə daha sərfəlidir!"** +
+    "Ətraflı məlumat üçün DM yazın" (render.py `CAMP_*`, `campaign()` — default açıqdır; `"campaign": false` ilə söndürülür).
+    Paylaşım mətnində "EV" yazın sətri yerinə: "🔥 Elandakı qiymətdən daha sərfəli — bizdə! Ətraflı məlumat üçün DM yazın."
+    Nömrə yenə yalnız paylaşım mətnində. Aşağıdakı 10-cu qanunun "EV" hissəsi artıq keçərli deyil.
 10. **Nömrə yox, "EV" şərh çağırışı (QANUN, 2026-11-04).** Videoda telefon nömrəsi YOXDUR.
     Giriş kadrında qızılı düymə: **"Qiymət üçün şərhə “EV” yazın ↓"**; son kadrda:
     **"Qiymət üçün şərhə yazın:"** + qızılı **“EV”** düyməsi + **"DM-ə göndərirəm"** (render.py `EV_*`).
