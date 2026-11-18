@@ -2390,6 +2390,117 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "mandala":
+            # gold lace mandala medallion (echoes the facade ornament) with the title inside
+            n = int(H * 0.40)
+            g[H - n:, :, 3] = (np.clip(np.linspace(0, 1.3, n), 0, 1) * 170)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            R = int((300 if self.tall else 250) * fs)
+            S = 2 * R + 40
+            md = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+            dm = ImageDraw.Draw(md)
+            c = S / 2
+            dm.ellipse([c - R, c - R, c + R, c + R], fill=GREEN_DARK + (225,))
+            for k in range(24):  # scalloped lace ring
+                a = k * math.pi / 12
+                x, y = c + R * 0.93 * math.cos(a), c + R * 0.93 * math.sin(a)
+                r_ = R * 0.10
+                dm.ellipse([x - r_, y - r_, x + r_, y + r_], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            dm.ellipse([c - R * 0.80, c - R * 0.80, c + R * 0.80, c + R * 0.80], outline=GOLD + (255,), width=max(2, int(3 * fs)))
+            dm.ellipse([c - R * 0.76, c - R * 0.76, c + R * 0.76, c + R * 0.76], outline=GOLD + (140,), width=max(1, int(1.5 * fs)))
+            for k in range(12):  # petals
+                a = k * math.pi / 6
+                x, y = c + R * 0.70 * math.cos(a), c + R * 0.70 * math.sin(a)
+                dm.ellipse([x - 7 * fs, y - 7 * fs, x + 7 * fs, y + 7 * fs], fill=GOLD + (255,))
+            dm.text((c, c - R * 0.40), az_upper(hook["kicker"]), font=font("Montserrat700.ttf", 24 * fs), fill=GOLD, anchor="mm")
+            fl = font("Playfair700.ttf", 66 * fs)
+            dm.text((c, c - R * 0.12), hook["lines"][0], font=fl, fill=CREAM, anchor="mm")
+            dm.text((c, c + R * 0.14), hook["lines"][1], font=fl, fill=GOLD, anchor="mm")
+            dm.line([(c - R * 0.30, c + R * 0.33), (c + R * 0.30, c + R * 0.33)], fill=GOLD + (200,), width=max(1, int(2 * fs)))
+            dm.text((c, c + R * 0.46), hook["sub"], font=font("Montserrat600.ttf", 26 * fs), fill=CREAM, anchor="mm")
+            cx0, cy0 = W // 2 - S // 2, int(H * (0.80 if self.tall else 0.775)) - S + 10
+            sh = Image.new("RGBA", md.size, (0, 0, 0, 0))
+            sh.putalpha(md.split()[3].filter(ImageFilter.GaussianBlur(20 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (cx0 + 8, cy0 + 16))
+            lay.alpha_composite(md, (cx0, cy0))
+        elif self.hook_style == "roadsign":
+            # green highway sign: arrow + "Əsas yol 50 m", second panel with the house; title above
+            n = int(H * (0.66 if self.tall else 0.95))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 220)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            bw = int(W - 2 * mx)
+            rows = hook["signs"]
+            rh = int(118 * fs)
+            bh = rh * len(rows) + int(30 * fs)
+            bx = int(mx)
+            by = int(H * (0.80 if self.tall else 0.775)) - bh
+            sg = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+            ds = ImageDraw.Draw(sg)
+            ds.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(22 * fs), fill=(24, 92, 62, 245), outline=CREAM + (255,), width=max(3, int(5 * fs)))
+            fr_ = font("Montserrat700.ttf", 44 * fs)
+            y = int(15 * fs)
+            for j, (arrow, txt, dist) in enumerate(rows):
+                cy = y + rh / 2
+                ax = int(60 * fs)
+                a_ = 26 * fs
+                if arrow == "up":
+                    ds.polygon([(ax, cy - a_), (ax + a_, cy + 2), (ax + a_ * 0.4, cy + 2), (ax + a_ * 0.4, cy + a_), (ax - a_ * 0.4, cy + a_), (ax - a_ * 0.4, cy + 2), (ax - a_, cy + 2)], fill=CREAM + (255,))
+                else:
+                    ds.polygon([(ax + a_, cy), (ax - 2, cy - a_), (ax - 2, cy - a_ * 0.4), (ax - a_, cy - a_ * 0.4), (ax - a_, cy + a_ * 0.4), (ax - 2, cy + a_ * 0.4), (ax - 2, cy + a_)], fill=GOLD + (255,))
+                ds.text((int(110 * fs), cy), txt, font=fr_, fill=CREAM if j == 0 else GOLD, anchor="lm")
+                ds.text((bw - int(36 * fs), cy), dist, font=fr_, fill=CREAM, anchor="rm")
+                if j < len(rows) - 1:
+                    ds.line([(int(20 * fs), y + rh), (bw - int(20 * fs), y + rh)], fill=CREAM + (160,), width=max(1, int(2 * fs)))
+                y += rh
+            sh = Image.new("RGBA", sg.size, (0, 0, 0, 0))
+            sh.putalpha(sg.split()[3].filter(ImageFilter.GaussianBlur(18 * fs)).point(lambda v: int(v * 0.5)))
+            lay.alpha_composite(sh, (bx + 8, by + 16))
+            lay.alpha_composite(sg, (bx, by))
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = by - int(270 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "inset":
+            # big round inset of an interior photo overlapping the facade shot, "ÇÖLDƏN / İÇƏRİDƏN" tags
+            n = int(H * (0.62 if self.tall else 0.92))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.4, n), 0, 1)) * 215)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            R = int((205 if self.tall else 165) * fs)
+            ins = load_photo(hook["inset"]).convert("RGB")
+            iw, ih = ins.size
+            sq = min(iw, ih)
+            ins = ins.crop(((iw - sq) // 2, (ih - sq) // 2, (iw - sq) // 2 + sq, (ih - sq) // 2 + sq)).resize((2 * R, 2 * R), Image.LANCZOS).convert("RGBA")
+            m = Image.new("L", (2 * R, 2 * R), 0)
+            ImageDraw.Draw(m).ellipse([0, 0, 2 * R - 1, 2 * R - 1], fill=255)
+            ins.putalpha(m)
+            cx, cy = int(W - mx - R), int(H * (0.42 if self.tall else 0.36))
+            sh = Image.new("RGBA", (2 * R + 60, 2 * R + 60), (0, 0, 0, 0))
+            ImageDraw.Draw(sh).ellipse([30, 40, 2 * R + 30, 2 * R + 50], fill=(0, 0, 0, 140))
+            lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(18)), (cx - R - 30, cy - R - 30))
+            lay.alpha_composite(ins, (cx - R, cy - R))
+            d = ImageDraw.Draw(lay)
+            lw = max(4, int(8 * fs))
+            d.ellipse([cx - R, cy - R, cx + R, cy + R], outline=GOLD + (255,), width=lw)
+            ft = font("Montserrat700.ttf", 26 * fs)
+            for (tx, ty, t_) in ((cx, cy + R, hook["tags"][1]), (mx + 110 * fs, cy - R * 0.55, hook["tags"][0])):
+                tw = d.textlength(az_upper(t_), font=ft)
+                d.rounded_rectangle([tx - tw / 2 - 22 * fs, ty - 24 * fs, tx + tw / 2 + 22 * fs, ty + 24 * fs], radius=int(24 * fs), fill=GOLD + (255,))
+                d.text((tx, ty), az_upper(t_), font=ft, fill=GREEN_DARK, anchor="mm")
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = cy + R + int(70 * fs)
+            parts = [(hook["kicker"], fk, GOLD, mx, yy, 6 * fs)]
+            yy += int(56 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(96 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 32 * fs), CREAM, mx, yy + int(10 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "plot":
             # top-down site plan card: lawn plot with house block, pool and pergola, dimension line "11 sot"
             n = int(H * (0.75 if self.tall else 0.98))
