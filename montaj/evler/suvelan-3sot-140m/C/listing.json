@@ -1,0 +1,138 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": [
+  "Şüvəlan  •  3 sot  •  140 m²",
+  "4 otaq + mətbəx  •  2 sanuzel",
+  "Filtrli hovuz  •  Söhbətgah  •  Kupça"
+ ],
+ "music": null,
+ "slug": "suvelan-3sot-140m-C",
+ "label_style": "signpost",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {
+  "style": "roadsign",
+  "kicker": "ŞÜVƏLAN  •  YENİ TİKİLİ",
+  "lines": [
+   "Çöldən gözəl,",
+   "içəridən daha da"
+  ],
+  "signs": [
+   [
+    "up",
+    "Çöldən",
+    "HOVUZ"
+   ],
+   [
+    "right",
+    "İçəridən",
+    "4 OTAQ"
+   ]
+  ],
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "sub": ""
+ },
+ "shots": [
+  [
+   "facade_front",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "pool_garage",
+   1.5,
+   "in",
+   "Həyət",
+   "lane"
+  ],
+  [
+   "pool_long",
+   1.5,
+   "left",
+   "Hovuz",
+   "lane"
+  ],
+  [
+   "hall",
+   1.5,
+   "right",
+   "Dəhliz",
+   "lane"
+  ],
+  [
+   "corridor",
+   1.5,
+   "up",
+   "Giriş holu",
+   "lane"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "in",
+   "Mətbəx",
+   "lane"
+  ],
+  [
+   "dining",
+   1.5,
+   "left",
+   "Qonaq otağı",
+   "lane"
+  ],
+  [
+   "living_dark",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "lane"
+  ],
+  [
+   "living_green",
+   1.5,
+   "right",
+   "Qonaq otağı",
+   "lane"
+  ],
+  [
+   "bed_blue",
+   1.5,
+   "up",
+   "Yataq otağı",
+   "lane"
+  ],
+  [
+   "bed_beige",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "lane"
+  ],
+  [
+   "bed_green",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "lane"
+  ],
+  [
+   "bath_blue",
+   1.5,
+   "out",
+   "Sanuzel",
+   "lane"
+  ],
+  [
+   "bath_brown",
+   1.5,
+   "right",
+   "Sanuzel",
+   "lane"
+  ]
+ ]
+}

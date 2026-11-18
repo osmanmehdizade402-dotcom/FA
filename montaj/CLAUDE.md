@@ -108,6 +108,7 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     - Mərdəkan 8 sot 230 m²: passport / visa / stamp (təklif olunub: flapboard)
     - Mərdəkan 4.5 sot 200 m²: chapter / scene / dip (təklif olunub, işlənməyib: marquee, museum)
     - Mərdəkan 11 sot 250 m²: bands / triline / slats (təklif olunub, işlənməyib: plot, ceiling)
+    - Şüvəlan 3 sot 140 m²: roadsign / signpost / lane (təklif olunub, işlənməyib: mandala, inset)
 16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
     "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
     krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
@@ -159,5 +160,5 @@ python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklə
 ```
 
 `listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
-`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block`, `banner`, `frame`, `glow`, `sprocket`, `wave`, `doortag`, `frost`, `waypoint`, `bearing`, `starrow`, `pennant`, `hollow`, `tick`, `placecard`, `linecap`, `halo`, `notch`, `datetab`, `visa`, `scene`, `triline` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop, tiles, stripes, glowcut, filmroll, ripple, swipe, pane, pan, spin, flip, swing, defocus, pixel, fold, lift, lensin, liftdoor, tearoff, stamp, dip, slats), `music`, `hook` (`style`: classic/pov/guess,
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block`, `banner`, `frame`, `glow`, `sprocket`, `wave`, `doortag`, `frost`, `waypoint`, `bearing`, `starrow`, `pennant`, `hollow`, `tick`, `placecard`, `linecap`, `halo`, `notch`, `datetab`, `visa`, `scene`, `triline`, `signpost` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop, tiles, stripes, glowcut, filmroll, ripple, swipe, pane, pan, spin, flip, swing, defocus, pixel, fold, lift, lensin, liftdoor, tearoff, stamp, dip, slats, lane), `music`, `hook` (`style`: classic/pov/guess,
 `lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.

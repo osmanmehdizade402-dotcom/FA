@@ -415,6 +415,32 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "signpost":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Montserrat700.ttf", 50 * fs)
+                tw = d.textlength(lab, font=f_)
+                bh = int(108 * fs)
+                bw = int(tw + 150 * fs)
+                x0, y0 = int(mx), H - int(350 * u) - bh
+                sg = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+                ds = ImageDraw.Draw(sg)
+                ds.rounded_rectangle([0, 0, bw - 1, bh - 1], radius=int(16 * fs), fill=(24, 92, 62, 245), outline=CREAM + (255,), width=max(3, int(4 * fs)))
+                ax, cy, a_ = 50 * fs, bh / 2, 22 * fs
+                ds.polygon([(ax + a_, cy), (ax - 2, cy - a_), (ax - 2, cy - a_ * 0.4), (ax - a_, cy - a_ * 0.4), (ax - a_, cy + a_ * 0.4), (ax - 2, cy + a_ * 0.4), (ax - 2, cy + a_)], fill=GOLD + (255,))
+                ds.text((96 * fs, cy), lab, font=f_, fill=CREAM, anchor="lm")
+                sh = Image.new("RGBA", sg.size, (0, 0, 0, 0))
+                sh.putalpha(sg.split()[3].filter(ImageFilter.GaussianBlur(12 * fs)).point(lambda v: int(v * 0.5)))
+                lay.alpha_composite(sh, (x0 + 6, y0 + 12))
+                lay.alpha_composite(sg, (x0, y0))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "triline":
             self.labels = {}
             for s in self.shots:
@@ -3833,7 +3859,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3859,6 +3885,25 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "lane":  # road lane: cur drives up from the bottom, dashed gold centre line streams past
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    off = int(e * self.H)
+                    fr = Image.new("RGB", (self.W, self.H))
+                    fr.paste(prev, (0, -off))
+                    fr.paste(cur, (0, self.H - off))
+                    dd = ImageDraw.Draw(fr)
+                    sp = math.sin(math.pi * k)
+                    if sp > 0.05:
+                        dl, gp = int(90 * self.W / 1080), int(70 * self.W / 1080)
+                        y = -int(k * 4 * (dl + gp)) % (dl + gp) - (dl + gp)
+                        cx_ = self.W // 2
+                        w_ = max(3, int(10 * sp * self.W / 1080))
+                        while y < self.H:
+                            dd.rectangle([cx_ - w_, y, cx_ + w_, y + dl], fill=GOLD)
+                            y += dl + gp
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "slats":  # three horizontal slats of cur slide in from the right, staggered, gold leading edges
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
