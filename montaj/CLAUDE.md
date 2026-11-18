@@ -61,6 +61,9 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
     "Ətraflı məlumat üçün DM yazın" (render.py `CAMP_*`, `campaign()` — default açıqdır; `"campaign": false` ilə söndürülür).
     Paylaşım mətnində "EV" yazın sətri yerinə: "🔥 Elandakı qiymətdən daha sərfəli — bizdə! Ətraflı məlumat üçün DM yazın."
     Nömrə yenə yalnız paylaşım mətnində. Aşağıdakı 10-cu qanunun "EV" hissəsi artıq keçərli deyil.
+10b. **TEST (qanun deyil, 2026-11-18):** yalnız NÖVBƏTİ evdə birləşmiş çağırış sınanır:
+    "~~Elandakı qiymət~~ Bizdə daha sərfəli — neçəyə? Şərhdə soruş ↓" (listing.json `"text": {"camp_new": ...}`).
+    İstifadəçi bəyənib "qanun et" deyənə qədər digər evlərdə 10a qalır.
 10. **Nömrə yox, "EV" şərh çağırışı (QANUN, 2026-11-04).** Videoda telefon nömrəsi YOXDUR.
     Giriş kadrında qızılı düymə: **"Qiymət üçün şərhə “EV” yazın ↓"**; son kadrda:
     **"Qiymət üçün şərhə yazın:"** + qızılı **“EV”** düyməsi + **"DM-ə göndərirəm"** (render.py `EV_*`).
