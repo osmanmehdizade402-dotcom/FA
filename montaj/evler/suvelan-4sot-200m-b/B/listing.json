@@ -1,0 +1,29 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Şüvəlan  •  4 sot  •  200 m²", "2 mərtəbə  •  4 otaq  •  4 sanuzel", "Hovuz  •  Yay-qış mətbəxi  •  Kupça"],
+ "music": null,
+ "slug": "suvelan-4sot-200m-b-B",
+ "label_style": "bubble",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "text": {"camp_new": "Bizdə daha sərfəli — neçəyə? Şərhdə soruş ↓"},
+ "hook": {"style": "qa", "q": "4 sotda hovuz, palma?", "a": ["Bəli, hamısı", "bu villada."], "sub": "Şüvəlan  •  200 m²  •  4 otaq", "cta_style": "pill", "title": [], "pill": "", "lines": []},
+ "shots": [
+  ["facade_front", 2.0, "in_slow", null, null],
+  ["pool_facade", 1.5, "in", "Hovuz", "popin"],
+  ["pool_sun", 1.5, "left", "Hovuz", "popin"],
+  ["gazebo_view", 1.5, "out", "Yay-qış mətbəxi", "popin"],
+  ["gazebo_in", 1.5, "right", "Yay-qış mətbəxi", "popin"],
+  ["stairs", 1.5, "up", "Giriş holu", "popin"],
+  ["living1", 1.5, "in", "Qonaq otağı", "popin"],
+  ["living2", 1.5, "left", "Qonaq otağı", "popin"],
+  ["kitchen", 1.5, "out", "Mətbəx", "popin"],
+  ["hall_closet", 1.5, "right", "Hol", "popin"],
+  ["bed1", 1.5, "up", "Yataq otağı", "popin"],
+  ["bed2", 1.5, "in", "Yataq otağı", "popin"],
+  ["bed3", 1.5, "left", "Yataq otağı", "popin"],
+  ["bath1", 1.5, "out", "Sanuzel", "popin"],
+  ["bath2", 1.5, "right", "Sanuzel", "popin"]
+ ]
+}

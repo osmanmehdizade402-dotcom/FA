@@ -421,6 +421,33 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "bubble":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Montserrat700.ttf", 50 * fs)
+                tw = d.textlength(lab, font=f_)
+                bw, bh = int(tw + 84 * fs), int(104 * fs)
+                x0, y0 = int(mx), H - int(380 * u) - bh
+                b = Image.new("RGBA", (bw + 40, bh + 40), (0, 0, 0, 0))
+                db = ImageDraw.Draw(b)
+                db.rounded_rectangle([0, 0, bw, bh], radius=int(bh / 2), fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                tx = int(46 * fs)
+                db.polygon([(tx, bh - 4), (tx + 34 * fs, bh - 4), (tx + 4 * fs, bh + 30 * fs)], fill=GREEN_DARK + (238,))
+                db.line([(tx + 4 * fs, bh + 30 * fs), (tx + 34 * fs, bh - 2)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                db.line([(tx + 4 * fs, bh + 30 * fs), (tx, bh - 2)], fill=GOLD + (255,), width=max(2, int(3 * fs)))
+                db.text((bw / 2, bh / 2), lab, font=f_, fill=CREAM, anchor="mm")
+                sh = Image.new("RGBA", b.size, (0, 0, 0, 0))
+                sh.putalpha(b.split()[3].filter(ImageFilter.GaussianBlur(12 * fs)).point(lambda v: int(v * 0.5)))
+                lay.alpha_composite(sh, (x0 + 6, y0 + 12))
+                lay.alpha_composite(b, (x0, y0))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "ember":
             self.labels = {}
             for s in self.shots:
@@ -3810,7 +3837,11 @@ class Renderer:
             items.append((lay, 0.7))
             y += 110 * fs
             fw = font("Playfair700.ttf", 74 * fs)
-            t_new = T("camp_new", CAMP_NEW)
+            t_new, _, t_tail = T("camp_new", CAMP_NEW).partition(" — ")  # long test line -> button + 2nd line
+            sc = 1.0
+            while d.textlength(t_new, font=fw) + 100 * fs > W - 80 * fs and sc > 0.6:
+                sc -= 0.05
+                fw = font("Playfair700.ttf", 74 * fs * sc)
             tw = d.textlength(t_new, font=fw)
             ph = int(140 * fs)
             lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -3819,6 +3850,9 @@ class Renderer:
             dd.text((cx, y + ph / 2), t_new, font=fw, fill=GREEN, anchor="mm")
             items.append((lay, 0.85))
             y += ph + 26 * fs
+            if t_tail:
+                items.append((self.text_layer([centered(t_tail[0].upper() + t_tail[1:], font("Montserrat700.ttf", 46 * fs), GOLD, y)], False), 0.9))
+                y += 76 * fs
             items.append((self.text_layer([centered(T("camp_dm", CAMP_DM), font("Montserrat600.ttf", 42 * fs), CREAM, y)], False), 0.95))
             y += 100 * fs
             self._endcard_share(items, centered, y, d)
@@ -4030,7 +4064,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -4056,6 +4090,23 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "popin":  # answer pop: cur pops in as a rounded card (0.8 -> 1.0) over a blurred, dimmed prev
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease_out(min(1, k * 1.15))
+                    bg = prev.filter(ImageFilter.GaussianBlur(int(18 * k * self.W / 1080) + 1))
+                    bg = Image.blend(bg, Image.new("RGB", bg.size, (0, 0, 0)), 0.35 * k)
+                    z = 0.8 + 0.2 * e
+                    cw, ch = int(self.W * z), int(self.H * z)
+                    card = cur.resize((cw, ch), Image.BILINEAR)
+                    m = Image.new("L", (cw, ch), 0)
+                    rad = int(60 * (1 - e) * self.W / 1080)
+                    ImageDraw.Draw(m).rounded_rectangle([0, 0, cw - 1, ch - 1], radius=max(rad, 1), fill=255)
+                    fr = bg.copy()
+                    fr.paste(card, ((self.W - cw) // 2, (self.H - ch) // 2), m)
+                    if e < 0.98:
+                        ImageDraw.Draw(fr).rounded_rectangle([(self.W - cw) // 2, (self.H - ch) // 2, (self.W + cw) // 2, (self.H + ch) // 2], radius=max(rad, 1), outline=GOLD, width=4)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "glowup":  # warm lamp glow blooms from the left, crossfade under it, then fades
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
