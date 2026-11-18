@@ -22,6 +22,16 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 4b. **Təkrar şəkil ləğv edilir (QANUN, 2026-11-17):** istifadəçi bilmədən eyni şəkli (və ya eyni bucaqdan
    demək olar eyni kadrı) bir neçə dəfə göndərsə — təkrarı videoya salma, avtomatik çıxar (hash ilə yoxla) və
    göndərəndə hansı təkrarın çıxarıldığını qısa yaz.
+4c. **Böyümə qanunu (QANUN, 2026-11-18) — hədəf: 5 milyon baxış:**
+   - Hər yeni video əvvəlkindən **1 pillə yuxarı** olmalıdır (rəng tonu, yazı, kompozisiya, ritm, hook — hamısı).
+   - İstifadəçinin göndərdiyi **ən çox baxış toplayan videoların** şəkillərini/ekran görüntülərini təhlil et
+     (`montaj/en-yaxsi-videolar/` qovluğunda saxla), onların güclü tərəflərini götür, eyni səviyyədə AMMA daha yaxşı et.
+     Yeni montajı əvvəl həmin "ən yaxşı" nümunələrlə müqayisə edib yoxla (test), zəif yeri varsa düzəlt.
+   - **Hər yeni evdə tövsiyə ver:** montajdan ƏVVƏL istifadəçiyə 1–3 konkret böyümə tövsiyəsi yaz — həm fiziki
+     (çəkiliş: məs. "əvvəl qısa video çək", "girişdən içəri gəzərək çək", "axşam işıqları yanılı çək", "sahibi ilə
+     5 saniyəlik danışıq"), həm paylaşım (vaxt, səs, şərh cavabı, seriya), lazım olsa istifadəçiyə hazır prompt/mətn yaz.
+     İstifadəçi əvvəl tövsiyəni edir, sonra şəkilləri göndərir, sonra montaj olunur.
+   - Anlaşılmayan bir şey varsa — ƏVVƏL sual ver, sonra tətbiq et.
 5. **Qanun verəndə yalnız deyiləni et.** Yeni qayda gələndə onu bu fayla yaz və təsdiqlə; köhnə videoları
    özbaşına yenidən render edib göndərmə — yalnız istifadəçi desə.
 6. **Fayl altlıqları.** Hər faylı ayrıca göndər, altında hansı tətbiq üçün olduğunu yaz:
