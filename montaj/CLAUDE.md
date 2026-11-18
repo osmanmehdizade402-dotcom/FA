@@ -32,6 +32,10 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
      5 saniyəlik danışıq"), həm paylaşım (vaxt, səs, şərh cavabı, seriya), lazım olsa istifadəçiyə hazır prompt/mətn yaz.
      İstifadəçi əvvəl tövsiyəni edir, sonra şəkilləri göndərir, sonra montaj olunur.
    - Anlaşılmayan bir şey varsa — ƏVVƏL sual ver, sonra tətbiq et.
+   - **Ən yaxşı nümunələr (Instagram, təhlil: `en-yaxsi-videolar/TEHLIL.md`):** həyat tərzi başlığı ("Səhər qəhvəsi
+     bu terrasda" 338, "Palma altında yelləncək" 273), status sözləri (saray/kurort/VILLA/Lüks — 321–325, 258, 232),
+     işıqlı səmalı fasad və ya isti-qızılı interyer ilk kadrda, iri serif başlıq + 1 sətir rəqəm. Tünd/neon (21) və
+     uzun/texniki başlıq (58) zəifdir — bunlardan qaç. Hələlik yalnız şəkillərlə (video çəkilişi istifadəçi xəbər verəndə).
 5. **Qanun verəndə yalnız deyiləni et.** Yeni qayda gələndə onu bu fayla yaz və təsdiqlə; köhnə videoları
    özbaşına yenidən render edib göndərmə — yalnız istifadəçi desə.
 6. **Fayl altlıqları.** Hər faylı ayrıca göndər, altında hansı tətbiq üçün olduğunu yaz:
