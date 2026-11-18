@@ -415,6 +415,32 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "ember":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                gg = np.zeros((H, W, 4), np.uint8)
+                g0 = int(H * 0.64)
+                gg[g0:, :, 3] = (np.clip(np.linspace(0, 1.2, H - g0), 0, 1) * 160)[:, None].astype(np.uint8)
+                lay.alpha_composite(Image.fromarray(gg, "RGBA"))
+                yb = H - int(360 * u)
+                cx, cy = mx + 22 * fs, yb - 40 * fs
+                halo = Image.new("L", (W, H), 0)
+                ImageDraw.Draw(halo).ellipse([cx - 60 * fs, cy - 60 * fs, cx + 60 * fs, cy + 60 * fs], fill=200)
+                halo = halo.filter(ImageFilter.GaussianBlur(22 * fs))
+                hl = Image.new("RGBA", (W, H), (255, 200, 110, 0)); hl.putalpha(halo)
+                lay.alpha_composite(hl)
+                d = ImageDraw.Draw(lay)
+                r_ = 13 * fs
+                d.ellipse([cx - r_, cy - r_, cx + r_, cy + r_], fill=(255, 232, 180, 255))
+                f_ = font("Playfair700.ttf", 66 * fs)
+                lay.alpha_composite(self.text_layer([(lab, f_, CREAM, cx + 52 * fs, cy - 46 * fs, 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "signpost":
             self.labels = {}
             for s in self.shots:
@@ -3922,7 +3948,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -3948,6 +3974,19 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "glowup":  # warm lamp glow blooms from the left, crossfade under it, then fades
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    fr = Image.blend(prev, cur, ease(k))
+                    q = math.sin(math.pi * k)
+                    if q > 0.02:
+                        sw, sh_ = self.W // 8, self.H // 8
+                        yy, xx = np.mgrid[0:sh_, 0:sw].astype(np.float32)
+                        r = np.sqrt(((xx - sw * 0.15) / sw) ** 2 + ((yy - sh_ * 0.45) / sh_) ** 2)
+                        m = np.clip(1.3 - r * 1.4, 0, 1) * q * 0.75
+                        mi = Image.fromarray((m * 255).astype(np.uint8)).resize((self.W, self.H), Image.BILINEAR)
+                        fr = Image.composite(Image.new("RGB", fr.size, (255, 214, 150)), fr, mi)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "lane":  # road lane: cur drives up from the bottom, dashed gold centre line streams past
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

@@ -1,0 +1,29 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Şüvəlan  •  3 sot  •  140 m²", "4 otaq + mətbəx  •  2 sanuzel", "Filtrli hovuz  •  Söhbətgah  •  Kupça"],
+ "music": null,
+ "slug": "suvelan-3sot-140m-c-B",
+ "label_style": "ember",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "hook": {"style": "lantern", "kicker": "ŞÜVƏLAN  •  3 SOT", "lines": ["Evin işığı", "səni gözləyir"], "sub": "140 m²  •  4 otaq  •  hovuz", "cta_style": "pill", "title": [], "pill": ""},
+ "shots": [
+  ["facade_palm", 2.0, "in_slow", null, null],
+  ["facade_front", 1.5, "in", "Fasad", "glowup"],
+  ["facade_side", 1.5, "left", "Həyət", "glowup"],
+  ["pergola", 1.5, "out", "Söhbətgah", "glowup"],
+  ["pool", 1.5, "right", "Hovuz", "glowup"],
+  ["yard_garage", 1.5, "up", "Həyət", "glowup", [0.55, 0.62, 1.25]],
+  ["yard_trees", 1.5, "in", "Həyət", "glowup"],
+  ["hall", 1.5, "left", "Giriş holu", "glowup"],
+  ["corridor", 1.5, "out", "Dəhliz", "glowup"],
+  ["living", 1.5, "right", "Qonaq otağı", "glowup"],
+  ["kitchen", 1.5, "up", "Mətbəx", "glowup"],
+  ["bed_wave", 1.5, "in", "Yataq otağı", "glowup"],
+  ["bed_marble", 1.5, "left", "Yataq otağı", "glowup"],
+  ["bed_gold", 1.5, "out", "Yataq otağı", "glowup"],
+  ["bath1", 1.5, "right", "Sanuzel", "glowup"],
+  ["bath2", 1.5, "up", "Sanuzel", "glowup"]
+ ]
+}
