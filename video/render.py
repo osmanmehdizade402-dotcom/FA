@@ -334,11 +334,17 @@ class Renderer:
                 if "comment_q" in (LISTING.get("text") or {}):
                     t = (T("comment_q", COMMENT_Q) + " " if LISTING["hook"]["cta_style"] == "pill" else "") + T("comment_a", COMMENT_A) + " ↓"
                 elif campaign():
-                    fo = font("Montserrat600.ttf", 34 * k)
                     t_old, t_new = T("camp_old", CAMP_OLD), T("camp_new", CAMP_NEW)
-                    wo, wn = d.textlength(t_old, font=fo), d.textlength(t_new, font=fp)
-                    gap = 26 * k
-                    tw = wo + gap + wn
+                    sc = 1.0
+                    while True:  # auto-fit long campaign lines inside the frame
+                        fo = font("Montserrat600.ttf", 34 * k * sc)
+                        fp = font("Montserrat700.ttf", 42 * k * sc)
+                        wo, wn = d.textlength(t_old, font=fo), d.textlength(t_new, font=fp)
+                        gap = 26 * k * sc
+                        tw = wo + gap + wn
+                        if tw + 80 * k <= W - 60 * k or sc < 0.55:
+                            break
+                        sc -= 0.04
                     ph = int(100 * k)
                     yb = H - int(230 * self.u) - ph
                     x0 = W / 2 - tw / 2
@@ -2442,6 +2448,82 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "glint":
+            # best-performer layout: photo dominant, short 2-word status title in lower third, gold sweep underline, number row
+            n = int(H * (0.50 if self.tall else 0.70))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.15, n), 0, 1)) * 235)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 118 * fs)
+            yy = int(H * (0.585 if self.tall else 0.43))
+            parts = [(hook["kicker"], fk, WHITE, mx, yy, 7 * fs)]
+            yy += int(58 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, CREAM if i == 0 else GOLD, mx, yy, 0))
+                yy += int(132 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            lw_ = d.textlength(hook["lines"][-1], font=fl)
+            ys = yy + int(14 * fs)
+            for k in range(int(lw_)):
+                a = int(255 * min(1, k / (lw_ * 0.15)) * min(1, (lw_ - k) / (lw_ * 0.35)))
+                d.line([(mx + k, ys), (mx + k, ys + max(3, int(5 * fs)))], fill=GOLD + (a,))
+            fsb = font("Montserrat600.ttf", 34 * fs)
+            lay.alpha_composite(self.text_layer([(hook["sub"], fsb, CREAM, mx, ys + int(30 * fs), 0)]))
+        elif self.hook_style == "qa":
+            # question -> answer: small cream question with a gold "?" badge, big gold answer below
+            n = int(H * (0.54 if self.tall else 0.74))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.15, n), 0, 1)) * 235)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            yy = int(H * (0.60 if self.tall else 0.44))
+            R = int(34 * fs)
+            d.ellipse([mx, yy, mx + 2 * R, yy + 2 * R], fill=GOLD + (255,))
+            d.text((mx + R, yy + R), "?", font=font("Playfair700.ttf", 52 * fs), fill=GREEN_DARK, anchor="mm")
+            fq = font("Playfair700.ttf", 64 * fs)
+            parts = [(hook["q"], fq, CREAM, mx + 2 * R + 24 * fs, yy - 6 * fs, 0)]
+            fa = font("Playfair700.ttf", 104 * fs)
+            ya = yy + int(110 * fs)
+            for i, line in enumerate(hook["a"]):
+                parts.append((line, fa, GOLD if i == 0 else CREAM, mx, ya, 0))
+                ya += int(118 * fs)
+            parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, ya + int(18 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "skyline":
+            # lifestyle line written in the empty blue sky, thin gold pointer down to the spot (balcony/terrace)
+            gt = np.zeros((H, W, 4), np.uint8)
+            nt = int(H * 0.44)
+            gt[:nt, :, 3] = (np.clip(np.linspace(1, 0, nt), 0, 1) ** 1.4 * 120)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(gt, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fk = font("Montserrat700.ttf", 30 * fs)
+            fl = font("Playfair700.ttf", 84 * fs)
+            yy = int(H * (0.15 if self.tall else 0.135))
+            kt = hook["kicker"]
+            kw = d.textlength(kt, font=fk) + 6 * fs * len(kt)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, WHITE if i == 0 else GOLD, W / 2 - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(100 * fs)
+            parts.append((kt, fk, CREAM, W / 2 - kw / 2, yy + int(6 * fs), 6 * fs))
+            yy += int(50 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            px, py = hook["point"][0] * W, hook["point"][1] * H
+            sx, sy = W / 2, yy + int(24 * fs)
+            if py > sy + 40 * fs:
+                d.line([(sx, sy), (px, py - 22 * fs)], fill=GOLD + (230,), width=max(2, int(3 * fs)))
+                r_ = 14 * fs
+                d.ellipse([px - r_, py - r_, px + r_, py + r_], outline=GOLD + (255,), width=max(2, int(4 * fs)))
+                d.ellipse([px - 5 * fs, py - 5 * fs, px + 5 * fs, py + 5 * fs], fill=GOLD + (255,))
+            fsb = font("Montserrat600.ttf", 34 * fs)
+            n = int(H * 0.30)
+            gb = np.zeros((H, W, 4), np.uint8)
+            gb[H - n:, :, 3] = (np.clip(np.linspace(0, 1.2, n), 0, 1) * 170)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(gb, "RGBA"))
+            sw = d.textlength(hook["sub"], font=fsb)
+            lay.alpha_composite(self.text_layer([(hook["sub"], fsb, CREAM, W / 2 - sw / 2, H - int(330 * self.u), 0)]))
         elif self.hook_style == "cartouche":
             # classical cartouche: cream panel with gold double frame, corner scrolls and keystone (echoes arched facade)
             n = int(H * (0.62 if self.tall else 0.92))
