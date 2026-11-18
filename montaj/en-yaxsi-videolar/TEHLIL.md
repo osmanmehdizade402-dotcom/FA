@@ -22,3 +22,19 @@
 
 ## Nə zəifdir
 - Tünd, gecə, neon rəng tonu; kiçik/çox sətirli başlıq; "texniki" başlıq (dəqiqə, mirli).
+
+# TikTok (2026-11-18) — baxış sayları
+
+**Ən yaxşı:** 749 Hovuzlu villa (Mərdəkan 6 sot, ağ villa + mavi hovuz + mavi səma) • 582 Lüks villa (6 sot 400 m², hovuz) •
+579 Klassik villa (16 sot, hovuz önü) • 521 Lüks villaya xoş gəldiniz (keycard) • 496 (yazısız, parlaq fasad + qazon) •
+490 Hovuzlu villa • 483 Palma altında yelləncək • 467 VILLA • 463 / 460 "Qışda hovuz? Bəli, isitməlidir." • 452 • 438 "Çamadanla gəl" • 429 (yazısız, hovuz + palma).
+
+**Ən zəif:** 16 / 16 / 21 (Şüvəlan, boz-buludlu səma, hovuz ilk kadrda yox) • 22 "TAM ƏŞYALI VİLLA" (çox iri, ekranı dolduran yazı) •
+123–147 (tünd fasad, tağlı çərçivə, "3.5 SOT" iri yazı).
+
+## TikTok qaydaları
+1. **İlk kadr = mavi səma + mavi hovuz + ağ villa.** Ən yaxşı 10 videonun 8-də hovuz ilk kadrdadır. Boz səma = 16–21 baxış.
+2. **Başlıq qısa: 2 söz** ("Hovuzlu villa", "Lüks villa", "Klassik villa") və ya **sual-cavab** ("Qışda hovuz? Bəli, isitməlidir.").
+3. **Şəkil ekranın çox hissəsini tutsun** — yazı aşağı 1/3-də; ekranı yazı ilə doldurmaq (22) zəifdir. Yazısız, çox gözəl kadr da işləyir (496, 429).
+4. Status sözləri (Lüks, Klassik, VILLA) Instagram-da da, TikTok-da da işləyir.
+5. Yeni "Bizdə daha sərfəlidir" çağırışlı videolar (199, 272) hələ təzədir — 1 həftə sonra müqayisə et.

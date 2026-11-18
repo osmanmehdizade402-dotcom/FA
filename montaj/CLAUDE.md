@@ -36,6 +36,9 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
      bu terrasda" 338, "Palma altında yelləncək" 273), status sözləri (saray/kurort/VILLA/Lüks — 321–325, 258, 232),
      işıqlı səmalı fasad və ya isti-qızılı interyer ilk kadrda, iri serif başlıq + 1 sətir rəqəm. Tünd/neon (21) və
      uzun/texniki başlıq (58) zəifdir — bunlardan qaç. Hələlik yalnız şəkillərlə (video çəkilişi istifadəçi xəbər verəndə).
+   - **TikTok (ən yaxşı 749, 582, 579, 521):** başlıq kadrı üçün HƏMİŞƏ ən yaxşı **mavi səma + mavi hovuz + ağ fasad**
+     şəklini seç (varsa); boz səmalı kadr başlıqda olmasın (16–21 baxış). Başlıq qısa (2–4 söz) və ya sual-cavab;
+     yazı aşağı 1/3-də, şəkil ekranın çoxunu tutsun — ekranı dolduran iri yazıdan qaç (22 baxış).
 5. **Qanun verəndə yalnız deyiləni et.** Yeni qayda gələndə onu bu fayla yaz və təsdiqlə; köhnə videoları
    özbaşına yenidən render edib göndərmə — yalnız istifadəçi desə.
 6. **Fayl altlıqları.** Hər faylı ayrıca göndər, altında hansı tətbiq üçün olduğunu yaz:
