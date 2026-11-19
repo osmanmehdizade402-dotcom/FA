@@ -421,6 +421,29 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "goldtab":
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Playfair700.ttf", 58 * fs)
+                tw = d.textlength(lab, font=f_)
+                bh = int(104 * fs)
+                y0 = H - int(380 * u) - bh
+                bw = int(tw + mx + 50 * fs)
+                sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(sh).rectangle([0, y0 + 10, bw + 10, y0 + bh + 14], fill=(0, 0, 0, 110))
+                lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(10 * fs)))
+                d = ImageDraw.Draw(lay)
+                d.rectangle([0, y0, bw, y0 + bh], fill=GOLD + (248,))
+                d.polygon([(bw, y0), (bw + 46 * fs, y0), (bw, y0 + bh)], fill=GOLD + (248,))
+                d.text((mx, y0 + bh / 2), lab, font=f_, fill=GREEN_DARK, anchor="lm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "bubble":
             self.labels = {}
             for s in self.shots:
@@ -2477,8 +2500,8 @@ class Renderer:
             lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "ticker":
             # one bold gold band across the lower third with the short title, small kicker above, facts below
-            n = int(H * (0.40 if self.tall else 0.60))
-            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.2, n), 0, 1)) * 200)[:, None].astype(np.uint8)
+            n = int(H * (0.46 if self.tall else 0.75))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.2, n), 0, 1)) * 225)[:, None].astype(np.uint8)
             lay.alpha_composite(Image.fromarray(g, "RGBA"))
             d = ImageDraw.Draw(lay)
             fl = font("Playfair700.ttf", 86 * fs)
@@ -4090,7 +4113,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -4116,6 +4139,19 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "bandsweep":  # a thick gold band sweeps top->bottom; above it cur, below it prev
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    bh = int(self.H * 0.10)
+                    y = int(-bh + e * (self.H + 2 * bh))
+                    fr = prev.copy()
+                    if y > 0:
+                        fr.paste(cur.crop((0, 0, self.W, min(y, self.H))), (0, 0))
+                    dd = ImageDraw.Draw(fr)
+                    dd.rectangle([0, y - bh, self.W, y], fill=GOLD)
+                    dd.line([(0, y - bh), (self.W, y - bh)], fill=GREEN_DARK, width=3)
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "popin":  # answer pop: cur pops in as a rounded card (0.8 -> 1.0) over a blurred, dimmed prev
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

@@ -1,0 +1,28 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Şüvəlan  •  2.6 sot  •  120 m²", "4 otaq + mətbəx  •  2 sanuzel", "Filtrli hovuz  •  Söhbətgah  •  Kupça"],
+ "music": null,
+ "slug": "suvelan-2-6sot-120m-B",
+ "label_style": "goldtab",
+ "share": "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!",
+ "text": {"camp_new": "Bizdə daha sərfəli — neçəyə? Şərhdə soruş ↓"},
+ "hook": {"style": "ticker", "kicker": "ŞÜVƏLAN  •  2.6 SOT", "lines": ["Kiçik həyət, böyük hovuz", "Hər şey bir addımda"], "sub": "120 m²  •  4 otaq  •  2 sanuzel", "cta_style": "pill", "title": [], "pill": ""},
+ "shots": [
+  ["pool", 2.0, "in_slow", null, null],
+  ["pool_patio", 1.5, "in", "Terras", "bandsweep"],
+  ["pool", 1.5, "left", "Hovuz", "bandsweep", [0.5, 0.72, 1.6]],
+  ["driveway", 1.5, "out", "Həyət", "bandsweep"],
+  ["living3", 1.5, "right", "Qonaq otağı", "bandsweep"],
+  ["living2", 1.5, "up", "Qonaq otağı", "bandsweep"],
+  ["living_dining", 1.5, "in", "Qonaq otağı", "bandsweep"],
+  ["kitchen", 1.5, "left", "Mətbəx", "bandsweep"],
+  ["corridor", 1.5, "out", "Dəhliz", "bandsweep"],
+  ["bed_dark", 1.5, "right", "Yataq otağı", "bandsweep"],
+  ["bed_wardrobe", 1.5, "up", "Yataq otağı", "bandsweep"],
+  ["bed_cream", 1.5, "in", "Yataq otağı", "bandsweep"],
+  ["bath2", 1.5, "left", "Sanuzel", "bandsweep"],
+  ["bath1", 1.5, "out", "Sanuzel", "bandsweep", [0.62, 0.68, 1.35]]
+ ]
+}
