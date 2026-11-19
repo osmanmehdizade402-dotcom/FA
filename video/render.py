@@ -2498,6 +2498,55 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "corners":
+            # title framed by four gold corner brackets in the lower third, photo stays dominant
+            n = int(H * (0.46 if self.tall else 0.70))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.2, n), 0, 1)) * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 104 * fs)
+            fk = font("Montserrat700.ttf", 28 * fs)
+            l1, l2 = hook["lines"]
+            w = max(d.textlength(l1, font=fl), d.textlength(l2, font=fl))
+            bx0, bx1 = W / 2 - w / 2 - 50 * fs, W / 2 + w / 2 + 50 * fs
+            by0 = int(H * (0.585 if self.tall else 0.44))
+            by1 = by0 + int(300 * fs)
+            L, lw = 48 * fs, max(3, int(5 * fs))
+            for (x, y, sx, sy) in ((bx0, by0, 1, 1), (bx1, by0, -1, 1), (bx0, by1, 1, -1), (bx1, by1, -1, -1)):
+                d.line([(x, y), (x + sx * L, y)], fill=GOLD + (255,), width=lw)
+                d.line([(x, y), (x, y + sy * L)], fill=GOLD + (255,), width=lw)
+            kt = az_upper(hook["kicker"])
+            kw = d.textlength(kt, font=fk) + 6 * fs * len(kt)
+            parts = [(kt, fk, CREAM, W / 2 - kw / 2, by0 + int(28 * fs), 6 * fs),
+                     (l1, fl, WHITE, W / 2 - d.textlength(l1, font=fl) / 2, by0 + int(68 * fs), 0),
+                     (l2, fl, GOLD, W / 2 - d.textlength(l2, font=fl) / 2, by0 + int(168 * fs), 0)]
+            fsb = font("Montserrat600.ttf", 34 * fs)
+            parts.append((hook["sub"], fsb, CREAM, W / 2 - d.textlength(hook["sub"], font=fsb) / 2, by1 + int(22 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "pills":
+            # title on the left + three stacked dark-green fact pills with gold dot, lower third
+            n = int(H * (0.48 if self.tall else 0.72))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.2, n), 0, 1)) * 225)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 92 * fs)
+            yy = int(H * (0.555 if self.tall else 0.40))
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, WHITE if i == 0 else GOLD, mx, yy, 0))
+                yy += int(104 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            fp = font("Montserrat700.ttf", 34 * fs)
+            yy += int(24 * fs)
+            ph = int(66 * fs)
+            for j, t in enumerate(hook["facts"]):
+                tw = d.textlength(t, font=fp)
+                x0 = mx + j * 30 * fs
+                d.rounded_rectangle([x0, yy, x0 + tw + 90 * fs, yy + ph], radius=ph // 2, fill=GREEN_DARK + (230,), outline=GOLD + (200,), width=max(1, int(2 * fs)))
+                d.ellipse([x0 + 24 * fs, yy + ph / 2 - 8 * fs, x0 + 40 * fs, yy + ph / 2 + 8 * fs], fill=GOLD + (255,))
+                d.text((x0 + 58 * fs, yy + ph / 2), t, font=fp, fill=CREAM, anchor="lm")
+                yy += ph + int(14 * fs)
         elif self.hook_style == "ticker":
             # one bold gold band across the lower third with the short title, small kicker above, facts below
             n = int(H * (0.46 if self.tall else 0.75))
