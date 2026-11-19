@@ -2475,6 +2475,32 @@ class Renderer:
                 parts.append((line, fi, CREAM, x0 + int(58 * fs), yy, 0))
                 yy += int(76 * fs)
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "ticker":
+            # one bold gold band across the lower third with the short title, small kicker above, facts below
+            n = int(H * (0.40 if self.tall else 0.60))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.2, n), 0, 1)) * 200)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 86 * fs)
+            t = hook["lines"][0]
+            bh = int(150 * fs)
+            by = int(H * (0.64 if self.tall else 0.50))
+            tw = d.textlength(t, font=fl)
+            sz = 86
+            while tw + 2 * mx + 100 * fs > W and sz > 50:
+                sz -= 4
+                fl = font("Playfair700.ttf", sz * fs)
+                tw = d.textlength(t, font=fl)
+            bw = int(tw + 2 * mx + 40 * fs)
+            d.rectangle([0, by, bw, by + bh], fill=GOLD + (245,))
+            d.polygon([(bw, by), (bw + 60 * fs, by), (bw, by + bh)], fill=GOLD + (245,))
+            d.text((mx, by + bh / 2), t, font=fl, fill=GREEN_DARK, anchor="lm")
+            fk = font("Montserrat700.ttf", 30 * fs)
+            parts = [(hook["kicker"], fk, WHITE, mx, by - int(56 * fs), 6 * fs)]
+            fb = font("Playfair700.ttf", 62 * fs)
+            parts.append((hook["lines"][1], fb, CREAM, mx, by + bh + int(22 * fs), 0))
+            parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, by + bh + int(108 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
         elif self.hook_style == "glint":
             # best-performer layout: photo dominant, short 2-word status title in lower third, gold sweep underline, number row
             n = int(H * (0.50 if self.tall else 0.70))
