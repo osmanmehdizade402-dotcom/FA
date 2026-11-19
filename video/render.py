@@ -421,6 +421,32 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "dotpill":  # dark capsule, gold ring + gold dot, thin gold rule to the right edge
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Montserrat700.ttf", 48 * fs)
+                tw = d.textlength(lab, font=f_)
+                bh = int(96 * fs)
+                bw = int(tw + 130 * fs)
+                x0, y0 = int(mx), H - int(380 * u) - bh
+                sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(sh).rounded_rectangle([x0 + 4, y0 + 12, x0 + bw + 4, y0 + bh + 12], radius=bh // 2, fill=(0, 0, 0, 120))
+                lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(12 * fs)))
+                d = ImageDraw.Draw(lay)
+                d.line([(x0 + bw, y0 + bh / 2), (W, y0 + bh / 2)], fill=GOLD + (230,), width=max(2, int(3 * fs)))
+                d.rounded_rectangle([x0, y0, x0 + bw, y0 + bh], radius=bh // 2, fill=GREEN_DARK + (240,), outline=GOLD + (255,), width=max(2, int(3 * fs)))
+                r = int(11 * fs)
+                cx, cy = x0 + int(48 * fs), y0 + bh / 2
+                d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=GOLD + (255,))
+                d.text((cx + int(34 * fs), cy), lab, font=f_, fill=CREAM, anchor="lm")
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "goldtab":
             self.labels = {}
             for s in self.shots:
@@ -4162,7 +4188,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep", "capsule") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -4188,6 +4214,20 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "capsule":  # cur grows from a small gold-rimmed capsule in the centre to full frame
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    cw = int(self.W * (0.30 + 0.85 * e)); ch = int(self.H * (0.06 + 1.05 * e))
+                    x0, y0 = (self.W - cw) // 2, (self.H - ch) // 2
+                    rad = max(1, int(min(cw, ch) / 2 * (1 - e) + 2))
+                    m = Image.new("L", (self.W, self.H), 0)
+                    ImageDraw.Draw(m).rounded_rectangle([x0, y0, x0 + cw, y0 + ch], radius=rad, fill=255)
+                    fr = Image.blend(prev, Image.new("RGB", prev.size, (0, 0, 0)), 0.25 * e)
+                    fr.paste(cur, (0, 0), m)
+                    if e < 0.95:
+                        ImageDraw.Draw(fr).rounded_rectangle([x0, y0, x0 + cw, y0 + ch], radius=rad, outline=GOLD, width=max(3, int(5 * self.W / 1080)))
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "bandsweep":  # a thick gold band sweeps top->bottom; above it cur, below it prev
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

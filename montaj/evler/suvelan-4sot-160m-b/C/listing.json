@@ -1,0 +1,27 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Şüvəlan  •  4 sot  •  160 m²", "3 yataq + qonaq otağı  •  3 sanuzel", "Hovuz  •  Veranda  •  İsti döşəmə"],
+ "music": null,
+ "slug": "suvelan-4sot-160m-b-C",
+ "label_style": "dotpill",
+ "share": "Yayı hovuz başında keçirmək istəyən dostuna göndər!",
+ "hook": {"style": "pills", "lines": ["Hovuz başında", "yeni həyat"], "facts": ["4 sot  •  160 m²", "3 yataq + qonaq otağı", "İsti döşəmə  •  kupça"], "cta_style": "pill", "title": [], "pill": "", "sub": "", "kicker": ""},
+ "shots": [
+  ["pool_front", 2.0, "in_slow", null, null],
+  ["pool_side", 1.5, "in", "Hovuz", "capsule"],
+  ["pool_side", 1.5, "right", "Veranda", "capsule", [0.62, 0.40, 1.5]],
+  ["garden_front", 1.5, "left", "Həyət", "capsule"],
+  ["garden_front", 1.5, "up", "Landşaft", "capsule", [0.60, 0.75, 1.5]],
+  ["corridor", 1.5, "in", "Dəhliz", "capsule"],
+  ["kitchen", 1.5, "left", "Mətbəx", "capsule"],
+  ["living", 1.5, "out", "Qonaq otağı", "capsule"],
+  ["bed1", 1.5, "right", "Yataq otağı", "capsule"],
+  ["bed2", 1.5, "up", "Yataq otağı", "capsule"],
+  ["bed3", 1.5, "in", "Yataq otağı", "capsule"],
+  ["bath_shower", 1.5, "left", "Sanuzel", "capsule"],
+  ["bath2", 1.5, "out", "Sanuzel", "capsule"],
+  ["wc", 1.5, "right", "Sanuzel", "capsule"]
+ ]
+}
