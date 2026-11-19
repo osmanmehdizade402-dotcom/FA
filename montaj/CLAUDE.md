@@ -64,6 +64,8 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
 10b. **TEST (qanun deyil, 2026-11-18):** yalnız NÖVBƏTİ evdə birləşmiş çağırış sınanır:
     "~~Elandakı qiymət~~ Bizdə daha sərfəli — neçəyə? Şərhdə soruş ↓" (listing.json `"text": {"camp_new": ...}`).
     İstifadəçi bəyənib "qanun et" deyənə qədər digər evlərdə 10a qalır.
+    **Test uzadılıb (2026-11-19):** NÖVBƏTİ evdə də eyni test çağırışı və eyni səviyyə (qa/sual-cavab qaydaları,
+    mavi səma başlıq, aşağı 1/3 yazı) tətbiq olunur — hələ də qanun DEYİL.
 10. **Nömrə yox, "EV" şərh çağırışı (QANUN, 2026-11-04).** Videoda telefon nömrəsi YOXDUR.
     Giriş kadrında qızılı düymə: **"Qiymət üçün şərhə “EV” yazın ↓"**; son kadrda:
     **"Qiymət üçün şərhə yazın:"** + qızılı **“EV”** düyməsi + **"DM-ə göndərirəm"** (render.py `EV_*`).
