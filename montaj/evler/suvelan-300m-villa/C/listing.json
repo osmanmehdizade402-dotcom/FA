@@ -1,0 +1,26 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Şüvəlan  •  əsas yoldan 300 m", "Zal + 3 yataq  •  2 sanuzel  •  hol", "Hovuz  •  Söhbətgah  •  Manqal"],
+ "music": null,
+ "slug": "suvelan-300m-villa-C",
+ "label_style": "ringtag",
+ "share": "Şəhər səs-küyündən qaçmaq istəyən dostuna göndər!",
+ "hook": {"style": "milestone", "kicker": "Şüvəlan  •  villalar arasında", "lines": ["Sakit küçə,", "rahat həyat"], "badge": ["300 m", "əsas yoldan"], "sub": "Qaz  •  su  •  işıq  •  optik internet", "cta_style": "pill", "title": [], "pill": ""},
+ "shots": [
+  ["courtyard", 2.0, "in_slow", null, null],
+  ["facade", 1.5, "in", "Fasad", "ringwipe"],
+  ["pool", 1.5, "up", "Hovuz", "ringwipe"],
+  ["pool", 1.5, "right", "Söhbətgah", "ringwipe", [0.80, 0.55, 1.6]],
+  ["courtyard", 1.5, "left", "Həyət", "ringwipe", [0.55, 0.62, 1.4]],
+  ["hall", 1.5, "in", "Hol", "ringwipe"],
+  ["living", 1.5, "out", "Qonaq otağı", "ringwipe"],
+  ["kitchen", 1.5, "left", "Mətbəx", "ringwipe"],
+  ["bed1", 1.5, "right", "Yataq otağı", "ringwipe"],
+  ["bed2", 1.5, "up", "Yataq otağı", "ringwipe"],
+  ["bed3", 1.5, "in", "Yataq otağı", "ringwipe"],
+  ["bath_wood", 1.5, "left", "Sanuzel", "ringwipe"],
+  ["bath_black", 1.5, "out", "Sanuzel", "ringwipe"]
+ ]
+}

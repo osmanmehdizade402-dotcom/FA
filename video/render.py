@@ -421,6 +421,34 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "ringtag":  # gold ring medallion with a dot + text on a squared dark-green tab
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                f_ = font("Montserrat700.ttf", 46 * fs)
+                d = ImageDraw.Draw(lay)
+                tw = d.textlength(az_upper(lab), font=f_) + 4 * fs * len(lab)
+                R = int(54 * fs)
+                cx, cy = int(mx) + R, H - int(380 * u) - R
+                th = int(80 * fs)
+                x1 = cx + int(R * 0.6) + int(tw + 70 * fs)
+                sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(sh).rectangle([cx, cy - th / 2 + 10, x1 + 6, cy + th / 2 + 14], fill=(0, 0, 0, 110))
+                ImageDraw.Draw(sh).ellipse([cx - R + 4, cy - R + 12, cx + R + 4, cy + R + 12], fill=(0, 0, 0, 110))
+                lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(12 * fs)))
+                d = ImageDraw.Draw(lay)
+                d.rectangle([cx, cy - th / 2, x1, cy + th / 2], fill=GREEN_DARK + (236,))
+                d.rectangle([x1 - int(8 * fs), cy - th / 2, x1, cy + th / 2], fill=GOLD + (255,))
+                d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=GREEN_DARK + (250,), outline=GOLD + (255,), width=max(3, int(5 * fs)))
+                r2 = int(14 * fs)
+                d.ellipse([cx - r2, cy - r2, cx + r2, cy + r2], fill=GOLD + (255,))
+                lay.alpha_composite(self.text_layer([(az_upper(lab), f_, CREAM, cx + R + int(26 * fs), cy - int(28 * fs), 4 * fs)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "dotpill":  # dark capsule, gold ring + gold dot, thin gold rule to the right edge
             self.labels = {}
             for s in self.shots:
@@ -4223,7 +4251,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep", "capsule") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep", "capsule", "ringwipe") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -4249,6 +4277,22 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "ringwipe":  # cur revealed by a circle growing from the top-right corner, gold ring at its rim
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    e = ease(k)
+                    cx, cy = int(self.W * 0.82), int(self.H * 0.22)
+                    Rm = math.hypot(self.W, self.H)
+                    r = int(e * Rm)
+                    m = Image.new("L", (self.W, self.H), 0)
+                    ImageDraw.Draw(m).ellipse([cx - r, cy - r, cx + r, cy + r], fill=255)
+                    fr = prev.copy()
+                    fr.paste(cur, (0, 0), m)
+                    if e < 0.97:
+                        lw = max(4, int(8 * self.W / 1080))
+                        ImageDraw.Draw(fr).ellipse([cx - r, cy - r, cx + r, cy + r], outline=GOLD, width=lw)
+                        ImageDraw.Draw(fr).ellipse([cx - r - 3 * lw, cy - r - 3 * lw, cx + r + 3 * lw, cy + r + 3 * lw], outline=GOLD, width=max(1, lw // 3))
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "capsule":  # cur grows from a small gold-rimmed capsule in the centre to full frame
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
