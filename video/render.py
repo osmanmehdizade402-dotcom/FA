@@ -2599,6 +2599,41 @@ class Renderer:
             parts.append((hook["lines"][1], fb, CREAM, mx, by + bh + int(22 * fs), 0))
             parts.append((hook["sub"], font("Montserrat600.ttf", 34 * fs), CREAM, mx, by + bh + int(108 * fs), 0))
             lay.alpha_composite(self.text_layer(parts))
+        elif self.hook_style == "milestone":
+            # title left in lower third + gold ring badge on the right with a distance/number ("300 m" / "əsas yoldan")
+            n = int(H * (0.50 if self.tall else 0.72))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.15, n), 0, 1)) * 230)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            fl = font("Playfair700.ttf", 96 * fs)
+            fk = font("Montserrat700.ttf", 28 * fs)
+            yy = int(H * (0.585 if self.tall else 0.43))
+            parts = [(az_upper(hook["kicker"]), fk, CREAM, mx, yy, 6 * fs)]
+            yy += int(54 * fs)
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, WHITE if i == 0 else GOLD, mx, yy, 0))
+                yy += int(108 * fs)
+            fsb = font("Montserrat600.ttf", 32 * fs)
+            parts.append((hook["sub"], fsb, CREAM, mx, yy + int(26 * fs), 0))
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            R = int(118 * fs)
+            cx, cy = W - mx - R, int(H * (0.585 if self.tall else 0.43)) - R - int(36 * fs)
+            sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            ImageDraw.Draw(sh).ellipse([cx - R + 6, cy - R + 14, cx + R + 6, cy + R + 14], fill=(0, 0, 0, 120))
+            lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(14 * fs)))
+            d = ImageDraw.Draw(lay)
+            d.ellipse([cx - R, cy - R, cx + R, cy + R], fill=GREEN_DARK + (238,), outline=GOLD + (255,), width=max(3, int(5 * fs)))
+            r2 = R - int(14 * fs)
+            d.ellipse([cx - r2, cy - r2, cx + r2, cy + r2], outline=GOLD + (150,), width=max(1, int(2 * fs)))
+            num, unit = hook["badge"]
+            fsz = 84
+            while fsz > 40 and ImageDraw.Draw(Image.new("L", (1, 1))).textlength(num, font=font("Playfair700.ttf", fsz * fs)) > 1.55 * r2:
+                fsz -= 4
+            fn = font("Playfair700.ttf", fsz * fs)
+            fu = font("Montserrat700.ttf", 24 * fs)
+            d.text((cx, cy - int(12 * fs)), num, font=fn, fill=GOLD, anchor="mm")
+            d.text((cx, cy + int(52 * fs)), az_upper(unit), font=fu, fill=CREAM, anchor="mm")
         elif self.hook_style == "glint":
             # best-performer layout: photo dominant, short 2-word status title in lower third, gold sweep underline, number row
             n = int(H * (0.50 if self.tall else 0.70))
