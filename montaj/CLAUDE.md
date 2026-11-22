@@ -1,5 +1,7 @@
 # Montaj — Xəzər Sahil Əmlak ev videoları (BÜTÜN QANUNLAR)
 
+> **2026-11-22:** yeni evlər artıq `../Ev montajı 2/` qovluğunda hazırlanır — qanunlar oraya köçürülüb (`Ev montajı 2/CLAUDE.md`).
+
 Yeni evlərin montajı **bu qovluqda** aparılır: hər ev `montaj/evler/<ad>/` qovluğunda
 (`listing.json` + `photos/` + `out/`). Alətlər `video/` qovluğundadır (render.py, straighten.py,
 tiltcheck.py, şriftlər, musiqi) — onları dəyişmə.

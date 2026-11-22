@@ -1,0 +1,196 @@
+# Ev montajı 2 — Xəzər Sahil Əmlak ev videoları (BÜTÜN QANUNLAR)
+
+> Bu qovluq `montaj/` qovluğunun davamıdır (2026-11-22 açılıb). Bütün qanunlar `montaj/CLAUDE.md`-dən
+> köçürülüb və burada eyni qüvvədədir. Yeni evlər artıq bu qovluqda: `Ev montajı 2/evler/<ad>/`.
+> "İşlənmiş" siyahısı (15b) köhnə evləri də əhatə edir — təkrar olmasın deyə həm burada, həm də yeni evləri bura yaz.
+> Köməkçi materiallar köhnə yerində qalır: `../montaj/en-yaxsi-videolar/`, `../montaj/evler/` (nümunələr).
+
+Yeni evlərin montajı **bu qovluqda** aparılır: hər ev `Ev montajı 2/evler/<ad>/` qovluğunda
+(`listing.json` + `photos/` + `out/`). Alətlər `video/` qovluğundadır (render.py, straighten.py,
+tiltcheck.py, şriftlər, musiqi) — onları dəyişmə.
+İstifadəçi ilə **azərbaycan dilində** danışılır. Aşağıdakı qanunlar istifadəçi tərəfindən təsdiqlənib;
+ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzərə alınıb).
+
+---
+
+## A. İş qaydası
+
+1. **Şəkillər 1 və ya 2 hissədə gəlir.** Hər hissədə yalnız qısa təsdiq: "✅ 1-ci hissəni aldım: N şəkil" — heç bir emal etmə.
+2. **İcazəsiz başlama.** Bütün şəkillər + evin məlumatları gəlib istifadəçi "hazırla"/"başla" deyəndə işə başla.
+3. "Heçnə yazma" deyilsə — yalnız "✅".
+4. **İlk saniyə — əvvəl məsləhət.** "Hazırla" deyiləndə render etmədən ƏVVƏL 2–3 giriş (hook) variantını
+   **dizayn nümunəsi şəkli + mətn** ilə göndər, eyni zamanda 2–3 "dostuna göndər" mətni təklif et.
+   İstifadəçi seçəndən SONRA render et. İstifadəçi bir neçə variant seçərsə, hər birini ayrıca hazırla.
+4a. **Bəyənilməyən B/C formatları QADAĞANDIR (QANUN, 2026-11-16, dəqiqləşdirilib):** hər evdə yenə 3 nümunə
+   (A, B, C) göndərilir, amma əvvəllər B/C kimi təklif olunub bəyənilməyən formatlar bir daha təklif olunmur:
+   `houseframe`, `tape`, `receipt`, `toggles`, `swiss`. B və C hər dəfə YENİ, fərqli formatda olur.
+4b. **Təkrar şəkil ləğv edilir (QANUN, 2026-11-17):** istifadəçi bilmədən eyni şəkli (və ya eyni bucaqdan
+   demək olar eyni kadrı) bir neçə dəfə göndərsə — təkrarı videoya salma, avtomatik çıxar (hash ilə yoxla) və
+   göndərəndə hansı təkrarın çıxarıldığını qısa yaz.
+4c. **Böyümə qanunu (QANUN, 2026-11-18) — hədəf: 5 milyon baxış:**
+   - Hər yeni video əvvəlkindən **1 pillə yuxarı** olmalıdır (rəng tonu, yazı, kompozisiya, ritm, hook — hamısı).
+   - İstifadəçinin göndərdiyi **ən çox baxış toplayan videoların** şəkillərini/ekran görüntülərini təhlil et
+     (`../montaj/en-yaxsi-videolar/` qovluğunda saxla), onların güclü tərəflərini götür, eyni səviyyədə AMMA daha yaxşı et.
+     Yeni montajı əvvəl həmin "ən yaxşı" nümunələrlə müqayisə edib yoxla (test), zəif yeri varsa düzəlt.
+   - **Hər yeni evdə tövsiyə ver:** montajdan ƏVVƏL istifadəçiyə 1–3 konkret böyümə tövsiyəsi yaz — həm fiziki
+     (çəkiliş: məs. "əvvəl qısa video çək", "girişdən içəri gəzərək çək", "axşam işıqları yanılı çək", "sahibi ilə
+     5 saniyəlik danışıq"), həm paylaşım (vaxt, səs, şərh cavabı, seriya), lazım olsa istifadəçiyə hazır prompt/mətn yaz.
+     İstifadəçi əvvəl tövsiyəni edir, sonra şəkilləri göndərir, sonra montaj olunur.
+   - Anlaşılmayan bir şey varsa — ƏVVƏL sual ver, sonra tətbiq et.
+   - **Ən yaxşı nümunələr (Instagram, təhlil: `../montaj/en-yaxsi-videolar/TEHLIL.md`):** həyat tərzi başlığı ("Səhər qəhvəsi
+     bu terrasda" 338, "Palma altında yelləncək" 273), status sözləri (saray/kurort/VILLA/Lüks — 321–325, 258, 232),
+     işıqlı səmalı fasad və ya isti-qızılı interyer ilk kadrda, iri serif başlıq + 1 sətir rəqəm. Tünd/neon (21) və
+     uzun/texniki başlıq (58) zəifdir — bunlardan qaç. Hələlik yalnız şəkillərlə (video çəkilişi istifadəçi xəbər verəndə).
+   - **TikTok (ən yaxşı 749, 582, 579, 521):** başlıq kadrı üçün HƏMİŞƏ ən yaxşı **mavi səma + mavi hovuz + ağ fasad**
+     şəklini seç (varsa); boz səmalı kadr başlıqda olmasın (16–21 baxış). Başlıq qısa (2–4 söz) və ya sual-cavab;
+     yazı aşağı 1/3-də, şəkil ekranın çoxunu tutsun — ekranı dolduran iri yazıdan qaç (22 baxış).
+5. **Qanun verəndə yalnız deyiləni et.** Yeni qayda gələndə onu bu fayla yaz və təsdiqlə; köhnə videoları
+   özbaşına yenidən render edib göndərmə — yalnız istifadəçi desə.
+6. **Fayl altlıqları.** Hər faylı ayrıca göndər, altında hansı tətbiq üçün olduğunu yaz:
+   - 9:16 video → "TikTok, Instagram Reels və Instagram Story üçün"
+   - 4:5 video → "Instagram post (lent) və Facebook post üçün"
+   - cover-9x16.jpg → "TikTok / Reels örtük şəkli"; cover-4x5.jpg → "Instagram post örtük şəkli"
+   - paylasim-metni.md → "TikTok / Instagram / Facebook paylaşım mətni və heşteqlər"
+7. **Söhbət adı:** yeni söhbətdə `session-counter.txt`-i 1 artır, adı "FA <rəqəm>" qoy (istifadəçi başqa ad deməsə).
+8. **Müəllif hüququ xəbərdarlığı:** musiqi, şəkil, mətn, şrift və s.-də risk varsa, işə başlamazdan ƏVVƏL
+   xəbər ver (nə risklidir, video silinə/səssizləşə bilər), təhlükəsiz alternativ təklif et, qərarı istifadəçi versin.
+   İstifadəçinin göndərdiyi ev şəkilləri onun özünə aiddir.
+9. **Partnyor elan mətnləri:** məlumatları götür, mətni HEÇ VAXT birə-bir köçürmə — öz üslubumuzda yenidən yaz.
+   Elandakı başqa nömrələr heç yerdə istifadə olunmur.
+
+## B. Videonun məzmunu
+
+10a. **"EV" şərh çağırışı LƏĞV EDİLDİ (QANUN, 2026-11-17) — yerinə qiymət kampaniyası (variant A):**
+    giriş kadrındakı qızılı düymədə: üstündən xətt çəkilmiş "Elandakı qiymət" + **"Bizdə daha sərfəlidir!"**;
+    son kadrda: üstündən qızılı xətt çəkilmiş "Elandakı qiymət" + qızılı düymədə **"Bizdə daha sərfəlidir!"** +
+    "Ətraflı məlumat üçün DM yazın" (render.py `CAMP_*`, `campaign()` — default açıqdır; `"campaign": false` ilə söndürülür).
+    Paylaşım mətnində "EV" yazın sətri yerinə: "🔥 Elandakı qiymətdən daha sərfəli — bizdə! Ətraflı məlumat üçün DM yazın."
+    Nömrə yenə yalnız paylaşım mətnində. Aşağıdakı 10-cu qanunun "EV" hissəsi artıq keçərli deyil.
+10b. **TEST (qanun deyil, 2026-11-18):** yalnız NÖVBƏTİ evdə birləşmiş çağırış sınanır:
+    "~~Elandakı qiymət~~ Bizdə daha sərfəli — neçəyə? Şərhdə soruş ↓" (listing.json `"text": {"camp_new": ...}`).
+    İstifadəçi bəyənib "qanun et" deyənə qədər digər evlərdə 10a qalır.
+    **Test uzadılıb (2026-11-19):** NÖVBƏTİ evdə də eyni test çağırışı və eyni səviyyə (qa/sual-cavab qaydaları,
+    mavi səma başlıq, aşağı 1/3 yazı) tətbiq olunur — hələ də qanun DEYİL.
+10. **Nömrə yox, "EV" şərh çağırışı (QANUN, 2026-11-04).** Videoda telefon nömrəsi YOXDUR.
+    Giriş kadrında qızılı düymə: **"Qiymət üçün şərhə “EV” yazın ↓"**; son kadrda:
+    **"Qiymət üçün şərhə yazın:"** + qızılı **“EV”** düyməsi + **"DM-ə göndərirəm"** (render.py `EV_*`).
+    Paylaşım mətnində də: "💬 Qiymət üçün şərhə "EV" yazın — DM-ə göndərirəm!".
+    Nömrə (`010-310-03-02`) yalnız paylaşım mətnində olur. (Köhnə "Bu ev neçəyə satılır? Şərhdə qeyd et" əvəz olundu.)
+11. **Qiymət videoda yazılmır** — istifadəçinin məlumatında olsa belə. "QİYMƏTİ SONDA" yazılmır.
+    Qiymət yalnız paylaşım mətnində ola bilər (istifadəçi əks deməsə).
+11a. **İSTİSNA — ukrayna dilində videolar (Facebook qrupları / Telegram üçün):** qiymət videoda
+    (son kadrda) MÜTLƏQ yazılır, məs. "655 000 ₼", və paylaşım mətnində də olur. Qiymət məlum deyilsə,
+    istifadəçidən soruş. Nömrə formatı: "+994 10 310 03 02 +WP" (videoda və mətndə).
+12. **"Dostuna göndər" çağırışı** hər videoda (son kadrda): marağı çəkən, "hə, dərhal göndərirəm" dedirdən,
+    evə uyğun, hər evdə fərqli mətn (məs. "Bu videonu 'bir gün belə evimiz olacaq' dediyin adama göndər!").
+    Video içində emoji işlətmə (şrift göstərmir) — emoji yalnız paylaşım mətnində.
+13. **Hər şəklin üstündə nə olduğu yazılır:** Hovuz, Həyət, Fasad, Mətbəx, Qonaq otağı, Yataq otağı, Sanuzel,
+    Qarderob, Dəhliz, Giriş holu, Yay-qış mətbəxi və s. (giriş kadrından başqa).
+    **Zal** şəklində yemək masası olsa belə yazı **"Qonaq otağı"** — heç vaxt "Yemək zonası".
+14. **Son kadr:** yaşıl fon, loqo, "SATILIR", evin məlumatları 3 sətirdə, "Qiymət üçün şərhə yazın:",
+    qızılı “EV” düyməsi, "DM-ə göndərirəm", "dostuna göndər" mətni; sonda girişə yumşaq keçid (loop).
+
+14a. **“Yoxlanılmış Ev” nişanı (2026-11-04):** `listing.json`-da `"verified": true` olan evlərdə girişdə
+    loqonun altında və son kadrda "SATILIR"-ın altında "Xəzər Sahil — Yoxlanılmış Ev" nişanı çıxır.
+    Yalnız 3 yoxlama (sənəd, texniki, qiymət) imzalanmış evlərə qoy — yoxlama vərəqi: `../yoxlanilmis-ev/`.
+14b. **Mətn dəyişdirmə:** son kadr və şərh çağırışı `"text"` ilə dəyişir: `sold`, `ev_pill`, `ev_q`, `ev_word`,
+    `ev_dm`, `verified` (nümunə: `../montaj/evler/aciq-qapi-senbe/listing.json` — "ŞƏNBƏ" açar sözü).
+
+## C. Dizayn
+
+15. **Hər evin dizaynı fərqli.** Giriş kompozisiyası, yazıların yeri/üslubu, kadr yazısı stili (`label_style`),
+    keçidlər, ritm hər evdə dəyişir. Hazır giriş üslubları: `classic`, `pov`, `guess`, `stat`, `checklist`, `cinema`, `beats`, `ribbon`, `split`, `arch`, `duo`, `magazine`, `polaroid`, `viewfinder`, `news`, `ticket`, `pin`, `chat`, `triptych`, `blueprint`, `seal`, `callout`, `postcard`, `diagonal`, `spotlight`, `plaque`, `stack`, `lens`, `colonnade`, `mosaic`, `ledger`, `neon`, `filmstrip`, `quote`, `waterline`, `keycard`, `countdown`, `glasspane`, `swiss`, `route`, `compass`, `hangsign`, `stars`, `bignum`, `houseframe`, `tape`, `seasons`, `invite`, `toggles`, `receipt`, `sidetitle`, `loupe`, `floors`, `calendar`, `notes`, `orbit`, `passport`, `flapboard`, `chapter`, `strike`, `marquee`, `museum`, `plot`, `ceiling`, `bands`, `mandala`, `roadsign`, `inset`, `cartouche`, `lantern`, `glint`, `qa`, `skyline`, `ticker`, `corners`, `pills`, `milestone` (render.py `build_hook_v2`) —
+    lazım olsa yenisini əlavə et.
+15a. **`polaroid` giriş üslubu QADAĞANDIR (QANUN, 2026-11-04)** — variant kimi təklif etmə; yerinə yeni, fərqli formatda bir şey düzəlt.
+15b. **Təkrar yoxdur (QANUN):** hər yeni evdə giriş üslubu, kadr yazısı stili və keçid birləşməsi ƏVVƏLKİ evlərdə
+    işlənməyən olsun. Təklif etməzdən əvvəl aşağıdakı "İşlənmiş" siyahısına bax, yeni ev bitəndə siyahıya əlavə et.
+    Hazır üslublar tükənibsə — render.py-də yeni üslub yarat.
+    **İşlənmiş (hook / label / keçid):**
+    - Mərdəkan 3.5 sot 220 m²: stat / goldbar / flash+punch; cinema / chip / whip
+    - Mərdəkan 4 sot 210 m²: beats(video) / band / punch; ribbon / tag / whip
+    - Mərdəkan 4 sot 160 m²: arch / goldbar / flash; magazine / chip / punch
+    - Şüvəlan 4 sot 180 m²: pov(video) / serif / flash; duo / band / whip
+    - Şüvəlan 4 sot 200 m²: stat / index / punch; cinema / toppill / flash+whip
+    - Şüvəlan 8 sot 450 m²: pov / tag / whip; beats / goldbar / flash+punch
+    - Şüvəlan 4.5 sot 170 m²: checklist / serif / whip; split / index / flash+punch
+    - Şüvəlan 4 sot 160 m²: ribbon / band / whip; magazine / toppill / flash+punch
+    - Şüvəlan 4 sot 180 m² (b): viewfinder / osd / slide; news / lower / fade; ticket / stub / punch+fade
+    - Mərdəkan 5 sot 220 m²: pin(video) / pinlab / zoom; triptych / vertical / wipe
+    - Açıq qapı şənbəsi (3 villa): triptych / chip / slide+fade
+    - Mərdəkan 5.5 sot 220 m²: seal / rule / iris; callout / leader / blinds
+    - Mərdəkan 8 sot 220 m²: diagonal / corner / doors; spotlight / outline / diag
+    - Mərdəkan 4 sot 250 m²: plaque / plate / split; stack / block / drop
+    - Mərdəkan 11 sot 350 m²: colonnade / banner / tiles; mosaic / frame / stripes
+    - Mərdəkan 4.2 sot 160 m²: neon / glow / glowcut; filmstrip / sprocket / filmroll
+    - Mərdəkan 6 sot 260 m²: waterline / wave / ripple; keycard / doortag / swipe
+    - Mərdəkan 6 sot 240 m²: glasspane / frost / pane; route / waypoint / pan (təklif olunub, işlənməyib: swiss)
+    - Şüvəlan 3 sot 150 m²: compass / bearing / spin; stars / starrow / flip; hangsign / pennant / swing
+    - Şüvəlan 3.5 sot 160 m²: bignum / hollow / defocus (təklif olunub, işlənməyib: houseframe, tape)
+    - Şüvəlan 4 sot 150 m²: seasons / tick / pixel (təklif olunub, işlənməyib: houseframe, swiss)
+    - Şüvəlan 4.5 sot 155 m²: invite / placecard / fold (təklif olunub, işlənməyib: houseframe, tape)
+    - Şüvəlan 3.3 sot 140 m²: sidetitle / linecap / lift (təklif olunub, işlənməyib: toggles, receipt)
+    - Şüvəlan 4.5 sot 170 m² (b): loupe / halo / lensin (təklif olunub, işlənməyib: houseframe, toggles)
+    - Şüvəlan 2 sot 120 m²: floors / notch / liftdoor (təklif olunub, işlənməyib: receipt, tape)
+    - Şüvəlan 3 sot 130 m²: calendar / datetab / tearoff (təklif olunub, işlənməyib: notes, orbit)
+    - Mərdəkan 8 sot 230 m²: passport / visa / stamp (təklif olunub: flapboard)
+    - Mərdəkan 4.5 sot 200 m²: chapter / scene / dip (təklif olunub, işlənməyib: marquee, museum)
+    - Mərdəkan 11 sot 250 m²: bands / triline / slats (təklif olunub, işlənməyib: plot, ceiling)
+    - Şüvəlan 3 sot 140 m²: roadsign / signpost / lane (təklif olunub, işlənməyib: mandala, inset)
+    - Şüvəlan 3 sot 140 m² (c): lantern / ember / glowup (təklif olunub, işlənməyib: cartouche, inset)
+    - Şüvəlan 4 sot 200 m² (b): qa / bubble / popin (təklif olunub, işlənməyib: glint, skyline) — test çağırışı 10b ilə
+    - Şüvəlan 2.6 sot 120 m²: ticker / goldtab / bandsweep (təklif olunub, işlənməyib: glint, skyline) — test çağırışı 10b ilə
+    - Şüvəlan 4 sot 160 m² (b): pills / dotpill / capsule (təklif olunub, işlənməyib: corners, skyline) — qanun çağırışı 10a ilə
+    - Şüvəlan villa (əsas yoldan 300 m): milestone / ringtag / ringwipe (təklif olunub, işlənməyib: corners, glint) — qanun çağırışı 10a ilə
+16. **Brend sabitdir:** loqo sol (və ya sağ) yuxarıda, nümunədən 20% böyük; "Xəzər Sahil" ağ, "Əmlak" və
+    "REAL ESTATE" qızılı. Brend adı **Xəzər Sahil Əmlak**. Rənglər: yaşıl `#163E3A`, qızılı `#C2A365`,
+    krem `#F1EFE8`, tünd yaşıl `#0F2E2A`. Şriftlər: Playfair Display Bold, Montserrat 600/700.
+
+## D. Şəkil emalı (hər montajda, xatırlatma lazım deyil)
+
+17. **Əyrilik düzəldilir** (`video/straighten.py`, perspektiv düzəltmə). Render-dən ƏVVƏL yoxla:
+    `python3 ../video/tiltcheck.py evler/<ad> yoxlama.jpg` — əyri qalan kadr varsa düzəlt və ya başqa şəkil seç.
+    Göndərəndə hansı şəkillərin düzəldildiyini qısa yaz.
+18. **İşıqlandırma** — qaranlıq tonlar avtomatik işıqlandırılır (`brighten`).
+19. **Rəng tonu — RƏNGLİ ETMƏ (QANUN, 2026-11-14):** videolar artıq rənglənmir — şəkillər öz təbii
+    rəngində qalır (doyğunluq artırılmır, kino effekti/vinyet yoxdur). render.py `vivid()` default olaraq
+    söndürülüb; köhnə canlı ton yalnız `listing.json`-da `"look": "vivid"` yazılsa işləyir (istifadəçi istəsə).
+    Sıra: düzəltmə → işıqlandırma (yalnız işıq, rəng yox).
+
+## E. Uzunluq və temp
+
+20. **Video maksimum 25–30 saniyə.** Sığmırsa ən zəif/təkrar şəkilləri çıxar (yataq otaqları və əsas otaqlar
+    mümkün qədər qalsın); çıxarılanları istifadəçiyə yaz. İstifadəçi konkret şəkli çıxar desə — çıxar.
+21. **Temp (QANUN, 2026-11-07):** giriş (başlıq) kadrı **dəqiq 2 san** (render.py `HOOK_MIN`; əvvəl 3 san idi), hər yazılı kadr
+    **dəqiq 1.5 san** (render.py `SHOT_SEC`), son kadr 4.8 san. 30 san-ə giriş + 15 kadr sığır (~29.3 san).
+21a. **"SAXLA, İTİRMƏ" çağırışı (QANUN, 2026-11-04):** hər videonun ortasındakı kadrda əlfəcin ikonlu krem düymə
+    (render.py `save_layer`; avtomatik orta kadr, `"save_cta": <nömrə>` ilə başqa kadr seçmək olar).
+20a. Rule 20 qeydi: 1.5 san ritmlə 30 san-ə giriş + 15 kadr sığır — çox şəkil olanda ən zəif/təkrarları çıxar.
+22. Şəkil ardıcıllığı: fasad → həyət/hovuz → hol → mətbəx → qonaq otağı → yataq otaqları → qarderob → sanuzellər.
+
+## F. Musiqi
+
+23. İstifadəçi nömrə deyəndə: `"music": "pro:NN"` (1–20, `video/music_pro_songs.py`); köhnə üslublar:
+    `"lofi"`, `"jazz"`, `"spa"`, `"cinematic"`, `"trend"` və s. Nömrə deyilməyibsə — musiqisiz.
+    Hamısı orijinaldır (müəllif hüququ riski yoxdur).
+
+## G. Formatlar və çıxış
+
+24. Hər ev üçün: 9:16 (1080×1920) və 4:5 (1080×1350) video, 2 örtük şəkli, paylaşım mətni (`out/paylasim-metni.md`).
+25. Hər işdən sonra commit + push (`claude/xezer-sahil-logo` budağı və `main`).
+
+---
+
+## Necə işləmək
+
+```bash
+cd "Ev montajı 2"
+mkdir -p evler/<ad>/photos            # şəkilləri bura kopyala: photos/<ad>.jpg
+# evler/<ad>/listing.json yaz (nümunə: ../montaj/evler/_numune/listing.json)
+python3 ../video/tiltcheck.py evler/<ad> yoxlama.jpg   # əyrilik yoxlaması
+python3 ../video/render.py evler/<ad> --preview        # önizləmə -> out/preview.jpg
+python3 ../video/render.py evler/<ad>                  # 9:16 + 4:5 + örtüklər -> out/
+```
+
+`listing.json` əsas sahələri: `slug`, `comment_cta: true`, `price: null`, `phone`, `details` (3 sətir),
+`share` (dostuna göndər mətni), `label_style` (`chip`, `band`, `tag`, `serif`, `index`, `toppill`, `osd`, `lower`, `stub`, `pinlab`, `vertical`, `rule`, `leader`, `corner`, `outline`, `plate`, `block`, `banner`, `frame`, `glow`, `sprocket`, `wave`, `doortag`, `frost`, `waypoint`, `bearing`, `starrow`, `pennant`, `hollow`, `tick`, `placecard`, `linecap`, `halo`, `notch`, `datetab`, `visa`, `scene`, `triline`, `signpost`, `ember`, `bubble`, `goldtab`, `dotpill`, `ringtag` və ya yoxdur; keçidlər: whip, flash, punch, slide, fade, zoom, wipe, iris, blinds, doors, diag, split, drop, tiles, stripes, glowcut, filmroll, ripple, swipe, pane, pan, spin, flip, swing, defocus, pixel, fold, lift, lensin, liftdoor, tearoff, stamp, dip, slats, lane, glowup, popin, bandsweep, capsule, ringwipe), `music`, `hook` (`style`: classic/pov/guess,
+`lines`, `kicker`, `sub`, `cta_style`: pill/answer), `shots` — `[şəkil, saniyə, hərəkət, yazı, keçid]`.
