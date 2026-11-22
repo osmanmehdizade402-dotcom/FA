@@ -2662,6 +2662,39 @@ class Renderer:
             fu = font("Montserrat700.ttf", 24 * fs)
             d.text((cx, cy - int(12 * fs)), num, font=fn, fill=GOLD, anchor="mm")
             d.text((cx, cy + int(52 * fs)), az_upper(unit), font=fu, fill=CREAM, anchor="mm")
+        elif self.hook_style == "pediment":
+            # neoclassical gable: thin gold pediment over a centred title in the lower third, columned fact line
+            n = int(H * (0.52 if self.tall else 0.74))
+            g[H - n:, :, 3] = ((lambda t: t * t * (3 - 2 * t))(np.clip(np.linspace(0, 1.15, n), 0, 1)) * 200)[:, None].astype(np.uint8)
+            lay.alpha_composite(Image.fromarray(g, "RGBA"))
+            d = ImageDraw.Draw(lay)
+            cx = W // 2
+            top = int(H * (0.565 if self.tall else 0.40))
+            pw, ph = int(250 * fs), int(64 * fs)
+            lw2 = max(3, int(4 * fs))
+            d.line([(cx - pw, top + ph), (cx, top), (cx + pw, top + ph), (cx - pw, top + ph)], fill=GOLD + (255,), width=lw2, joint="curve")
+            d.line([(cx - pw - int(18 * fs), top + ph + int(12 * fs)), (cx + pw + int(18 * fs), top + ph + int(12 * fs))], fill=GOLD + (255,), width=max(2, int(2 * fs)))
+            fk = font("Montserrat700.ttf", 26 * fs)
+            kick = az_upper(hook["kicker"])
+            d.text((cx, top + int(ph * 0.66)), kick, font=fk, fill=CREAM, anchor="mm")
+            fl = font("Playfair700.ttf", 104 * fs)
+            yy = top + ph + int(44 * fs)
+            parts = []
+            for i, line in enumerate(hook["lines"]):
+                parts.append((line, fl, WHITE if i == 0 else GOLD, cx - d.textlength(line, font=fl) / 2, yy, 0))
+                yy += int(118 * fs)
+            lay.alpha_composite(self.text_layer(parts))
+            d = ImageDraw.Draw(lay)
+            fsb = font("Montserrat700.ttf", 32 * fs)
+            sub = az_upper(hook["sub"])
+            sw = d.textlength(sub, font=fsb)
+            ys = yy + int(40 * fs)
+            colh = int(46 * fs)
+            for sx in (cx - sw / 2 - int(34 * fs), cx + sw / 2 + int(34 * fs)):  # two little columns
+                d.rectangle([sx - int(5 * fs), ys - colh / 2, sx + int(5 * fs), ys + colh / 2], fill=GOLD + (255,))
+                d.rectangle([sx - int(11 * fs), ys - colh / 2 - int(6 * fs), sx + int(11 * fs), ys - colh / 2], fill=GOLD + (255,))
+                d.rectangle([sx - int(11 * fs), ys + colh / 2, sx + int(11 * fs), ys + colh / 2 + int(6 * fs)], fill=GOLD + (255,))
+            lay.alpha_composite(self.text_layer([(sub, fsb, CREAM, cx - sw / 2, ys - int(22 * fs), 3 * fs)]))
         elif self.hook_style == "glint":
             # best-performer layout: photo dominant, short 2-word status title in lower third, gold sweep underline, number row
             n = int(H * (0.50 if self.tall else 0.70))

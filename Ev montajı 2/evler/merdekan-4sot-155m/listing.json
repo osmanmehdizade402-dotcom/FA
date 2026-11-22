@@ -1,0 +1,28 @@
+{
+ "comment_cta": true,
+ "price": null,
+ "phone": "010-310-03-02",
+ "details": ["Mərdəkan  •  mərkəzi yola yaxın", "4 sot  •  155 m²  •  4 otaq  •  2 sanuzel", "Hovuz  •  Terras  •  İsti döşəmə  •  Çıxarış"],
+ "music": null,
+ "slug": "merdekan-4sot-155m",
+ "label_style": "chip",
+ "share": "",
+ "hook": {"style": "pediment", "kicker": "Mərdəkan  •  4 sot", "lines": ["Ağ saray", "Mərdəkanda"], "sub": "155 m²  •  4 otaq  •  hovuz", "cta_style": "pill", "title": [], "pill": ""},
+ "shots": [
+  ["facade_pool", 2.0, "in_slow", null, null],
+  ["facade", 1.5, "in", "Fasad", "fade"],
+  ["facade_pool", 1.5, "up", "Hovuz", "fade", [0.50, 0.80, 1.55]],
+  ["terrace", 1.5, "left", "Terras", "fade"],
+  ["courtyard", 1.5, "right", "Həyət", "fade"],
+  ["hall", 1.5, "in", "Hol", "fade"],
+  ["living_kitchen", 1.5, "out", "Qonaq otağı", "fade"],
+  ["kitchen", 1.5, "left", "Mətbəx", "fade"],
+  ["living_dining", 1.5, "right", "Qonaq otağı", "fade"],
+  ["living3", 1.5, "up", "Qonaq otağı", "fade"],
+  ["bed1", 1.5, "in", "Yataq otağı", "fade"],
+  ["bed2", 1.5, "left", "Yataq otağı", "fade"],
+  ["bed3", 1.5, "right", "Yataq otağı", "fade"],
+  ["bath1", 1.5, "up", "Sanuzel", "fade"],
+  ["bath2", 1.5, "out", "Sanuzel", "fade"]
+ ]
+}
