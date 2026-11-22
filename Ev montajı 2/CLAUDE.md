@@ -57,6 +57,9 @@ ziddiyyət olanda **ən son verilən qanun** keçərlidir (burada artıq nəzər
    İstifadəçinin göndərdiyi ev şəkilləri onun özünə aiddir.
 9. **Partnyor elan mətnləri:** məlumatları götür, mətni HEÇ VAXT birə-bir köçürmə — öz üslubumuzda yenidən yaz.
    Elandakı başqa nömrələr heç yerdə istifadə olunmur.
+9a. **Partnyor elanları — xəbərdarlıq YOXDUR (QANUN, 2026-11-22):** istifadəçinin göndərdiyi bina.az və s. elan
+   linkləri onun partnyorlarına aiddir və onların icazəsi var — həmin elanların şəkil/mətni üçün müəllif hüququ
+   xəbərdarlığı bir daha VERİLMİR, birbaşa hazırlanır (mətn qanun 9 üzrə yenidən yazılır).
 
 ## B. Videonun məzmunu
 
