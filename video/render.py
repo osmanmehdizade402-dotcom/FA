@@ -421,6 +421,34 @@ class Renderer:
 
         # shot labels
         f_lab = font("Montserrat700.ttf", 62 * fs)
+        if LISTING.get("label_style") == "slashtag":  # slanted dark-green tab, thick gold slash at its left, serif caption
+            self.labels = {}
+            for s in self.shots:
+                lab = s[3]
+                if not lab or lab in self.labels:
+                    continue
+                lay = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                d = ImageDraw.Draw(lay)
+                f_ = font("Playfair700.ttf", 58 * fs)
+                tw = d.textlength(lab, font=f_)
+                bh = int(92 * fs)
+                sk = int(26 * fs)  # slant
+                x0, y0 = int(mx), H - int(380 * u) - bh
+                x1 = x0 + int(tw + 120 * fs)
+                poly = [(x0 + sk, y0), (x1 + sk, y0), (x1, y0 + bh), (x0, y0 + bh)]
+                sh = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+                ImageDraw.Draw(sh).polygon([(a + 5, b + 12) for a, b in poly], fill=(0, 0, 0, 120))
+                lay.alpha_composite(sh.filter(ImageFilter.GaussianBlur(12 * fs)))
+                d = ImageDraw.Draw(lay)
+                d.polygon(poly, fill=GREEN_DARK + (238,))
+                gw = int(16 * fs)
+                d.polygon([(x0 + sk, y0), (x0 + sk + gw, y0), (x0 + gw, y0 + bh), (x0, y0 + bh)], fill=GOLD + (255,))
+                d.line([(x0 + sk + int(34 * fs), y0 + bh + int(14 * fs)), (x1 + int(40 * fs), y0 + bh + int(14 * fs) - int(10 * fs))], fill=GOLD + (220,), width=max(2, int(3 * fs)))
+                bb = f_.getbbox(lab)
+                lay.alpha_composite(self.text_layer([(lab, f_, CREAM, x0 + gw + int(44 * fs), y0 + (bh - (bb[3] - bb[1])) / 2 - bb[1], 0)]))
+                self.labels[lab] = lay
+            self.build_endcard(Image.open(LOGO).convert("RGBA"))
+            return
         if LISTING.get("label_style") == "ringtag":  # gold ring medallion with a dot + text on a squared dark-green tab
             self.labels = {}
             for s in self.shots:
@@ -4284,7 +4312,7 @@ class Renderer:
             i = max(j for j, s in enumerate(starts) if s <= T + 1e-9)
             t = T - starts[i]
             tr = shots[i][4]
-            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep", "capsule", "ringwipe") and t < TR and i > 0:
+            if tr in ("whip", "flash", "slide", "fade", "zoom", "wipe", "iris", "blinds", "doors", "diag", "split", "drop", "tiles", "stripes", "glowcut", "filmroll", "ripple", "swipe", "pane", "pan", "spin", "flip", "swing", "defocus", "pixel", "fold", "lift", "lensin", "liftdoor", "tearoff", "stamp", "dip", "slats", "lane", "glowup", "popin", "bandsweep", "capsule", "ringwipe", "strikeout") and t < TR and i > 0:
                 k = t / TR
                 prev = self.full_shot(i - 1, shots[i - 1][1] + t).convert("RGB")
                 cur = self.full_shot(i, t).convert("RGB")
@@ -4310,6 +4338,27 @@ class Renderer:
                     rp = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")  # undecorated: no ghost logo
                     rc = self.shot_frame(i, t).convert("RGB")
                     fr = Image.blend(zc(rp, 1 + 0.25 * e), zc(rc, 1.2 - 0.2 * e), e)
+                    fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
+                elif tr == "strikeout":  # a gold strike line is drawn across prev, then cur opens out of that line
+                    prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")
+                    cur = self.shot_frame(i, t).convert("RGB")
+                    lw = max(6, int(12 * self.W / 1080))
+                    yl, yr = self.H * 0.53, self.H * 0.47  # slight upward tilt, like the hook's strike line
+                    if k < 0.42:
+                        e = ease(k / 0.42)
+                        fr = prev.copy()
+                        x = e * self.W
+                        ImageDraw.Draw(fr).line([(0, yl), (x, yl + (yr - yl) * x / self.W)], fill=GOLD, width=lw)
+                    else:
+                        e = ease((k - 0.42) / 0.58)
+                        o = e * self.H * 0.62
+                        m = Image.new("L", (self.W, self.H), 0)
+                        ImageDraw.Draw(m).polygon([(0, yl - o), (self.W, yr - o), (self.W, yr + o), (0, yl + o)], fill=255)
+                        fr = Image.composite(cur, prev, m)
+                        if e < 0.97:
+                            dd = ImageDraw.Draw(fr)
+                            dd.line([(0, yl - o), (self.W, yr - o)], fill=GOLD, width=max(3, lw // 2))
+                            dd.line([(0, yl + o), (self.W, yr + o)], fill=GOLD, width=max(3, lw // 2))
                     fr = self.decorate(fr.convert("RGBA"), i, t).convert("RGB")
                 elif tr == "ringwipe":  # cur revealed by a circle growing from the top-right corner, gold ring at its rim
                     prev = self.shot_frame(i - 1, shots[i - 1][1] + t).convert("RGB")

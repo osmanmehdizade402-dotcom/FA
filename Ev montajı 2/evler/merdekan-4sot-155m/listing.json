@@ -2,27 +2,142 @@
  "comment_cta": true,
  "price": null,
  "phone": "010-310-03-02",
- "details": ["Mərdəkan  •  mərkəzi yola yaxın", "4 sot  •  155 m²  •  4 otaq  •  2 sanuzel", "Hovuz  •  Terras  •  İsti döşəmə  •  Çıxarış"],
+ "details": [
+  "Mərdəkan  •  mərkəzi yola yaxın",
+  "4 sot  •  155 m²  •  4 otaq  •  2 sanuzel",
+  "Hovuz  •  Terras  •  İsti döşəmə  •  Çıxarış"
+ ],
  "music": null,
  "slug": "merdekan-4sot-155m",
- "label_style": "chip",
- "share": "",
- "hook": {"style": "pediment", "kicker": "Mərdəkan  •  4 sot", "lines": ["Ağ saray", "Mərdəkanda"], "sub": "155 m²  •  4 otaq  •  hovuz", "cta_style": "pill", "title": [], "pill": ""},
+ "label_style": "slashtag",
+ "share": "'Bir gün belə evimiz olacaq' dediyin adama göndər, qoy görsün!",
+ "hook": {
+  "style": "strike",
+  "kicker": "Mərdəkan  •  155 m²",
+  "lines": [
+   "Neoklassik",
+   "VİLLA"
+  ],
+  "sub": "Hovuz  •  terras  •  isti döşəmə",
+  "cta_style": "pill",
+  "title": [],
+  "pill": "",
+  "crossed": "Adi bağ evi",
+  "sticker": [
+   "4 SOT",
+   "4 otaq"
+  ]
+ },
  "shots": [
-  ["facade_pool", 2.0, "in_slow", null, null],
-  ["facade", 1.5, "in", "Fasad", "fade"],
-  ["facade_pool", 1.5, "up", "Hovuz", "fade", [0.50, 0.80, 1.55]],
-  ["terrace", 1.5, "left", "Terras", "fade"],
-  ["courtyard", 1.5, "right", "Həyət", "fade"],
-  ["hall", 1.5, "in", "Hol", "fade"],
-  ["living_kitchen", 1.5, "out", "Qonaq otağı", "fade"],
-  ["kitchen", 1.5, "left", "Mətbəx", "fade"],
-  ["living_dining", 1.5, "right", "Qonaq otağı", "fade"],
-  ["living3", 1.5, "up", "Qonaq otağı", "fade"],
-  ["bed1", 1.5, "in", "Yataq otağı", "fade"],
-  ["bed2", 1.5, "left", "Yataq otağı", "fade"],
-  ["bed3", 1.5, "right", "Yataq otağı", "fade"],
-  ["bath1", 1.5, "up", "Sanuzel", "fade"],
-  ["bath2", 1.5, "out", "Sanuzel", "fade"]
+  [
+   "facade_pool",
+   2.0,
+   "in_slow",
+   null,
+   null
+  ],
+  [
+   "facade",
+   1.5,
+   "in",
+   "Fasad",
+   "strikeout"
+  ],
+  [
+   "facade_pool",
+   1.5,
+   "up",
+   "Hovuz",
+   "strikeout",
+   [
+    0.5,
+    0.8,
+    1.55
+   ]
+  ],
+  [
+   "terrace",
+   1.5,
+   "left",
+   "Terras",
+   "strikeout"
+  ],
+  [
+   "courtyard",
+   1.5,
+   "right",
+   "Həyət",
+   "strikeout"
+  ],
+  [
+   "hall",
+   1.5,
+   "in",
+   "Hol",
+   "strikeout"
+  ],
+  [
+   "living_kitchen",
+   1.5,
+   "out",
+   "Qonaq otağı",
+   "strikeout"
+  ],
+  [
+   "kitchen",
+   1.5,
+   "left",
+   "Mətbəx",
+   "strikeout"
+  ],
+  [
+   "living_dining",
+   1.5,
+   "right",
+   "Qonaq otağı",
+   "strikeout"
+  ],
+  [
+   "living3",
+   1.5,
+   "up",
+   "Qonaq otağı",
+   "strikeout"
+  ],
+  [
+   "bed1",
+   1.5,
+   "in",
+   "Yataq otağı",
+   "strikeout"
+  ],
+  [
+   "bed2",
+   1.5,
+   "left",
+   "Yataq otağı",
+   "strikeout"
+  ],
+  [
+   "bed3",
+   1.5,
+   "right",
+   "Yataq otağı",
+   "strikeout"
+  ],
+  [
+   "bath1",
+   1.5,
+   "up",
+   "Sanuzel",
+   "strikeout"
+  ],
+  [
+   "bath2",
+   1.5,
+   "out",
+   "Sanuzel",
+   "strikeout"
+  ]
  ]
 }
